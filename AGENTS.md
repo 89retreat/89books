@@ -82,6 +82,10 @@ from the sources according to `canvas-instructions.md`.
 
 ## Navigator Preferences
 
+**History policy in this project: commit at the end of every turn that
+changed files, without asking; push only when the Navigator explicitly asks.**
+Details in `docs/process/development-guide.md` → Commit and Release Rules.
+
 Follow `docs/process/development-guide.md` for commit frequency, push policy,
 checkpoint compression, documentation detail, worklog habits, and branch or
 pull request rules. If no local preference is configured, use Ariad defaults:
@@ -102,8 +106,8 @@ Technical Stories (listed in its `Candidate Stories` table), recommend which one
 to start, and wait for the Navigator to confirm.
 
 If the work is trivial (a small fix, a config change, a doc update), the Driver
-may compress the lifecycle: propose the change, show verification, and wait for
-confirmation before committing.
+may compress the lifecycle: propose the change, show verification, and commit
+it at the end of the turn.
 
 For non-trivial work, follow the full lifecycle.
 
@@ -185,17 +189,19 @@ it changed.
 
 ### 7. Record History
 
-Set the story to `status: Done`. Propose a descriptive commit message that
-explains the WHY, in English.
+Set the story to `status: Done` and commit it at the end of the turn with a
+descriptive message that explains the WHY, in English. Every turn that changed
+files ends with a commit, not only the closing one.
 
-**→ Checkpoint 4: stop and present the proposed history action. Wait for
-Navigator confirmation unless the local commit policy says otherwise.**
+**→ Checkpoint 4: do not push. Report the commit and wait. Push only when the
+Navigator explicitly asks.**
 
 ## Checkpoint Rules
 
 A confirmation releases work until the next checkpoint, not through the entire
 lifecycle. "Go ahead" after the plan means "implement and test", not
-"implement, test, review, document, and commit".
+"implement, test, review, and document". Turn commits still happen along the
+way; pushes never do without an explicit request.
 
 At each checkpoint, the Driver presents what was done and what comes next. The
 Navigator confirms, redirects, or asks questions. Between checkpoints the Driver

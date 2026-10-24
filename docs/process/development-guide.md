@@ -155,13 +155,17 @@ Pare para confirmação do Navigator:
 - depois dos checks automatizados, com uma rota de validação concreta para o
   Navigator (observações esperadas, condição de sucesso, condição de falha);
 - depois da review e da avaliação de refatoração;
-- antes de registrar o histórico.
+- antes de qualquer push (ver Commit and Release Rules).
+
+O commit não é checkpoint: acontece ao fim de cada turno, sem pedir
+confirmação.
 
 ## Navigator Preferences
 
-- **Commit policy:** um commit por story coerente, depois de validada e
-  aceita. Mensagens em inglês, explicando o porquê.
-- **Push policy:** pedir antes de fazer push para o remoto compartilhado.
+- **Commit policy:** um commit por turno. Ao fim de todo turno que mudou
+  arquivos, o Driver faz commit do que mudou, sem pedir confirmação.
+  Mensagens em inglês, explicando o porquê.
+- **Push policy:** push só sob comando explícito do Navigator.
 - **Checkpoint compression:** checkpoints completos para trabalho não trivial;
   comprimidos só para mudanças triviais de baixo risco.
 - **Documentation detail:** a menor atualização que mantenha o projeto
@@ -173,6 +177,32 @@ Pare para confirmação do Navigator:
   colaboradores.)
 
 ## Commit and Release Rules
+
+### Commit por turno
+
+- Ao fim de cada turno em que arquivos mudaram, faça um commit com todas as
+  mudanças do turno, incluindo o `canvas.md` atualizado.
+- Um commit por turno, mesmo que o turno avance só parte de uma story. O
+  histórico registra o caminho; o fechamento da story aparece no commit do
+  turno em que ela chega a `Done`.
+- Turno sem mudança de arquivo não gera commit.
+- Mensagem em inglês: uma linha de resumo e, quando ajudar, um corpo curto
+  explicando o porquê. Cite o código da story quando houver
+  (`CV1.DS1.TS1: ...`).
+- Nunca faça commit de arquivos ignorados pelo `.gitignore` nem de fotos ou
+  dados reais do grupo sem consentimento.
+- Ao fim do turno, informe o commit: `Commit <hash>: <resumo>.`
+
+### Push sob comando
+
+- Nunca faça push por conta própria, nem ao fechar uma story.
+- Faça push apenas quando o Navigator pedir explicitamente ("push", "suba",
+  "publique no remoto").
+- Antes do push, confira se a branch está atualizada com o remoto. Se houver
+  divergência ou conflito, pare e mostre a situação ao Navigator.
+- Depois do push, informe a branch e o hash publicado.
+
+### Releases
 
 Ainda não há releases. O fim da CV1 é um marco de produto (o experimento com o
 grupo), não uma versão pública. Se uma Delivery Story criar uma fronteira de

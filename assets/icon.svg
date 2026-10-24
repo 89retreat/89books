@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe39a" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#ffd166" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="tile"><rect x="112" y="112" width="800" height="800" rx="72"/></clipPath>
+  </defs>
+
+  <rect width="1024" height="1024" fill="#14152b"/>
+  <g clip-path="url(#tile)">
+    <rect x="112" y="112" width="800" height="800" fill="#25305e"/>
+    <circle cx="512" cy="500" r="318" fill="#2f3c76"/>
+    <rect x="112" y="760" width="800" height="152" fill="#1d264d"/>
+  </g>
+
+  <g stroke="#15162b" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <!-- leaning book (drawn first so its neighbour overlaps it) -->
+    <g transform="rotate(9 598 720)">
+      <rect x="598" y="404" width="62" height="316" rx="6" fill="#e07a5f"/>
+      <line x1="610" y1="448" x2="648" y2="448" stroke-width="7"/>
+      <line x1="610" y1="676" x2="648" y2="676" stroke-width="7"/>
+    </g>
+
+    <rect x="232" y="392" width="70" height="328" rx="6" fill="#c8553d"/>
+    <rect x="302" y="432" width="56" height="288" rx="6" fill="#e9b44c"/>
+    <rect x="358" y="360" width="86" height="360" rx="6" fill="#2a9d8f"/>
+    <rect x="444" y="412" width="60" height="308" rx="6" fill="#efe3c8"/>
+    <rect x="504" y="378" width="72" height="342" rx="6" fill="#8e5aa8"/>
+    <rect x="716" y="424" width="72" height="296" rx="6" fill="#3f73b8"/>
+
+    <!-- spine bands -->
+    <g stroke-width="7">
+      <line x1="244" y1="436" x2="290" y2="436"/><line x1="244" y1="676" x2="290" y2="676"/>
+      <line x1="314" y1="470" x2="346" y2="470"/><line x1="314" y1="684" x2="346" y2="684"/>
+      <line x1="370" y1="404" x2="432" y2="404"/><line x1="370" y1="676" x2="432" y2="676"/>
+      <line x1="456" y1="452" x2="492" y2="452"/><line x1="456" y1="684" x2="492" y2="684"/>
+      <line x1="516" y1="420" x2="564" y2="420"/><line x1="516" y1="676" x2="564" y2="676"/>
+      <line x1="728" y1="464" x2="776" y2="464"/><line x1="728" y1="684" x2="776" y2="684"/>
+    </g>
+
+    <!-- shelf -->
+    <rect x="196" y="720" width="632" height="44" rx="10" fill="#b5793f"/>
+    <path d="M250 764 L250 812 L300 764 Z" fill="#8a5a2b"/>
+    <path d="M774 764 L774 812 L724 764 Z" fill="#8a5a2b"/>
+  </g>
+
+  <!-- 89 on the teal spine -->
+  <text x="401" y="560" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="52" font-weight="700" fill="#efe3c8" transform="rotate(-90 401 545)">89</text>
+
+  <!-- spark of a reading movement -->
+  <circle cx="700" cy="296" r="92" fill="url(#glow)"/>
+  <path d="M700 238 C706 278 718 290 758 296 C718 302 706 314 700 354 C694 314 682 302 642 296 C682 290 694 278 700 238 Z"
+        fill="#ffd166" stroke="#15162b" stroke-width="10" stroke-linejoin="round"/>
+  <circle cx="770" cy="226" r="11" fill="#ffd166" stroke="#15162b" stroke-width="6"/>
+</svg>
