@@ -1,0 +1,8 @@
+# Mirror Mind local runtime state (per-machine, not project truth)
+.mirror/
+
+# Raw exploration transcript: personal speech of the friends' group.
+# Kept local until the group agrees to share it in the repository.
+docs/project/exploration/es-001-a-estante-como-retrato/artifacts/full-conversation.md
+
+.DS_Store

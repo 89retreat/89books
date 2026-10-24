@@ -1,0 +1,55 @@
+# Canvas — 89 Livros
+
+> Uma estante visível e movimentos simples já fazem conversas nascerem?
+
+## Caminho de construção
+
+| Capability / entrega | Estado | Progresso |
+| --- | --- | --- |
+| **CV1 · A Primeira Estante Viva** | 🟡 planejada · dogfood com o grupo | `░░░░░░░░░░` 0/11 |
+| ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟡 planejada · recomendada para puxar | `░░░░░░░░░░` 0/3 |
+| 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟡 planejada · maior risco técnico | `░░░░░░░░░░` |
+| 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟡 planejada · depende do spike | `░░░░░░░░░░` |
+| 　　↳ TS3 · Esqueleto implantado | 🟡 planejada | `░░░░░░░░░░` |
+| ↳ CV1.DS2 · Entrada sem estado vazio | 🟡 planejada | `░░░░░░░░░░` 0/3 |
+| ↳ CV1.DS3 · Estante visitável | 🟡 planejada | `░░░░░░░░░░` 0/2 |
+| ↳ CV1.DS4 · Movimentos que circulam | 🟡 planejada | `░░░░░░░░░░` 0/3 |
+
+## Decisões em aberto
+
+| Decisão | Estado | Destrava |
+| --- | --- | --- |
+| **Interface principal** · web app ou bot do Telegram | 🟡 aberta · aguarda o spike | CV1.DS1.TS2 · DS2 · DS4 |
+| **Reconhecimento de livros** · modelo de visão e custo por foto | 🟡 aberta · respondida pelo spike | CV1.DS1.TS1 · DS2 |
+| **Acesso do grupo** · links mágicos ou Telegram | 🟡 aberta | CV1.DS1.TS3 |
+| **Grupo do Telegram** · existente ou dedicado | 🟡 aberta | CV1.DS4 |
+| **Privacidade dos insights** · sempre no grupo ou escolha | 🟡 aberta | CV1.DS4.US2 |
+| **Navigator dos colaboradores** | 🟡 aberta · padrão provisório do Ariad | entrada de colaboradores |
+
+## Próximas opções de trabalho
+
+| Opção | Estado | Próximo gesto |
+| --- | --- | --- |
+| **Abrir o projeto aos colaboradores** | 🧭 repositório publicado | Convidar o grupo para `89retreat/89books` e decidir sobre a transcrição integral |
+| **CV1.DS1 · Fundação** | 🧭 recomendada | Puxar a DS e começar pelo spike com fotos reais das estantes do grupo |
+| **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
+
+### ✅ Fundações assentadas
+
+| Fundação | Estado | Progresso |
+| --- | --- | --- |
+| ES-001 · A Estante como Retrato e Campo de Ressonância | ✅ promovida para a CV1 | `██████████` |
+| Adoção do Ariad · AGENTS.md, guia local, princípios, decisões | ✅ assentada · Mirror lê o roadmap | `██████████` |
+| Repositório `89retreat/89books` | ✅ publicado · privado | `██████████` |
+
+### ⚪ Horizonte
+
+| Capability / entrega | Estado | Progresso |
+| --- | --- | --- |
+| Afinidade entre estantes | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Perguntas na estante e nos livros | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Várias estantes e lugares da casa · organização autoral | ⚪ sinal guardado | `░░░░░░░░░░` |
+| História da estante física · estantes que se juntam | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Integrações · Readwise, Kindle highlights, Goodreads | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Fichamento e resenhas | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Estantes públicas · leitores além do grupo | ⚪ depois do dogfood | `░░░░░░░░░░` |
