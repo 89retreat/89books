@@ -11,9 +11,17 @@
 | 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟡 planejada · maior risco técnico | `░░░░░░░░░░` |
 | 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟡 planejada · depende do spike | `░░░░░░░░░░` |
 | 　　↳ TS3 · Esqueleto implantado | 🟡 planejada | `░░░░░░░░░░` |
-| ↳ CV1.DS2 · Entrada sem estado vazio | 🟡 planejada | `░░░░░░░░░░` 0/3 |
-| ↳ CV1.DS3 · Estante visitável | 🟡 planejada | `░░░░░░░░░░` 0/2 |
-| ↳ CV1.DS4 · Movimentos que circulam | 🟡 planejada | `░░░░░░░░░░` 0/3 |
+| ↳ **CV1.DS2 · Entrada sem estado vazio** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
+| 　　↳ US1 · Entrar pela foto da estante | 🟡 planejada · abordagem definida pelo spike | `░░░░░░░░░░` |
+| 　　↳ US2 · Revisar e corrigir o reconhecimento | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US3 · Entrar por print do Kindle ou seleção manual | 🟡 planejada | `░░░░░░░░░░` |
+| ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
+| 　　↳ US1 · Ver minha estante com a foto como capa | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US2 · Visitar a estante de outra pessoa | 🟡 planejada | `░░░░░░░░░░` |
+| ↳ **CV1.DS4 · Movimentos que circulam** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
+| 　　↳ US1 · Marcar que comecei a ler um livro | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US2 · Registrar um insight durante a leitura | 🟡 planejada · privacidade em aberto | `░░░░░░░░░░` |
+| 　　↳ TS1 · Movimentos chegam ao grupo do Telegram | 🟡 planejada · grupo em aberto | `░░░░░░░░░░` |
 
 ## Decisões em aberto
 

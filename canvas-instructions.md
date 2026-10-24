@@ -42,8 +42,9 @@ Quando o Navigator pedir `status` ou `canvas`, releia as fontes, atualize o que 
 
 ## Regras de expansão
 
-- Mostrar todas as CVs que não estejam `Done`, em ordem, e todas as suas DS, na ordem do `Delivery Arc`.
-- Expandir as stories de uma única DS: a que estiver `Active`; se nenhuma estiver, a primeira DS não concluída na ordem do `Delivery Arc`.
+- Mostrar todas as CVs que não estejam `Done`, em ordem, e todas as suas DS, na ordem do `Delivery Arc`, com o nome da DS em negrito.
+- Expandir as stories de todas as DS, na ordem da tabela `Candidate Stories` de cada uma.
+- Notas curtas após `·` podem indicar dependências ou decisões em aberto que afetam a story.
 - Uma CV concluída sai do `Caminho de construção` e vai para `Fundações assentadas`.
 
 ## Próximas opções de trabalho
