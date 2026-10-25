@@ -1,0 +1,16 @@
+[project]
+name = "spike-reconhecimento"
+version = "0.1.0"
+description = "CV1.DS1.TS1: medir o reconhecimento de livros em prints do Kindle e fotos de estante"
+requires-python = ">=3.11"
+dependencies = ["httpx>=0.27"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

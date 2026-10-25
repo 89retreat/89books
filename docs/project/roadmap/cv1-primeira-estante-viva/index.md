@@ -1,9 +1,9 @@
 ---
 code: CV1
 level: Value
-status: Planned
-status_reason:
-updated: 2026-10-24
+status: Active
+status_reason: CV1.DS1 em andamento
+updated: 2026-10-25
 related:
   - ../../exploration/es-001-a-estante-como-retrato/index.md
 ---
@@ -12,7 +12,7 @@ related:
 
 # CV1 — A Primeira Estante Viva
 
-**Status:** Planned
+**Status:** Active
 
 ---
 

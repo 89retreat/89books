@@ -20,7 +20,7 @@ humano no meio.
 
 - Amostras locais, fora do git (`spikes/reconhecimento/amostras/`):
   - `kindle/`: 3 prints do Kindle do Raphael Albino (33 livros no rascunho).
-  - `estante/`: 6 fotos de prateleira e 2 fotos gerais da estante do Lula
+  - `estante/`: 7 fotos de prateleira e 2 fotos gerais da estante do Lula
     (144 livros no rascunho).
 - **Consentimento:** Lula e Raphael autorizaram o uso das imagens e o envio a
   um modelo externo (Navigator, 2026-10-25).
@@ -91,7 +91,7 @@ contam à parte.
 ## Acceptance Behavior
 
 ```text
-Given os 3 prints do Raphael e as 6 fotos de prateleira do Lula, com gabaritos locais
+Given os 3 prints do Raphael e as 7 fotos de prateleira do Lula, com gabaritos locais
 When o script roda com Sonnet 5.5 e com Haiku 5.5
 Then cada imagem produz uma lista de livros ligados a obras da Open Library, com capa quando houver
 And o relatório mostra, por tipo de imagem e por modelo: cobertura, invenções, achados na Open Library, com capa, duplicados removidos, custo e tempo por imagem
@@ -159,5 +159,5 @@ E2E: não se aplica a um spike sem produto. A validação é o relatório.
 
 Implementation must not start until the Navigator approves this plan.
 
-- Approved by: <name>
-- Approved on: <YYYY-MM-DD>
+- Approved by: Alisson Vale (Navigator)
+- Approved on: 2026-10-25

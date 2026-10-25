@@ -6,9 +6,9 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟡 planejada · dogfood com o grupo | `░░░░░░░░░░` 0/11 |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · dogfood com o grupo | `░░░░░░░░░░` 0/11 |
 | ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟢 ativa · story por story | `░░░░░░░░░░` 0/3 |
-| 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟢 ativa · relatório pronto · aguarda validação | `░░░░░░░░░░` |
 | 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟡 planejada · depende do spike | `░░░░░░░░░░` |
 | 　　↳ TS3 · Esqueleto implantado | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS2 · Entrada sem estado vazio** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
@@ -28,7 +28,7 @@
 | Decisão | Estado | Destrava |
 | --- | --- | --- |
 | **Interface principal** · web app ou bot do Telegram | 🟡 aberta · aguarda o spike | CV1.DS1.TS2 · DS2 · DS4 |
-| **Reconhecimento de livros** · modelo de visão e custo por foto | 🟡 aberta · spike planejado | CV1.DS1.TS1 · DS2 |
+| **Reconhecimento de livros** · modelo de visão e custo por foto | 🟡 aberta · recomendação: Sonnet 5.5 | CV1.DS1.TS1 · DS2 |
 | **Acesso do grupo** · links mágicos ou Telegram | 🟡 aberta | CV1.DS1.TS3 |
 | **Grupo do Telegram** · existente ou dedicado | 🟡 aberta | CV1.DS4 |
 | **Privacidade dos insights** · sempre no grupo ou escolha | 🟡 aberta | CV1.DS4.US2 |
@@ -39,7 +39,7 @@
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite, fazer push dos commits locais e decidir sobre a transcrição integral |
-| **CV1.DS1.TS1 · Spike de reconhecimento** | 🧭 plano pronto | Aprovar o plano: Sonnet 5.5 contra Haiku 5.5 via OpenRouter, teto de US$ 3 |
+| **CV1.DS1.TS1 · Validar o spike** | 🧭 relatório pronto | Ler `spikes/reconhecimento/relatorio.md` e aceitar ou ajustar a recomendação: Sonnet 5.5 para tudo, revisão obrigatória |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 
 ### ✅ Fundações assentadas

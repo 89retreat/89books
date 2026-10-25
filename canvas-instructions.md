@@ -46,6 +46,7 @@ Quando o Navigator pedir `status` ou `canvas`, releia as fontes, atualize o que 
 - Expandir as stories de todas as DS, na ordem da tabela `Candidate Stories` de cada uma.
 - Notas curtas após `·` podem indicar dependências ou decisões em aberto que afetam a story.
 - Uma CV concluída sai do `Caminho de construção` e vai para `Fundações assentadas`.
+- O estado da CV acompanha o das suas DS: se alguma DS está `Active`, a CV também está. Se o frontmatter da CV divergir disso, corrija o frontmatter da CV no mesmo turno.
 
 ## Próximas opções de trabalho
 

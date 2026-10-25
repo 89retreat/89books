@@ -2,7 +2,7 @@
 code: CV1.DS1.TS1
 level: Technical Story
 status: Active
-status_reason: plano escrito; aguarda aprovação do Navigator
+status_reason: implementado; relatório aguarda validação do Navigator
 updated: 2026-10-25
 related:
   - ../../../../decisions/records/2026-10-24T2013Z-reconhecimento-de-livros.md

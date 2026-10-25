@@ -11,3 +11,6 @@ docs/project/exploration/es-001-a-estante-como-retrato/artifacts/full-conversati
 # Personal; kept local unless the owner agrees to share them.
 spikes/reconhecimento/amostras/
 spikes/reconhecimento/resultados/
+.venv/
+__pycache__/
+.pytest_cache/

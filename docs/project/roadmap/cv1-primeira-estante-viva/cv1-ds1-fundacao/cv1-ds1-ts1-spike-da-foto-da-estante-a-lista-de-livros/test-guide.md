@@ -38,4 +38,13 @@ Ler `spikes/reconhecimento/relatorio.md`.
 
 ## Validation Evidence
 
-<Preenchido depois das rodadas.>
+2026-10-25, prompt `v1`, gasto total US$ 0,25.
+
+- `uv run pytest`: 22 testes passando.
+- Rodadas completas com Sonnet 5.5 e Haiku 5.5 sobre 3 prints e 7 fotos de
+  prateleira; resultados locais em `spikes/reconhecimento/resultados/`.
+- Relatório: [spikes/reconhecimento/relatorio.md](../../../../../../spikes/reconhecimento/relatorio.md).
+- Cobertura: Kindle 100% nos dois modelos; estante 88% (Sonnet) contra 60%
+  (Haiku).
+- Pendente: revisão dos gabaritos por Raphael e Lula; validação do
+  Navigator.
