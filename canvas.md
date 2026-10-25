@@ -38,7 +38,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **Abrir o projeto aos colaboradores** | 🧭 repositório publicado | Convidar o grupo para `89retreat/89books` e decidir sobre a transcrição integral |
+| **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite, fazer push dos commits locais e decidir sobre a transcrição integral |
 | **CV1.DS1 · Fundação** | 🧭 recomendada | Puxar a DS e começar pelo spike com fotos reais das estantes do grupo |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 
