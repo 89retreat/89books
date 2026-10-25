@@ -2,9 +2,9 @@
 
 Data: 2026-10-25 · Prompt `v1` · Gasto total do spike: **US$ 0,25** (teto: US$ 3)
 
-> **Números provisórios.** Os gabaritos foram rascunhados pelo Driver (Claude
-> Opus 5.5, da mesma família dos modelos medidos) e ainda não foram revisados
-> por Raphael e Lula. Este relatório só traz números agregados; as listas de
+> **Validado em 2026-10-25** pelo Navigator, com ok de Raphael e Lula. Os
+> gabaritos foram rascunhados pelo Driver (Claude Opus 5.5, da mesma família
+> dos modelos medidos) e não foram revisados linha a linha pelos donos. Este relatório só traz números agregados; as listas de
 > livros ficam locais, fora do git.
 
 ## O que foi medido
@@ -85,7 +85,7 @@ medida).
 
 ## Limitações
 
-- Gabaritos ainda não revisados pelos donos; a amostra é de duas pessoas.
+- Gabaritos sem revisão linha a linha pelos donos; a amostra é de duas pessoas.
 - Um único prompt (`v1`); não houve otimização.
 - Status de leitura do Kindle (lido, em leitura) foi extraído, mas não medido.
 

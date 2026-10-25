@@ -46,5 +46,7 @@ Ler `spikes/reconhecimento/relatorio.md`.
 - Relatório: [spikes/reconhecimento/relatorio.md](../../../../../../spikes/reconhecimento/relatorio.md).
 - Cobertura: Kindle 100% nos dois modelos; estante 88% (Sonnet) contra 60%
   (Haiku).
-- Pendente: revisão dos gabaritos por Raphael e Lula; validação do
-  Navigator.
+- 2026-10-25: Navigator validou o relatório e aceitou a recomendação;
+  Raphael e Lula deram ok para o relatório.
+- Os números continuam baseados nos rascunhos de gabarito do Driver; não
+  houve revisão linha a linha pelos donos.

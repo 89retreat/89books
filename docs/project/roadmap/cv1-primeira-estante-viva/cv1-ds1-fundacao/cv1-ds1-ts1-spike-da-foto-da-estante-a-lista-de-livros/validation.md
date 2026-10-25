@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -20,9 +20,9 @@ Evidence: Spike has no product surface; the report is the deliverable, as stated
 
 Route: Read spikes/reconhecimento/relatorio.md and accept or adjust the recommendation
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: Metrics per image type and model (coverage, outside ground truth, Open Library works, covers, duplicates, cost and model time per image), total spend US$0.25, and a recommendation
+Expected observation: Metrics per image type and model, total spend US$0.25, and a recommendation
 
 Pass condition: Numbers allow choosing the entry approach and the Navigator accepts the recommendation
 
@@ -30,4 +30,4 @@ Fail condition: Missing metrics, unmeasured cost, or a recommendation that does 
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

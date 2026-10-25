@@ -1,8 +1,8 @@
 ---
 code: CV1.DS1.TS1
 level: Technical Story
-status: Active
-status_reason: implementado; relatório aguarda validação do Navigator
+status: Done
+status_reason: relatório validado pelo Navigator, com ok de Raphael e Lula
 updated: 2026-10-25
 related:
   - ../../../../decisions/records/2026-10-24T2013Z-reconhecimento-de-livros.md
@@ -12,7 +12,7 @@ related:
 
 # CV1.DS1.TS1 — Spike: da foto da estante à lista de livros
 
-**Status:** Active
+**Status:** Done
 **Type:** Technical Story
 
 ---
