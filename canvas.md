@@ -7,8 +7,8 @@
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
 | **CV1 · A Primeira Estante Viva** | 🟡 planejada · dogfood com o grupo | `░░░░░░░░░░` 0/11 |
-| ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟡 planejada · recomendada para puxar | `░░░░░░░░░░` 0/3 |
-| 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟡 planejada · maior risco técnico | `░░░░░░░░░░` |
+| ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟢 ativa · expandida, aguarda escolha do fluxo | `░░░░░░░░░░` 0/3 |
+| 　　↳ TS1 · Spike: da foto da estante à lista de livros | 🟡 planejada · recomendada · gabaritos em rascunho | `░░░░░░░░░░` |
 | 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟡 planejada · depende do spike | `░░░░░░░░░░` |
 | 　　↳ TS3 · Esqueleto implantado | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS2 · Entrada sem estado vazio** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
@@ -39,7 +39,7 @@
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite, fazer push dos commits locais e decidir sobre a transcrição integral |
-| **CV1.DS1 · Fundação** | 🧭 recomendada | Puxar a DS e começar pelo spike com fotos reais das estantes do grupo |
+| **CV1.DS1.TS1 · Spike de reconhecimento** | 🧭 recomendada | Escolher o fluxo da DS e planejar o spike com os prints do Raphael e as fotos do Lula |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 
 ### ✅ Fundações assentadas

@@ -52,16 +52,16 @@ estado numa linha `**Status:**` abaixo do título:
 
 ```markdown
 ---
-code: CV1.DS1
+code: CV<N>.DS<M>
 level: Delivery Story
 status: Active
 status_reason: puxada para a entrega atual
 updated: YYYY-MM-DD
 ---
 
-[< CV1](../index.md)
+[< CV<N>](../index.md)
 
-# CV1.DS1 — Título
+# CV<N>.DS<M> — Título
 
 **Status:** Active
 ```
