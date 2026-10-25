@@ -1,8 +1,8 @@
 ---
 code: CV1.DS1.TS1
 level: Technical Story
-status: Planned
-status_reason:
+status: Active
+status_reason: plano escrito; aguarda aprovação do Navigator
 updated: 2026-10-25
 related:
   - ../../../../decisions/records/2026-10-24T2013Z-reconhecimento-de-livros.md
@@ -12,7 +12,7 @@ related:
 
 # CV1.DS1.TS1 — Spike: da foto da estante à lista de livros
 
-**Status:** Planned
+**Status:** Active
 **Type:** Technical Story
 
 ---
