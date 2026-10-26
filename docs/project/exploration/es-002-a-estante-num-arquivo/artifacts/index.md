@@ -33,9 +33,9 @@ _No attractors recorded._
 
 ## Current Experiment Proposal
 
-**O retrato do Lula, feito à mão** (`proposed`)
+**O retrato do Lula, feito à mão** (`accepted`)
 
-Gerar o retrato de si (frase sobre a lente, temas que se repetem, pergunta que a estante desperta) a partir dos livros que o Sonnet 5.5 extraiu das fotos do Lula no spike, com os erros de leitura incluídos, como o produto faria. O Alisson envia o texto ao Lula, sem página nem bot. Observar: se ele reconhece a si ('é isso mesmo'), se corrige ou contesta algo, se o tom soa como horóscopo ou julgamento, e se ele espontaneamente quer mostrar a alguém. Se possível, repetir com o Raphael (Kindle) para ter dois leitores. Custo: centavos. Resultado orienta o prompt do retrato e confirma se o centro do MVP se sustenta antes de construir.
+Feito em 2026-10-26. Retrato gerado com Sonnet 5.5 a partir dos 146 itens extraídos das fotos do Lula no spike, com os erros de leitura incluídos (US$ 0,016, 9 s), e enviado pelo Alisson sem página nem bot, com consentimento do Lula. Resultado: o Lula se reconheceu no retrato. A pergunta final não foi útil e saiu do prompt; o retrato fica com a lente e os temas que se repetem. Não testado: o comprimento do retrato lido no celular e um segundo leitor (Raphael).
 
 ## Builder Reading Order
 
