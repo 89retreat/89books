@@ -44,4 +44,12 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
             "No OpenRouter API key. Set OPENROUTER_API_KEY or add "
             f'openrouter_api_key = "..." to {CONFIG_FILE} in the photos folder.'
         )
+    cover = settings.get("cover_photo")
+    if cover:
+        match = [p for p in photos if p.name == cover]
+        if not match:
+            raise ConfigError(
+                f'cover_photo = "{cover}" in {CONFIG_FILE} is not one of the photos in {folder}.'
+            )
+        photos = match + [p for p in photos if p.name != cover]
     return Config(folder=folder, photos=photos, api_key=api_key, name=settings.get("name") or None)

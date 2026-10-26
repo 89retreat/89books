@@ -40,7 +40,7 @@ def build_shelf(
     log(f"Recognizing books in {len(config.photos)} photos...")
     for path in config.photos:
         jpeg = photo_tools.prepare(path)
-        images.append(photo_tools.data_uri(jpeg))
+        images.append(photo_tools.data_uri(photo_tools.prepare(path, photo_tools.PAGE_SIDE)))
         books, spent = recognize(jpeg, config.api_key)
         cost += spent
         found.extend({**book, "photo": path.name} for book in books)

@@ -2,7 +2,7 @@
 code: CV1.DS2.US2
 level: User Story
 status: Active
-status_reason: puxada pelo Navigator com o design aprovado nos protótipos
+status_reason: implementada; aguarda validação do Navigator
 updated: 2026-10-26
 related:
   - ../cv1-ds2-us1-gerar-minha-estante/index.md

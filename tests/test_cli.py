@@ -21,7 +21,11 @@ def fake_recognize(image: bytes, api_key: str):
 
 
 def fake_portrait(books, api_key):
-    return {"lens": "Você olha a terra.", "themes": [{"name": "Terra", "text": "*Torto Arado*"}]}, 0.01
+    portrait = {
+        "lens": "Eu olho a terra.",
+        "themes": [{"title": "Quando penso na terra", "text": "*Torto Arado*", "books": [0]}],
+    }
+    return portrait, 0.01
 
 
 def test_build_shelf_writes_private_self_contained_html_and_books_yaml(shelf_folder):
@@ -38,7 +42,9 @@ def test_build_shelf_writes_private_self_contained_html_and_books_yaml(shelf_fol
     assert str(shelf_folder) not in html
     assert "SecretCam" not in html
     assert html.count("data:image/jpeg;base64,") == 2
-    assert "Você olha a terra." in html
+    assert "Eu olho a terra." in html
+    assert "Quando penso na terra" in html
+    assert "Quando não procuro nada em particular" in html  # Cynefin has no theme
     assert "books:" in (shelf_folder / "books.yaml").read_text(encoding="utf-8")
     assert any("2 books" in line for line in lines)
     assert any("US$ 0.05" in line for line in lines)

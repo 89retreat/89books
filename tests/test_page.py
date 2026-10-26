@@ -1,28 +1,41 @@
 from shelf.page import render
 
+PORTRAIT = {
+    "lens": "Eu leio *Torto Arado* <b>",
+    "themes": [{"title": "Quando penso <na> terra", "text": "Começa por *Torto Arado*.", "books": [0]}],
+}
+
 
 def test_page_escapes_text_and_marks_book_titles():
     html = render(
         name=None,
         photos=["data:image/jpeg;base64,AAA"],
         books=[{"title": "<script>x</script>", "authors": ["A & B"], "cover_id": 7}],
-        portrait={"lens": "Você lê *Torto Arado* <b>", "themes": [{"name": "Terra", "text": "ok"}]},
+        portrait={"lens": "Eu leio *Torto Arado* <b>", "themes": []},
     )
     assert "<script>x</script>" not in html
     assert "&lt;script&gt;" in html
     assert "<em>Torto Arado</em>" in html
     assert "&lt;b&gt;" in html
-    assert "https://covers.openlibrary.org/b/id/7-M.jpg" in html
     assert "data:image/jpeg;base64,AAA" in html
 
 
-def test_page_without_cover_shows_title_card_and_uses_name():
+def test_page_shows_themes_as_shelves_with_cited_cover_face_out():
     html = render(
         name="Lula",
-        photos=[],
-        books=[{"title": "Cynefin", "authors": []}],
-        portrait={"lens": "x", "themes": []},
+        photos=["data:image/jpeg;base64,AAA", "data:image/jpeg;base64,BBB"],
+        books=[{"title": "Torto Arado", "authors": [], "cover_id": 7}, {"title": "Cynefin", "authors": []}],
+        portrait=PORTRAIT,
     )
-    assert "A estante de Lula" in html
+    assert "Lula" in html and "A estante de" in html
+    assert "Quando penso &lt;na&gt; terra" in html
+    assert "https://covers.openlibrary.org/b/id/7-M.jpg?default=false" in html
+    assert "Quando não procuro nada em particular" in html
     assert "Cynefin" in html
-    assert "covers.openlibrary.org" not in html
+    assert html.count('class="tile') == 2
+
+
+def test_page_embeds_the_title_font():
+    html = render(name=None, photos=[], books=[], portrait={"lens": "x", "themes": []})
+    assert "font-family: 'Newsreader'" in html or 'font-family:"Newsreader"' in html
+    assert "data:font/woff2;base64," in html

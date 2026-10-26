@@ -9,7 +9,7 @@
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `████░░░░░░` 3/7 |
 | ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `███░░░░░░░` 1/3 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟢 ativa · design aprovado · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
 | 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
@@ -35,7 +35,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US2 · Aprovar o plano** | 🧭 planejada | Aprovar o plano que leva ao comando o design dos protótipos: mosaico, prateleiras por situação, lombadas |
+| **CV1.DS2.US2 · Validar a estante bonita** | 🧭 implementada | Abrir `~/Downloads/estante-lula-us2.html` no Chrome do computador e do celular |
 | **Medir o Google Books** | 🧭 opcional · precisa de chave | Deixou de bloquear a US2: livros sem capa viram lombadas |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 

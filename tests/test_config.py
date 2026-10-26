@@ -30,3 +30,15 @@ def test_folder_without_photos_is_a_clear_error(tmp_path):
 def test_missing_folder_is_a_clear_error(tmp_path):
     with pytest.raises(ConfigError, match="Folder not found"):
         load_config(tmp_path / "nope", env={"OPENROUTER_API_KEY": "sk"})
+
+
+def test_cover_photo_from_config_comes_first(shelf_folder):
+    (shelf_folder / "config.toml").write_text('cover_photo = "photo-02.jpg"\n')
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"})
+    assert [p.name for p in config.photos] == ["photo-02.jpg", "photo-01.jpg"]
+
+
+def test_unknown_cover_photo_is_a_clear_error(shelf_folder):
+    (shelf_folder / "config.toml").write_text('cover_photo = "nope.jpg"\n')
+    with pytest.raises(ConfigError, match="cover_photo"):
+        load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"})

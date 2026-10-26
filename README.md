@@ -24,11 +24,12 @@ seven photos costs about US$ 0.10.
    ```
 
    or in a `config.toml` inside the photos folder, which can also set your
-   name for the page title:
+   name for the page title and the photo that opens the page:
 
    ```toml
    openrouter_api_key = "sk-or-..."
    name = "Lula"
+   cover_photo = "photo-03.jpg"  # optional; the first photo by name otherwise
    ```
 
 3. Run:
@@ -40,9 +41,13 @@ seven photos costs about US$ 0.10.
 
 The command writes into the same folder:
 
-- `shelf.html`: a self-contained page with your photos, your books and a
-  portrait of you as a reader. Open it in a browser or send the file to
-  anyone. Book covers load from Open Library when online.
+- `shelf.html`: a self-contained page that presents your shelf in your own
+  voice. It opens with a mosaic of your photos and a sentence about how you
+  read the world, then shows your books on drawn shelves, one for each
+  situation that takes you to them ("Quando busco…"). Books mentioned in the
+  text stand face out with their Open Library covers. Open it in a browser
+  (Chrome or Safari); file previews such as Quick Look do not run the
+  layout.
 - `books.yaml`: the list of recognized books.
 - `.shelf/`: a local cache of Open Library lookups.
 
