@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `███░░░░░░░` 2/7 |
 | ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | 🟢 ativa · puxada · aguarda plano | `░░░░░░░░░░` |
+| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟡 planejada · medir Google Books antes | `░░░░░░░░░░` |
 | 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
@@ -35,7 +35,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US1 · Gerar a estante** | 🧭 puxada | Aprovar o plano da US1: o spike vira o comando `uv run estante <pasta>` que gera o HTML |
+| **CV1.DS2.US1 · Validar a estante** | 🧭 implementada | Rodar `uv run shelf <pasta>` com fotos da própria estante e abrir o `shelf.html` no computador e no celular |
 | **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes da DS2.US2 |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 

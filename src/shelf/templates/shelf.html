@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>{{ title }}</title>
+<style>
+  :root { --ink: #2b2420; --muted: #7a6e66; --paper: #f7f2ea; --line: #e2d8ca; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font: 17px/1.55 Georgia, "Iowan Old Style", "Times New Roman", serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.9rem; margin: 8px 0 20px; font-weight: normal; }
+  h2 { font-size: 1.1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+       font-weight: normal; margin: 40px 0 12px; }
+  .photos { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+  .photos img { flex: 0 0 92%; max-height: 70vh; object-fit: cover; border-radius: 6px;
+                scroll-snap-align: center; }
+  .photos img:only-child { flex-basis: 100%; }
+  .lens { font-size: 1.3rem; line-height: 1.45; margin: 0; }
+  .theme { margin: 0 0 18px; }
+  .theme h3 { font-size: 1.05rem; margin: 0 0 4px; }
+  .theme p { margin: 0; }
+  .books { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 16px; }
+  .book { margin: 0; }
+  .book img, .book .card { width: 100%; aspect-ratio: 2 / 3; border-radius: 3px; display: block;
+                           box-shadow: 0 1px 3px rgba(0, 0, 0, .18); }
+  .book img { object-fit: cover; background: var(--line); }
+  .book .card { background: #fffdf8; border: 1px solid var(--line); padding: 10px; font-size: .85rem;
+                line-height: 1.3; overflow: hidden; display: flex; align-items: center; text-align: center; }
+  .book figcaption { font-size: .8rem; line-height: 1.3; margin-top: 6px; color: var(--muted); }
+  footer { margin-top: 48px; font-size: .8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{ title }}</h1>
+
+  {% if photos %}
+  <section class="photos" aria-label="Fotos da estante">
+    {% for photo in photos %}<img src="{{ photo }}" alt="Foto da estante {{ loop.index }}">{% endfor %}
+  </section>
+  {% endif %}
+
+  <h2>A lente</h2>
+  <p class="lens">{{ portrait.lens | emphasize }}</p>
+
+  {% if portrait.themes %}
+  <h2>Temas que se repetem</h2>
+  {% for theme in portrait.themes %}
+  <div class="theme">
+    <h3>{{ theme.name }}</h3>
+    <p>{{ theme.text | emphasize }}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <h2>Livros ({{ books | length }})</h2>
+  <section class="books">
+    {% for book in books %}
+    <figure class="book">
+      {% if book.cover_id %}
+      <img src="https://covers.openlibrary.org/b/id/{{ book.cover_id }}-M.jpg" alt="{{ book.title }}" loading="lazy">
+      {% else %}
+      <div class="card">{{ book.title }}</div>
+      {% endif %}
+      <figcaption>{{ book.ol_title or book.title }}{% if book.authors %}<br>{{ book.authors | join(", ") }}{% endif %}</figcaption>
+    </figure>
+    {% endfor %}
+  </section>
+
+  <footer>Feita com o 89books. Capas da Open Library.</footer>
+</main>
+</body>
+</html>

@@ -14,3 +14,10 @@ spikes/reconhecimento/resultados/
 .venv/
 __pycache__/
 .pytest_cache/
+
+# Shelf generator: local config with the API key, cache and generated output.
+config.toml
+.shelf/
+shelf.html
+!src/shelf/templates/shelf.html
+books.yaml

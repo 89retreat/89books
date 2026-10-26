@@ -39,9 +39,12 @@ aceite.
 
 Stack decidida na `CV1.DS1.TS2`
 ([registro](../project/decisions/records/2026-10-26T1332Z-stack-e-hospedagem.md)):
-um projeto Python local, sem servidor, que gera um HTML autocontido. Os
-comandos abaixo são os previstos e passam a valer quando a `CV1.DS2.US1`
-criar o projeto; ela corrige o que mudar.
+um projeto Python local, sem servidor, que gera um HTML autocontido. O código
+fica em `src/shelf/` e os testes em `tests/`.
+
+Idiomas: código, nomes de scripts, argumentos, mensagens do comando e
+instruções de uso (`README.md`, `--help`) em inglês. A interface da estante,
+o retrato e a documentação do projeto (`docs/`) em português.
 
 ```bash
 # install dependencies
@@ -54,11 +57,11 @@ uv run pytest
 uv run ruff check . && uv run ruff format --check .
 
 # generate a shelf from a folder of photos
-uv run estante <pasta-de-fotos>
+uv run shelf <photos-folder>
 ```
 
-Hoje só existe o spike, com comandos próprios em
-`spikes/reconhecimento/README.md`. A chave do OpenRouter nunca entra no
+O spike da TS1 continua em `spikes/reconhecimento/`, com comandos próprios
+no seu `README.md`. A chave do OpenRouter nunca entra no
 repositório nem no HTML gerado: vem do ambiente ou de um arquivo de
 configuração local ignorado pelo git.
 

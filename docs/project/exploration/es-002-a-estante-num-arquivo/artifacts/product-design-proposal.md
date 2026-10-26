@@ -12,21 +12,22 @@ reconheça, e que ela queira mostrar.
 ## User-Facing Behavior
 
 ```text
-minha-estante/
-  config.toml        # chave do OpenRouter (ou variável de ambiente); capa opcional
-  foto-01.jpg        # fotos da estante ou das prateleiras, sem distinção
-  foto-02.jpg
+my-shelf/
+  config.toml        # openrouter_api_key (or the OPENROUTER_API_KEY variable); optional name
+  photo-01.jpg       # photos of the whole shelf or of single shelves, no distinction
+  photo-02.jpg
   ...
 
-$ uv run estante minha-estante/
-Reconhecendo 7 fotos... 118 livros.
-Buscando na Open Library... 86 com obra, 51 com capa.
-Escrevendo o retrato...
-Pronto: minha-estante/estante.html  (custo: US$ 0,21)
-       minha-estante/livros.yaml   (apague o que não for seu e rode de novo)
+$ uv run shelf my-shelf/
+Recognizing books in 7 photos...
+Recognized 161 books.
+Looking them up on Open Library...
+  108 found, 58 with covers.
+Writing your portrait...
+Done: shelf.html and books.yaml in my-shelf (cost: US$ 0.09)
 ```
 
-O `estante.html` abre no navegador e mostra:
+O `shelf.html` abre no navegador e mostra:
 
 - a capa da estante: a primeira foto, ou a indicada em `config.toml`;
 - um carrossel com todas as fotos;
@@ -44,26 +45,26 @@ elogio, julgamento ou frase de horóscopo.
 ## Interaction Flow
 
 1. A pessoa põe as fotos numa pasta e a chave na configuração.
-2. Roda o comando e recebe o HTML e o `livros.yaml`.
-3. Abre o HTML. Se algo estiver errado, apaga linhas do `livros.yaml` e roda
+2. Roda o comando e recebe o HTML e o `books.yaml`.
+3. Abre o HTML. Se algo estiver errado, apaga linhas do `books.yaml` e roda
    de novo; o reconhecimento vem do cache, e só o retrato e o HTML são
    refeitos.
-4. Se não se reconhecer no retrato, roda com `--novo-retrato`.
+4. Se não se reconhecer no retrato, roda com `--new-portrait`.
 5. Manda o arquivo a alguém, publica no GitHub Pages com um comando, ou as
    duas coisas.
 
 ## Product-Level States
 
 - Pasta sem fotos ou sem chave: mensagem clara do que falta.
-- Estante gerada: HTML e `livros.yaml` ao lado das fotos.
-- Estante corrigida: `livros.yaml` editado e HTML refeito.
+- Estante gerada: HTML e `books.yaml` ao lado das fotos.
+- Estante corrigida: `books.yaml` editado e HTML refeito.
 - Estante publicada: link no GitHub Pages (CV1.DS3).
 
 ## Acceptance Behavior
 
 - Com as fotos do Lula, o comando gera um HTML que abre no celular e no
   computador, com fotos, livros e retrato.
-- Apagar uma linha do `livros.yaml` e rodar de novo leva segundos e não chama
+- Apagar uma linha do `books.yaml` e rodar de novo leva segundos e não chama
   o modelo de visão.
 - Livros sem capa não deixam buracos na estante.
 - O HTML não contém a chave, caminhos locais nem EXIF das fotos.
@@ -80,4 +81,4 @@ elogio, julgamento ou frase de horóscopo.
 
 - Onde publicar no GitHub Pages: repositório da org ou pessoal.
 - O comprimento ideal do retrato lido no celular.
-- Se o `livros.yaml` basta como forma de correção ou se pede algo mais leve.
+- Se o `books.yaml` basta como forma de correção ou se pede algo mais leve.

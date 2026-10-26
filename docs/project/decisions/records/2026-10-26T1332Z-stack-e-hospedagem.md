@@ -26,9 +26,9 @@ precisa de servidor?
 
 - Python, gerenciado com `uv`; testes com `pytest`; lint e formatação com
   `ruff`.
-- Um comando de linha (por exemplo `uv run estante <pasta>`) lê as fotos de
+- Um comando de linha (por exemplo `uv run shelf <folder>`) lê as fotos de
   uma pasta e um arquivo de configuração com a chave, e grava ao lado das
-  fotos um arquivo de livros editável e o `estante.html`.
+  fotos um arquivo de livros editável e o `shelf.html`.
 - Reconhecimento e retrato com Claude Sonnet 5.5 via OpenRouter, só
   provedores sem retenção para treino
   ([reconhecimento de livros](2026-10-24T2013Z-reconhecimento-de-livros.md)).
