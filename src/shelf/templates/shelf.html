@@ -204,8 +204,9 @@
   })();
 
   // Packs the books of each shelf into rows that fit its width, one plank per row.
-  // A short last row, and rows beyond the shelf's limit, hide behind "Expandir…".
-  const GAP = 3, SHORT = 0.4;
+  // Rows beyond the shelf's limit hide behind "Expandir…", and so does a last row of fewer than
+  // FEW books under a full row, unless it holds a cover face out.
+  const GAP = 3, FEW = 5;
   const widthOf = el => el.classList.contains('face') ? (innerWidth <= 600 ? 143 : 164) : +el.dataset.w;
   function layoutShelf(shelf) {
     const items = shelf._items || (shelf._items = [...shelf.children].filter(e => e.matches('.spine, .face')));
@@ -219,7 +220,9 @@
       rows.at(-1).push(item); used += w;
     }
     let visible = Math.min(rows.length, max);
-    if (visible === rows.length && rows.length > 1 && rows.at(-1).length < rows[0].length * SHORT) visible--;
+    const last = rows.at(-1);
+    if (visible === rows.length && rows.length > 1 && last.length < FEW
+        && !last.some(item => item.classList.contains('face'))) visible--;
     shelf.replaceChildren();
     let hidden = 0;
     rows.forEach((items, i) => {

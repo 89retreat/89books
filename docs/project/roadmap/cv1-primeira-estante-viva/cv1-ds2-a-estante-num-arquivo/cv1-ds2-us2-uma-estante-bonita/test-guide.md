@@ -75,3 +75,8 @@ largura, ou texto que não está em primeira pessoa.
   branca com letras cinza, passa porque guarda um leve tom de cor. 41 testes
   passando. O arquivo de validação recebeu a mesma decisão sem uma nova
   geração paga.
+- O Navigator definiu o critério de recolhimento: a última fileira de uma
+  prateleira fica atrás de "Expandir…" quando tem menos de cinco livros, está
+  embaixo de uma fileira cheia e não tem capa de frente. Substitui a regra
+  anterior (menos de 40% da primeira fileira), que deixava à mostra a fileira
+  de *Sexualidad* e *O meu pequeno mundo*.

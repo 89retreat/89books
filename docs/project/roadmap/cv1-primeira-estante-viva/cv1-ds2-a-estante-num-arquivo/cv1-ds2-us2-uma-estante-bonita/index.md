@@ -71,7 +71,8 @@ de verdade. O produto final será compartilhado por URL. Por isso:
   tem inclinação própria, em intensidade e direção, estável entre gerações. Na
   última prateleira, algumas capas de frente só dão ritmo.
 - Os livros se distribuem em fileiras que cabem na largura do módulo, cada uma
-  com a sua tábua. Uma última fileira muito curta, e as fileiras além de três
+  com a sua tábua. Uma última fileira com menos de cinco livros, embaixo de
+  uma fileira cheia e sem nenhuma capa de frente, e as fileiras além de três
   na última prateleira, ficam atrás de "Expandir… mais N livros", que vira
   "Recolher".
 - Capa que não carrega ou vem vazia vira lombada.
