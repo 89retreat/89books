@@ -54,6 +54,19 @@ membros ou no grupo dedicado. Decidir ao planejar a CV2.
 - O HTML não deve incluir nada além do que a pessoa vê: sem a chave, sem
   caminhos locais, sem metadados das fotos (EXIF).
 
+## Revisão de 2026-10-26
+
+O Navigator definiu que o arquivo HTML é um artefato temporário, para a
+validação entre os fundadores. Quando o produto sair do grupo de fundadores,
+a estante será compartilhada sempre por URL. Consequências:
+
+- O GitHub Pages da CV1.DS3 é o primeiro passo rumo ao compartilhamento por
+  URL, não uma alternativa equivalente ao arquivo.
+- A página pode depender de JavaScript; a pré-visualização do Mac e a do
+  WhatsApp não são critério de aceite.
+- Fotos e fontes embutidas no arquivo são provisórias: numa URL elas podem
+  ser servidas à parte.
+
 ## Review Trigger
 
 Início da CV2, ou estantes que as pessoas queiram mostrar só a alguns.

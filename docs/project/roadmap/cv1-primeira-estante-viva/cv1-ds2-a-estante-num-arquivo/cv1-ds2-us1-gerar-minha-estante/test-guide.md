@@ -47,4 +47,8 @@ ausentes, ou dado privado no arquivo.
 - `shelf.html` com 1,4 MB: sem a chave, sem caminhos locais, as 7 fotos sem
   EXIF. Conferido no navegador em 1280 px e em 390 px de largura.
 - Retrato com a lente e seis temas; o prompt pede de três a cinco.
-- Pendente: validação do Navigator com a própria estante.
+
+2026-10-26, Navigator: validou a estante gerada com as fotos do Lula, no
+computador e no celular, em vez de rodar o comando com a própria estante.
+Os pontos de design levantados (carrossel pouco visível, lista longa demais)
+viraram o escopo da US2, desenhado em protótipos e aprovado.

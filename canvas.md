@@ -6,10 +6,10 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `███░░░░░░░` 2/7 |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
-| 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟡 planejada · medir Google Books antes | `░░░░░░░░░░` |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `████░░░░░░` 3/7 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `███░░░░░░░` 1/3 |
+| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
+| 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟢 ativa · design aprovado · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
@@ -35,8 +35,8 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US1 · Validar a estante** | 🧭 implementada | Rodar `uv run shelf <pasta>` com fotos da própria estante e abrir o `shelf.html` no computador e no celular |
-| **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes da DS2.US2 |
+| **CV1.DS2.US2 · Aprovar o plano** | 🧭 planejada | Aprovar o plano que leva ao comando o design dos protótipos: mosaico, prateleiras por situação, lombadas |
+| **Medir o Google Books** | 🧭 opcional · precisa de chave | Deixou de bloquear a US2: livros sem capa viram lombadas |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 
 ### ✅ Fundações assentadas

@@ -2,11 +2,11 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
-- uv run pytest (20 passed); uv run ruff check and ruff format --check clean; real run on 7 shelf photos: 161 books, US$0.09, HTML without key, local paths or EXIF, checked at 1280 and 390 px
+- uv run pytest (20 passed); ruff check and format clean; real run on 7 shelf photos: 161 books, US$0.09, no key, local paths or EXIF in the HTML
 
 Checks status: passed
 
@@ -18,16 +18,16 @@ Evidence: Automated end-to-end test with simulated OpenRouter and Open Library (
 
 ## Navigator Validation
 
-Route: Run uv run shelf <folder> with photos of your own shelf, open shelf.html on computer and phone
+Route: Navigator opened the generated shelf of Lula's photos in the browser on computer and phone
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: Command reports books and cost; page shows photo carousel, lens, themes and books
+Expected observation: Command reports books and cost; page shows photos, lens, themes and books
 
-Pass condition: Page opens on its own on both devices and the portrait sounds like you
+Pass condition: Page opens on its own and shows books and portrait
 
-Fail condition: Unclear error, page broken on phone, missing books or portrait, or private data in the file
+Fail condition: Unclear error, broken page, missing books or portrait, or private data in the file
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

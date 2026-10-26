@@ -1,8 +1,8 @@
 ---
 code: CV1.DS2.US1
 level: User Story
-status: Active
-status_reason: implementada; aguarda validação do Navigator
+status: Done
+status_reason: validada pelo Navigator em 2026-10-26
 updated: 2026-10-26
 related:
   - ../../../../exploration/es-002-a-estante-num-arquivo/artifacts/product-design-proposal.md
@@ -14,7 +14,7 @@ related:
 
 # CV1.DS2.US1 — Gerar minha estante a partir de uma pasta de fotos
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---
