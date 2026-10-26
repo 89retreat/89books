@@ -83,6 +83,12 @@ medida).
    busca de metadados é lenta; a entrada deve aceitar as fotos e avisar quando
    a estante estiver pronta para revisão.
 
+> **Nota de 2026-10-26.** A
+> [ES-002](../../docs/project/exploration/es-002-a-estante-num-arquivo/index.md)
+> trocou a revisão obrigatória da recomendação 2 por correção gradual: a
+> estante aparece na hora e a pessoa corrige aos poucos. A recomendação 5 vale
+> para a CV2; na CV1 o script roda localmente.
+
 ## Limitações
 
 - Gabaritos sem revisão linha a linha pelos donos; a amostra é de duas pessoas.

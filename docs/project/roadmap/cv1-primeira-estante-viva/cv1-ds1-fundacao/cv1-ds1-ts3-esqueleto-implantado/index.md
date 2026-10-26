@@ -1,9 +1,9 @@
 ---
 code: CV1.DS1.TS3
 level: Technical Story
-status: Planned
-status_reason: depende das decisões da TS2
-updated: 2026-10-25
+status: Dropped
+status_reason: ES-002 trocou o app no ar por um script local; a necessidade volta na CV2.DS1.TS1
+updated: 2026-10-26
 related:
 ---
 
@@ -11,7 +11,7 @@ related:
 
 # CV1.DS1.TS3 — Esqueleto implantado
 
-**Status:** Planned
+**Status:** Dropped
 **Type:** Technical Story
 
 ---

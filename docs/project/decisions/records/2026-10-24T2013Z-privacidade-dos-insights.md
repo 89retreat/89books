@@ -1,13 +1,14 @@
 ---
-status: Open
+status: Decided
 raised: 2026-10-24
-decided:
+decided: 2026-10-26
 deciders:
   - Navigator (Alisson)
 supersedes:
 related:
-  - CV1.DS4.US2
-  - CV1.DS4.TS1
+  - CV2.DS2.US2
+  - CV2.DS2.TS1
+  - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
 # Todo insight vai para o grupo?
@@ -19,22 +20,25 @@ cada registro?
 
 ## Decision
 
-Pending
+**Compartilhar é sempre uma escolha, a cada registro.** O bot pergunta se o
+insight vai ao grupo dedicado ou fica só na estante da pessoa. O padrão da
+pergunta (compartilhar ou só para mim) se decide ao planejar a CV2.DS2.US2.
 
 ## Rationale
 
-O princípio "a leitura não vira prestação de contas" sugere que compartilhar
-seja sempre uma escolha. Por outro lado, enviar por padrão aumenta a frequência
-dos movimentos, que foi o motivo de incluir os insights.
+Coerente com "a leitura não vira prestação de contas" e com a forma do bot na
+[ES-002](../../exploration/es-002-a-estante-num-arquivo/index.md): a pessoa
+conversa em particular com o bot, e só o que ela escolhe chega ao grupo.
 
 ## Options Considered
 
-- Sempre compartilhado.
-- Escolha a cada registro, com padrão "compartilhar".
-- Escolha a cada registro, com padrão "só para mim".
+- Sempre compartilhado: descartado.
+- **Escolha a cada registro** (escolhida); padrão em aberto.
 
 ## Consequences
 
+- A CV2.DS2.US2 inclui a pergunta de compartilhamento.
+
 ## Review Trigger
 
-Planejamento da `CV1.DS4.US2`.
+Planejamento da CV2.DS2.US2.

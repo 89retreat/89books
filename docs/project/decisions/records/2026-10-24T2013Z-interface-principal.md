@@ -7,6 +7,9 @@ deciders:
 supersedes:
 related:
   - CV1.DS1.TS2
+  - CV1.DS2
+  - CV2.DS1
+  - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
 # Interface principal da CV1
@@ -22,40 +25,47 @@ precisa instalar ou aprender.
 
 ## Decision
 
-**Híbrido.** Um web app pensado para celular é a interface principal: entrada,
-revisão do reconhecimento, estante, visita e registro dos movimentos. O bot do
-Telegram só **envia**: os movimentos para o grupo (DS4) e o link de acesso para
-cada pessoa (ver [acesso do grupo](2026-10-24T2013Z-acesso-do-grupo.md)).
+**CV1: um script local.** A pessoa põe as fotos numa pasta, configura a chave
+do OpenRouter e roda um script Python, que gera um HTML autocontido da sua
+estante. Não há web app, bot nem servidor.
+
+**CV2: o Telegram como porta.** A entrada e os movimentos passam para o bot
+do Telegram; a estante continua sendo uma página, que abre também no
+navegador comum. A forma está descrita na
+[CV2](../../roadmap/cv2-a-estante-no-telegram/index.md).
 
 ## Rationale
 
-- A revisão é obrigatória
-  ([reconhecimento de livros](2026-10-24T2013Z-reconhecimento-de-livros.md)) e
-  envolve dezenas de livros por foto (até ~20 por prateleira no spike):
-  remover, corrigir e buscar num chat seria um formulário pior que o vazio.
-- "A estante é o centro" pede capas reunidas e a foto da estante como capa.
-  Isso só existe numa página.
-- O Telegram continua sendo onde a conversa acontece; o produto não precisa
-  receber comandos por lá para isso.
-- Um web app abre por link, sem instalação, como pede o briefing.
+- A [ES-002](../../exploration/es-002-a-estante-num-arquivo/index.md) partiu
+  do prêmio que a pessoa recebe: uma estante bonita com um retrato de si. Bot,
+  servidor e login existiam só para entregar esse prêmio; o script entrega o
+  mesmo prêmio sem eles.
+- Todos os colaboradores do dogfood são técnicos; rodar um script com `uv` não
+  é atrito para eles.
+- O experimento com o Lula mostrou que o retrato funciona; o que falta saber é
+  se a estante dá vontade de ser mostrada, e isso não exige o bot.
+- A revisão obrigatória, que pesava contra o bot, deixou de existir: a estante
+  aparece na hora e é corrigida aos poucos
+  ([reconhecimento de livros](2026-10-24T2013Z-reconhecimento-de-livros.md)).
 
 ## Options Considered
 
-- **Web app com bot só para enviar** (escolhida).
-- **Bot como interface principal**, com páginas só para ver estantes: menos
-  atrito para mandar a foto, mas revisão e movimentos ficariam presos ao
-  formato de conversa.
-- **Entrada pelo bot e revisão no web app**: duas portas para a mesma tarefa
-  na CV1; fica como evolução se o grupo pedir.
+- **Script local que gera HTML** (escolhida para a CV1).
+- **Bot como porta, estante como página** (escolhida para a CV2): menor
+  atrito para quem não programa; exige servidor.
+- **Web app com bot só para enviar**: proposta inicial da TS2; a revisão no
+  web app perdeu o motivo quando a revisão obrigatória saiu.
+- **Mini Apps do Telegram**: guardados como sinal para depois.
+- **Levar os movimentos ao WhatsApp do grupo**: fora por enquanto.
 
 ## Consequences
 
-- DS2 e DS3 são páginas web otimizadas para celular; a DS4 registra os
-  movimentos na web e o bot publica no grupo.
-- O bot existe desde a TS3, por causa do acesso.
-- Mandar foto direto ao bot fica fora da CV1.
+- A CV1 se organiza em torno do script (CV1.DS2) e do compartilhamento
+  (CV1.DS3). A CV1.DS1.TS3 (esqueleto implantado) foi descartada.
+- O bot, o grupo dedicado e os movimentos vão para a CV2.
+- O código do script deve ficar reaproveitável pelo servidor da CV2.
 
 ## Review Trigger
 
-Se o grupo pedir para mandar fotos ou insights pelo Telegram durante o
-dogfood, ou se a revisão no celular se mostrar penosa.
+Retrospectiva da CV1, ou pessoas de fora do grupo técnico querendo a própria
+estante.

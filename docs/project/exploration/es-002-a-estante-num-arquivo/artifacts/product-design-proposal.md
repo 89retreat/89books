@@ -1,46 +1,83 @@
 # Product Design Proposal: A Estante num Arquivo
 
+> Reescrito pelo Driver na promoção (2026-10-26). O documento gerado pelo
+> Explorer Mode trazia só o resumo e um modelo genérico.
+
 ## Product Intent
 
-Reorganizar a CV1 em torno de um MVP local: cada pessoa põe as fotos da estante ou das prateleiras numa pasta, configura a chave do OpenRouter num arquivo e roda um script Python. O resultado é um HTML autocontido e bonito da sua estante, com as fotos, a capa escolhida, os livros (com visual próprio para os ~40% sem capa na Open Library) e o retrato de si em duas partes, a lente e os temas que se repetem. A pessoa corrige apagando linhas de um arquivo de livros e rodando de novo, com o reconhecimento em cache, e pode gerar o retrato outra vez. Ela escolhe compartilhar o arquivo, publicar no GitHub Pages ou as duas coisas. Sem bot, servidor, login ou hospedagem. O Telegram (bot como porta, grupo dedicado, movimentos) passa para uma CV seguinte, já com as respostas desta exploração.
+Dar a cada pessoa do grupo, em troca de uma pasta de fotos e um comando, uma
+estante bonita num arquivo HTML, com um retrato de si em que ela se
+reconheça, e que ela queira mostrar.
 
 ## User-Facing Behavior
 
-O Telegram como Porta da Estante
+```text
+minha-estante/
+  config.toml        # chave do OpenRouter (ou variável de ambiente); capa opcional
+  foto-01.jpg        # fotos da estante ou das prateleiras, sem distinção
+  foto-02.jpg
+  ...
+
+$ uv run estante minha-estante/
+Reconhecendo 7 fotos... 118 livros.
+Buscando na Open Library... 86 com obra, 51 com capa.
+Escrevendo o retrato...
+Pronto: minha-estante/estante.html  (custo: US$ 0,21)
+       minha-estante/livros.yaml   (apague o que não for seu e rode de novo)
+```
+
+O `estante.html` abre no navegador e mostra:
+
+- a capa da estante: a primeira foto, ou a indicada em `config.toml`;
+- um carrossel com todas as fotos;
+- o retrato de si: uma frase sobre a lente do leitor e de três a cinco temas
+  que se repetem, cada um com livros da estante;
+- os livros como conjunto: capas da Open Library e, para os que não têm,
+  lombadas desenhadas com título, autor e uma cor estável por livro.
 
 ## What The Product Should Feel Like
 
-The product should preserve the exploratory shape discovered by Explorer Mode. It should show the user what is happening at the product level, not expose implementation mechanics first.
+Receber um presente, não preencher um cadastro. A estante deve parecer feita
+à mão para aquela pessoa. O retrato observa com atenção e generosidade, sem
+elogio, julgamento ou frase de horóscopo.
 
 ## Interaction Flow
 
-- User works in Explorer Mode while uncertainty is still alive.
-- Explorer surfaces story changes visibly.
-- Explorer names attractors and proposes small experiments.
-- Explorer proposes Builder handoff only when the user asks or confirms readiness.
-- Builder begins only after explicit confirmation.
+1. A pessoa põe as fotos numa pasta e a chave na configuração.
+2. Roda o comando e recebe o HTML e o `livros.yaml`.
+3. Abre o HTML. Se algo estiver errado, apaga linhas do `livros.yaml` e roda
+   de novo; o reconhecimento vem do cache, e só o retrato e o HTML são
+   refeitos.
+4. Se não se reconhecer no retrato, roda com `--novo-retrato`.
+5. Manda o arquivo a alguém, publica no GitHub Pages com um comando, ou as
+   duas coisas.
 
 ## Product-Level States
 
-- Exploratory Story active.
-- Attractor proposed or accepted.
-- Experiment proposal proposed or accepted.
-- Builder handoff proposed.
+- Pasta sem fotos ou sem chave: mensagem clara do que falta.
+- Estante gerada: HTML e `livros.yaml` ao lado das fotos.
+- Estante corrigida: `livros.yaml` editado e HTML refeito.
+- Estante publicada: link no GitHub Pages (CV1.DS3).
 
 ## Acceptance Behavior
 
-- The user can understand what is being proposed without reading implementation details.
-- The proposal preserves uncertainty and open questions.
-- The proposal gives Builder enough product shape to create roadmap or story plans.
+- Com as fotos do Lula, o comando gera um HTML que abre no celular e no
+  computador, com fotos, livros e retrato.
+- Apagar uma linha do `livros.yaml` e rodar de novo leva segundos e não chama
+  o modelo de visão.
+- Livros sem capa não deixam buracos na estante.
+- O HTML não contém a chave, caminhos locais nem EXIF das fotos.
 
 ## Explicit Non-Goals
 
-- This document does not define implementation architecture.
-- This document does not create delivery tasks by itself.
-- This document does not replace Builder planning.
+- Bot, servidor, login, banco de dados.
+- Editar o texto do retrato (só gerar de novo).
+- A IA distinguir estante de prateleira.
+- Print do Kindle, seleção manual, movimentos, grupo do Telegram.
+- Sinalizar o que a IA não teve certeza.
 
 ## Open Product Questions
 
-- Which behavior is necessary for the first delivery slice?
-- What should remain exploratory after Builder starts?
-- What user validation will prove the product behavior works?
+- Onde publicar no GitHub Pages: repositório da org ou pessoal.
+- O comprimento ideal do retrato lido no celular.
+- Se o `livros.yaml` basta como forma de correção ou se pede algo mais leve.

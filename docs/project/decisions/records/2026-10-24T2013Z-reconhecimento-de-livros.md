@@ -39,12 +39,17 @@ livros e tem capa para ~60% delas.
 
 ## Consequences
 
-- CV1.DS2.US2 (revisão do reconhecimento) é obrigatória.
-- A entrada pede fotos por prateleira, de perto, mais uma foto geral para a
-  capa, e reconhece em segundo plano.
-- A DS3 precisa de visual próprio para livros sem capa. A segunda fonte de
-  metadados (Google Books) ficou para medir antes da DS2.US1; ver
-  [stack e hospedagem](2026-10-26T1332Z-stack-e-hospedagem.md).
+- A estante aparece na hora com a leitura da IA e é corrigida aos poucos pela
+  pessoa (CV1.DS2.US3). A revisão obrigatória antes de a estante existir,
+  registrada em 2026-10-25, foi substituída pela correção gradual na
+  [ES-002](../../exploration/es-002-a-estante-num-arquivo/index.md)
+  (2026-10-26).
+- Fotos por prateleira, de perto, rendem mais; uma foto geral serve de capa.
+- Livros sem capa na Open Library (~40%) precisam de visual próprio
+  (CV1.DS2.US2). A segunda fonte de metadados (Google Books) segue sem medição;
+  ver [stack](2026-10-26T1332Z-stack-e-hospedagem.md).
+- O mesmo modelo gera o retrato de si a partir dos livros reconhecidos
+  (experimento com o Lula, ES-002).
 
 ## Review Trigger
 

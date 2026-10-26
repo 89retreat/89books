@@ -20,8 +20,9 @@ Ninguém deveria entrar diante de um perfil vazio e cadastrar a própria
 identidade leitora do zero. A pessoa traz livros que já existem: uma foto de
 estante, um print do Kindle ou um primeiro conjunto escolhido.
 
-Na prática, o onboarding termina com uma estante preenchida. Revisar o
-reconhecimento é a primeira visita à própria estante, não um formulário.
+Na prática, a pessoa recebe a estante pronta, com a leitura da IA, e a
+corrige aos poucos. Corrigir é a primeira visita à própria estante, não um
+formulário que vem antes dela.
 
 ### A foto da estante física é a presença
 
@@ -43,7 +44,8 @@ matéria para perguntas; a resposta vem na conversa.
 ### A conversa acontece onde as pessoas já estão
 
 O produto faz o livro aparecer entre as pessoas; não precisa hospedar a
-conversa. Na CV1, os movimentos vão para um grupo do Telegram.
+conversa. Na CV1, a pessoa leva a estante a quem quiser, por arquivo ou link;
+na CV2, os movimentos vão para um grupo dedicado do Telegram.
 
 Na prática, nada de feed, comentários ou mensagens internas até o uso pedir.
 

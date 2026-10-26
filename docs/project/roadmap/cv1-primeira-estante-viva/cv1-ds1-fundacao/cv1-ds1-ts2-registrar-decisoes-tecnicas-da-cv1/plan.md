@@ -87,6 +87,13 @@ há superfície de produto.
 - failing_required_check_without_clear_fix
 - navigator_decision_needed
 
+## Revisão pela ES-002
+
+Em 2026-10-26, com a story parada na Validação, a ES-002 trocou o MVP com
+servidor por um script local. O objetivo e o contrato deste plano continuam;
+o conteúdo das decisões mudou (ver o `index.md`). A medição do Google Books
+segue pendente de chave.
+
 ## Approval Gate
 
 - active checkpoint: `after_plan`

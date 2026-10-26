@@ -39,8 +39,9 @@ aceite.
 
 Stack decidida na `CV1.DS1.TS2`
 ([registro](../project/decisions/records/2026-10-26T1332Z-stack-e-hospedagem.md)):
-Python + Django + HTMX, SQLite, Fly.io. Os comandos abaixo são os previstos e
-passam a valer quando a `CV1.DS1.TS3` criar o app; a TS3 corrige o que mudar.
+um projeto Python local, sem servidor, que gera um HTML autocontido. Os
+comandos abaixo são os previstos e passam a valer quando a `CV1.DS2.US1`
+criar o projeto; ela corrige o que mudar.
 
 ```bash
 # install dependencies
@@ -52,22 +53,23 @@ uv run pytest
 # run lint or formatting checks
 uv run ruff check . && uv run ruff format --check .
 
-# run the app locally
-uv run python manage.py migrate && uv run python manage.py runserver
+# generate a shelf from a folder of photos
+uv run estante <pasta-de-fotos>
 ```
 
 Hoje só existe o spike, com comandos próprios em
-`spikes/reconhecimento/README.md`. Segredos (chave do OpenRouter, token do
-bot) nunca entram no repositório: localmente vêm do ambiente; em produção,
-dos segredos do Fly.io.
+`spikes/reconhecimento/README.md`. A chave do OpenRouter nunca entra no
+repositório nem no HTML gerado: vem do ambiente ou de um arquivo de
+configuração local ignorado pelo git.
 
 ## Verification
 
 Trabalho verificado neste projeto significa:
 
 - checks automatizados passando, quando houver código;
-- para User Stories, uma rota de validação executada pelo Navigator num
-  celular, já que a entrada (foto da estante) e a visita acontecem no celular;
+- para User Stories, uma rota de validação executada pelo Navigator: rodar o
+  script com as próprias fotos e abrir o HTML no computador e no celular, já
+  que a visita acontece no celular;
 - para mensagens no Telegram, validação num grupo de teste antes do grupo real;
 - nunca usar fotos ou dados reais do grupo em fixtures públicas ou commits sem
   consentimento da pessoa.
@@ -119,8 +121,8 @@ Taxonomia padrão do Ariad:
 - **Task**: trabalho concreto dentro de uma story. Não vira item de roadmap.
 - **Maintenance**: trabalho legítimo fora da hierarquia.
 
-Códigos: `CV1`, `CV1.DS2`, `CV1.DS2.US1`, `CV1.DS1.TS3`. Pastas em
-minúsculas: `cv1-primeira-estante-viva/cv1-ds2-entrada-sem-vazio/cv1-ds2-us1-entrar-pela-foto/`.
+Códigos: `CV1`, `CV1.DS2`, `CV1.DS2.US1`, `CV1.DS1.TS2`. Pastas em
+minúsculas: `cv1-primeira-estante-viva/cv1-ds2-a-estante-num-arquivo/cv1-ds2-us1-gerar-minha-estante/`.
 
 Estados: `Planned`, `Active`, `Blocked`, `Validated`, `Done`, `Deferred`,
 `Dropped`. Quando o trabalho não pode seguir, use `Blocked` com
