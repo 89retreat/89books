@@ -125,8 +125,8 @@ Then essa foto é a maior do mosaico
 - Pré-visualização do Mac e do WhatsApp (premissa acima).
 - Escolher a edição certa na Open Library, preferir edições em português e
   medir o Google Books: com as lombadas, a falta de capa deixou de ser problema
-  visual. Capas erradas, como a do sumário no protótipo, ficam para a correção
-  da US3.
+  visual. Imagens do miolo no lugar da capa viram lombada (achado da
+  validação); outras capas erradas ficam para a correção da US3.
 - Cache do reconhecimento, correção pelo `books.yaml` e `--new-portrait` (US3).
 - Publicação (DS3).
 

@@ -65,5 +65,13 @@ largura, ou texto que não está em primeira pessoa.
   ampliação com navegação ("6 / 7"). As 13 capas de frente carregam.
 - `shelf.html` com 1,1 MB, sem a chave, sem caminhos locais e com as 7 fotos
   sem EXIF.
-- Conhecido e fora do escopo: o sumário no lugar da capa de *A urbanização
-  brasileira* (correção na US3).
+- Na validação, o Navigator apontou duas capas que eram fotos do miolo do
+  livro: o sumário de *A urbanização brasileira* e duas páginas abertas, de
+  lado, de *Manuscritos econômico-filosóficos*. A geração passou a baixar cada
+  capa uma vez (cache em `.shelf/covers.json`) e a descartar imagens mais
+  largas que altas ou em cinza exato e quase brancas, que é como o miolo
+  escaneado chega. Uma capa descartada vira lombada. Entre as 60 capas do
+  Lula, só essas duas são descartadas; a do *Extreme Programming Explained*,
+  branca com letras cinza, passa porque guarda um leve tom de cor. 41 testes
+  passando. O arquivo de validação recebeu a mesma decisão sem uma nova
+  geração paga.

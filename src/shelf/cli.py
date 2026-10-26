@@ -9,6 +9,7 @@ from pathlib import Path
 from shelf import photos as photo_tools
 from shelf.books import dedupe, write_books_yaml
 from shelf.config import Config, ConfigError, load_config
+from shelf.covers import CoverCheck
 from shelf.openlibrary import OpenLibrary
 from shelf.page import render
 from shelf.portrait import write_portrait
@@ -30,9 +31,11 @@ def build_shelf(
     recognize: Callable = recognize,
     library=None,
     portrait: Callable = write_portrait,
+    covers=None,
     log: Callable[[str], None] = print,
 ) -> Result:
     library = library or OpenLibrary(config.folder / CACHE_DIR / "openlibrary.json")
+    covers = covers or CoverCheck(config.folder / CACHE_DIR / "covers.json")
     cost = 0.0
     images: list[str] = []
     found: list[dict] = []
@@ -53,9 +56,15 @@ def build_shelf(
     for book in books:
         book.update(library.lookup(book["title"], book.get("authors") or []) or {})
     library.save()
+    rejected = 0
+    for book in books:
+        if book.get("cover_id") and not covers.ok(book["cover_id"]):
+            book.pop("cover_id")
+            rejected += 1
+    covers.save()
     with_work = sum(1 for b in books if b.get("work"))
     with_cover = sum(1 for b in books if b.get("cover_id"))
-    log(f"  {with_work} found, {with_cover} with covers.")
+    log(f"  {with_work} found, {with_cover} with covers ({rejected} scans of pages left out).")
 
     log("Writing your portrait...")
     reader_portrait, spent = portrait(books, config.api_key)

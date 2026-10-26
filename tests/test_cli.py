@@ -2,6 +2,14 @@ from shelf.cli import build_shelf, main
 from shelf.config import load_config
 
 
+class FakeCovers:
+    def ok(self, cover_id):
+        return cover_id != 42
+
+    def save(self):
+        pass
+
+
 class FakeLibrary:
     def lookup(self, title, authors):
         if title == "Torto Arado":
@@ -32,7 +40,12 @@ def test_build_shelf_writes_private_self_contained_html_and_books_yaml(shelf_fol
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
     lines = []
     result = build_shelf(
-        config, recognize=fake_recognize, library=FakeLibrary(), portrait=fake_portrait, log=lines.append
+        config,
+        recognize=fake_recognize,
+        library=FakeLibrary(),
+        portrait=fake_portrait,
+        covers=FakeCovers(),
+        log=lines.append,
     )
 
     html = (shelf_folder / "shelf.html").read_text(encoding="utf-8")
@@ -55,3 +68,18 @@ def test_main_reports_missing_key_without_calling_the_model(shelf_folder, monkey
     assert main([str(shelf_folder)]) == 2
     assert "OPENROUTER_API_KEY" in capsys.readouterr().err
     assert not (shelf_folder / "shelf.html").exists()
+
+
+def test_a_cover_that_is_not_a_cover_becomes_a_spine(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    build_shelf(
+        config,
+        recognize=fake_recognize,
+        library=FakeLibrary(),
+        portrait=fake_portrait,
+        covers=FakeCovers(),
+        log=lambda line: None,
+    )
+    html = (shelf_folder / "shelf.html").read_text(encoding="utf-8")
+    assert "covers.openlibrary.org" not in html
+    assert "Torto Arado" in html
