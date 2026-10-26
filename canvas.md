@@ -37,6 +37,7 @@
 | --- | --- | --- |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite dos convites e decidir sobre a transcrição integral |
 | **CV1.DS1.TS2 · Validar as decisões** | 🧭 registradas | Ler os registros de interface, acesso e stack e aceitar ou ajustar: web app + bot só para enviar, acesso por link do bot, Django no Fly.io |
+| **Teste do retrato com o Lula** | 🧭 retrato gerado | Enviar o retrato ao Lula e registrar a reação na exploração "O Telegram como Porta da Estante" |
 | **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes de planejar a DS2.US1 |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 

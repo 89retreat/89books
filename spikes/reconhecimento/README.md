@@ -15,6 +15,7 @@ Plano em
 | `gabarito.py` | Converte o rascunho Markdown em `gabarito.json` |
 | `prompts.py` | Versões do prompt |
 | `resumir.py` / `recomparar.py` | Tabela da última rodada / recálculo sem chamar o modelo |
+| `retrato.py` | Gera o retrato de si a partir dos livros extraídos (experimento da exploração do Telegram); saída local em `resultados/retratos/` |
 | `segunda_fonte.py` | Mede o Google Books como segunda fonte (CV1.DS1.TS2); exige `GOOGLE_BOOKS_API_KEY` |
 
 A chave vem de `OPENROUTER_API_KEY` ou, se ausente, só dessa linha em
