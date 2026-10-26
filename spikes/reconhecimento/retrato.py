@@ -1,7 +1,9 @@
 """Gera o "retrato de si" a partir dos livros já extraídos de uma estante.
 
 Experimento da ES "O Telegram como Porta da Estante": testar à mão, antes do
-MVP, se o retrato faz a pessoa se reconhecer. Usa os itens da última rodada
+MVP, se o retrato faz a pessoa se reconhecer. Depois do teste com o Lula
+(2026-10-26), a pergunta final saiu: ele se reconheceu, mas a pergunta não
+ajudou. Usa os itens da última rodada
 do modelo de visão, com os erros de leitura incluídos, como o produto faria.
 O retrato é pessoal e fica em resultados/retratos/, fora do git.
 
@@ -23,11 +25,10 @@ RAIZ = Path(__file__).parent
 
 PROMPT = """Você recebe a lista de livros de uma estante pessoal, reconhecidos automaticamente a partir de fotos. Pode haver erros de leitura e itens que não são livros; ignore o que não fizer sentido.
 
-Escreva um retrato curto, em português do Brasil, dirigido à própria pessoa ("você"), com exatamente três partes:
+Escreva um retrato curto, em português do Brasil, dirigido à própria pessoa ("você"), com exatamente duas partes:
 
 **A lente**: uma frase sobre o modo de olhar o mundo que esta estante revela.
 **Temas que se repetem**: de três a cinco temas, cada um com dois ou três livros da lista como exemplo.
-**Uma pergunta**: uma pergunta que esta estante desperta em quem a visita, do tipo que um amigo faria numa conversa.
 
 Tom: observação atenta e generosa, de quem gosta de livros e de gente. Nada de elogio, julgamento, diagnóstico de personalidade ou frases genéricas que serviriam para qualquer leitor. Seja específico a esta estante. Não mencione que a lista veio de fotos nem os possíveis erros.
 
