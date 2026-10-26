@@ -6,12 +6,9 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `█░░░░░░░░░` 1/7 |
-| ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟢 ativa · story por story | `█████░░░░░` 1/2 |
-| 　　↳ TS1 · Spike: da foto da estante à lista de livros | ✅ concluída · Sonnet 5.5 recomendado | `██████████` |
-| 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟢 ativa · reescritas pela ES-002 · aguarda validação | `░░░░░░░░░░` |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | 🟡 planejada · próxima depois da DS1 | `░░░░░░░░░░` |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `███░░░░░░░` 2/7 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `░░░░░░░░░░` 0/3 |
+| 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | 🟢 ativa · puxada · aguarda plano | `░░░░░░░░░░` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟡 planejada · medir Google Books antes | `░░░░░░░░░░` |
 | 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
@@ -38,8 +35,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS1.TS2 · Validar as decisões** | 🧭 reescritas para o MVP local | Ler interface, acesso e stack: script local, arquivo ou GitHub Pages, Python sem servidor |
-| **CV1.DS2.US1 · Gerar a estante** | 🧭 recomendada depois da TS2 | Puxar a US1 e transformar o spike num comando que gera o HTML |
+| **CV1.DS2.US1 · Gerar a estante** | 🧭 puxada | Aprovar o plano da US1: o spike vira o comando `uv run estante <pasta>` que gera o HTML |
 | **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes da DS2.US2 |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 
@@ -49,6 +45,7 @@
 | --- | --- | --- |
 | ES-001 · A Estante como Retrato e Campo de Ressonância | ✅ promovida para a CV1 | `██████████` |
 | ES-002 · A Estante num Arquivo | ✅ promovida · CV1 reorganizada, CV2 criada | `██████████` |
+| CV1.DS1 · Fundação: reconhecimento e decisões técnicas | ✅ concluída · spike validado, decisões do MVP local aceitas | `██████████` 2/2 |
 | Adoção do Ariad · AGENTS.md, guia local, princípios, decisões | ✅ assentada · Mirror lê o roadmap | `██████████` |
 | Repositório `89retreat/89books` | ✅ publicado · privado | `██████████` |
 

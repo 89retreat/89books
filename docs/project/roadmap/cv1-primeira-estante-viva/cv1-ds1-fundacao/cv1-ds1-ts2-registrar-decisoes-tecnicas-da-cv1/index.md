@@ -1,8 +1,8 @@
 ---
 code: CV1.DS1.TS2
 level: Technical Story
-status: Active
-status_reason: decisões reescritas para o MVP local pela ES-002; aguarda validação do Navigator
+status: Done
+status_reason: decisões do MVP local validadas pelo Navigator
 updated: 2026-10-26
 related:
   - ../../../../decisions/records/
@@ -12,7 +12,7 @@ related:
 
 # CV1.DS1.TS2 — Registrar decisões técnicas da CV1
 
-**Status:** Active
+**Status:** Done
 **Type:** Technical Story
 
 ---

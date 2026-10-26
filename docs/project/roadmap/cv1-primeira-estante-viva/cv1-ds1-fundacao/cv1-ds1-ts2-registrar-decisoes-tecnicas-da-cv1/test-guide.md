@@ -40,4 +40,4 @@ relatório, ou que o Navigator não sustenta.
   consulta. O script fica pronto para rodar com chave.
 - 2026-10-26: decisões reescritas para o MVP local depois da ES-002; a
   versão com servidor ficou registrada para a CV2.
-- Pendente: validação do Navigator.
+- 2026-10-26: o Navigator validou as três decisões reescritas.

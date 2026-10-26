@@ -2,7 +2,7 @@
 code: CV1
 level: Value
 status: Active
-status_reason: reorganizada pela ES-002 em torno do MVP local; CV1.DS1 em andamento
+status_reason: CV1.DS1 concluída; CV1.DS2 em andamento
 updated: 2026-10-26
 related:
   - ../../exploration/es-001-a-estante-como-retrato/index.md
