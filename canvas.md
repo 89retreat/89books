@@ -9,8 +9,8 @@
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · dogfood com o grupo | `█░░░░░░░░░` 1/11 |
 | ↳ **CV1.DS1 · Fundação: reconhecimento e decisões técnicas** | 🟢 ativa · story por story | `███░░░░░░░` 1/3 |
 | 　　↳ TS1 · Spike: da foto da estante à lista de livros | ✅ concluída · Sonnet 5.5 recomendado | `██████████` |
-| 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟡 planejada · recomendada · spike concluído | `░░░░░░░░░░` |
-| 　　↳ TS3 · Esqueleto implantado | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ TS2 · Registrar decisões técnicas da CV1 | 🟢 ativa · decisões registradas · aguarda validação | `░░░░░░░░░░` |
+| 　　↳ TS3 · Esqueleto implantado | 🟡 planejada · Django no Fly.io, acesso pelo bot | `░░░░░░░░░░` |
 | ↳ **CV1.DS2 · Entrada sem estado vazio** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
 | 　　↳ US1 · Entrar pela foto da estante | 🟡 planejada · abordagem definida pelo spike | `░░░░░░░░░░` |
 | 　　↳ US2 · Revisar e corrigir o reconhecimento | 🟡 planejada | `░░░░░░░░░░` |
@@ -27,8 +27,6 @@
 
 | Decisão | Estado | Destrava |
 | --- | --- | --- |
-| **Interface principal** · web app ou bot do Telegram | 🟡 aberta · pronta para decidir na TS2 | CV1.DS1.TS2 · DS2 · DS4 |
-| **Acesso do grupo** · links mágicos ou Telegram | 🟡 aberta | CV1.DS1.TS3 |
 | **Grupo do Telegram** · existente ou dedicado | 🟡 aberta | CV1.DS4 |
 | **Privacidade dos insights** · sempre no grupo ou escolha | 🟡 aberta | CV1.DS4.US2 |
 | **Navigator dos colaboradores** | 🟡 aberta · padrão provisório do Ariad | entrada de colaboradores |
@@ -37,8 +35,9 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite, fazer push dos commits locais e decidir sobre a transcrição integral |
-| **CV1.DS1.TS2 · Decisões técnicas** | 🧭 recomendada | Puxar a TS2 e decidir interface, acesso, stack e hospedagem com base no relatório |
+| **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite dos convites e decidir sobre a transcrição integral |
+| **CV1.DS1.TS2 · Validar as decisões** | 🧭 registradas | Ler os registros de interface, acesso e stack e aceitar ou ajustar: web app + bot só para enviar, acesso por link do bot, Django no Fly.io |
+| **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes de planejar a DS2.US1 |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 
 ### ✅ Fundações assentadas

@@ -42,8 +42,9 @@ livros e tem capa para ~60% delas.
 - CV1.DS2.US2 (revisão do reconhecimento) é obrigatória.
 - A entrada pede fotos por prateleira, de perto, mais uma foto geral para a
   capa, e reconhece em segundo plano.
-- A DS3 precisa de visual próprio para livros sem capa; a TS2 avalia uma
-  segunda fonte de metadados (por exemplo, Google Books).
+- A DS3 precisa de visual próprio para livros sem capa. A segunda fonte de
+  metadados (Google Books) ficou para medir antes da DS2.US1; ver
+  [stack e hospedagem](2026-10-26T1332Z-stack-e-hospedagem.md).
 
 ## Review Trigger
 

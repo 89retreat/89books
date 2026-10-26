@@ -1,9 +1,9 @@
 ---
 code: CV1.DS1.TS2
 level: Technical Story
-status: Planned
-status_reason: depende do resultado do spike TS1
-updated: 2026-10-25
+status: Active
+status_reason: decisões registradas; aguarda validação do Navigator
+updated: 2026-10-26
 related:
   - ../../../../decisions/records/
 ---
@@ -12,7 +12,7 @@ related:
 
 # CV1.DS1.TS2 — Registrar decisões técnicas da CV1
 
-**Status:** Planned
+**Status:** Active
 **Type:** Technical Story
 
 ---

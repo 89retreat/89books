@@ -16,23 +16,32 @@ Origem: Exploratory Story
 
 ## Current State
 
-Início. Nenhum código ainda. O roadmap tem uma CV,
+Início. Nenhum código de produto ainda; o spike de reconhecimento está em
+`spikes/reconhecimento/`. O roadmap tem uma CV,
 [CV1 A Primeira Estante Viva](roadmap/cv1-primeira-estante-viva/index.md): um
 experimento de dogfood com o grupo de amigos que originou a conversa.
 
-O trabalho mais importante agora é a `CV1.DS1`, que verifica se uma foto de
-estante vira uma lista confiável de livros e fecha as decisões técnicas.
+O trabalho mais importante agora é a `CV1.DS1`: o reconhecimento foi
+validado (TS1), as decisões técnicas estão registradas (TS2) e falta o
+esqueleto implantado (TS3).
 
 ## Architecture Premises
 
-Ainda em aberto. Ver as decisões com `status: Open` em
-[decisions/records/](decisions/records/). Premissas já assumidas:
+Decididas na `CV1.DS1`; detalhes em [decisions/records/](decisions/records/).
 
-- os metadados dos livros vêm da Open Library, normalizando título, autor e
-  capa;
-- o reconhecimento de livros em fotos usa um modelo de visão;
-- a conversa acontece num grupo do Telegram, não dentro do produto;
-- cada livro na estante guarda a sua origem (foto, Kindle ou seleção manual).
+- **Interface:** web app pensado para celular; o bot do Telegram só envia
+  (movimentos ao grupo e link de acesso).
+- **Acesso:** link de uso único enviado pelo bot, só para quem está na lista
+  de membros (ID do Telegram).
+- **Stack:** Python + Django + HTMX, SQLite e fotos num volume, fila de
+  reconhecimento no próprio banco, Fly.io em São Paulo, deploy pelo GitHub
+  Actions.
+- **Reconhecimento:** Claude Sonnet 5.5 via OpenRouter, só provedores sem
+  retenção para treino, com revisão obrigatória pela pessoa.
+- **Metadados:** Open Library, ligando cada livro à obra; a estante não
+  depende de capa.
+- A conversa acontece num grupo do Telegram, não dentro do produto.
+- Cada livro na estante guarda a sua origem (foto, Kindle ou seleção manual).
 
 ## Product Premises
 

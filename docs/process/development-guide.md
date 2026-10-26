@@ -37,18 +37,29 @@ aceite.
 
 ## Project Commands
 
-Ainda não há código. Esta seção será preenchida pela `CV1.DS1.TS2` (decisões
-técnicas) e pela `CV1.DS1.TS3` (esqueleto implantado).
+Stack decidida na `CV1.DS1.TS2`
+([registro](../project/decisions/records/2026-10-26T1332Z-stack-e-hospedagem.md)):
+Python + Django + HTMX, SQLite, Fly.io. Os comandos abaixo são os previstos e
+passam a valer quando a `CV1.DS1.TS3` criar o app; a TS3 corrige o que mudar.
 
 ```bash
 # install dependencies
+uv sync
 
 # run tests
+uv run pytest
 
 # run lint or formatting checks
+uv run ruff check . && uv run ruff format --check .
 
 # run the app locally
+uv run python manage.py migrate && uv run python manage.py runserver
 ```
+
+Hoje só existe o spike, com comandos próprios em
+`spikes/reconhecimento/README.md`. Segredos (chave do OpenRouter, token do
+bot) nunca entram no repositório: localmente vêm do ambiente; em produção,
+dos segredos do Fly.io.
 
 ## Verification
 
