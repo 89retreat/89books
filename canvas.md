@@ -6,10 +6,10 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `████░░░░░░` 3/7 |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `███░░░░░░░` 1/3 |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `██████░░░░` 4/7 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `███████░░░` 2/3 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US2 · Uma estante bonita, mesmo sem capas | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
+| 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
@@ -35,7 +35,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US2 · Validar a estante bonita** | 🧭 implementada | Abrir `~/Downloads/estante-lula-us2.html` no Chrome do computador e do celular |
+| **CV1.DS2.US3 · Corrigir a estante e pedir outro retrato** | 🧭 próxima | Puxar a US3; a primeira geração real dela também exercita o descarte de capas e o layout final |
 | **Medir o Google Books** | 🧭 opcional · precisa de chave | Deixou de bloquear a US2: livros sem capa viram lombadas |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 

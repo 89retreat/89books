@@ -1,8 +1,8 @@
 ---
 code: CV1.DS2.US2
 level: User Story
-status: Active
-status_reason: implementada; aguarda validação do Navigator
+status: Done
+status_reason: validada pelo Navigator em 2026-10-26; débitos adiados na revisão
 updated: 2026-10-26
 related:
   - ../cv1-ds2-us1-gerar-minha-estante/index.md
@@ -14,7 +14,7 @@ related:
 
 # CV1.DS2.US2 — Uma estante bonita, mesmo sem capas
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---
