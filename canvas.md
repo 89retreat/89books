@@ -37,7 +37,7 @@
 | --- | --- | --- |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite dos convites e decidir sobre a transcrição integral |
 | **CV1.DS1.TS2 · Validar as decisões** | 🧭 registradas | Ler os registros de interface, acesso e stack e aceitar ou ajustar: web app + bot só para enviar, acesso por link do bot, Django no Fly.io |
-| **Promover a exploração do Telegram** | 🧭 teste do retrato feito · Lula se reconheceu | Gerar o handoff e rever as decisões da TS2 e o roadmap da CV1 em torno do MVP |
+| **Promover "A Estante num Arquivo"** | 🧭 handoff proposto · aguarda confirmação | Conferir `docs/project/explorations/a-estante-num-arquivo/` e confirmar a promoção para o Builder |
 | **Medir o Google Books** | 🧭 precisa de chave | Criar uma chave gratuita da Books API e rodar `segunda_fonte.py` antes de planejar a DS2.US1 |
 | **Navigator dos colaboradores** | 🧭 decisão | Escolher entre cada colaborador navegar a própria story ou o Alisson aprovar planos e validações |
 
