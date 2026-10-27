@@ -55,3 +55,15 @@ def test_google_books_key_is_optional_and_read_from_env_or_config(shelf_folder):
 def test_a_skipped_google_books_key_means_no_key(shelf_folder):
     (shelf_folder / "config.toml").write_text('google_books_api_key = "skip"\n')
     assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key is None
+
+
+def test_heic_photos_are_listed(tmp_path):
+    (tmp_path / "IMG_0001.HEIC").write_bytes(b"x")
+    (tmp_path / "IMG_0002.heif").write_bytes(b"x")
+    config = load_config(tmp_path, env={"OPENROUTER_API_KEY": "sk"})
+    assert [p.name for p in config.photos] == ["IMG_0001.HEIC", "IMG_0002.heif"]
+
+
+def test_no_photos_message_names_heic_and_the_command(tmp_path):
+    with pytest.raises(ConfigError, match=r"\.heic.*uv run shelf"):
+        load_config(tmp_path, env={"OPENROUTER_API_KEY": "sk"})

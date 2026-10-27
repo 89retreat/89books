@@ -68,3 +68,22 @@ def test_missing_folder_points_to_my_bookshelf(tmp_path, monkeypatch, capsys):
     monkeypatch.chdir(tmp_path)
     code, _ = run([], FakeTerminal([]))
     assert code == 2 and "my-bookshelf" in capsys.readouterr().err
+
+
+def test_an_empty_folder_is_reported_before_any_question(tmp_path, monkeypatch, capsys):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    folder = tmp_path / "my-bookshelf"
+    folder.mkdir()
+    (folder / "README.md").write_text("put photos here")
+    terminal = FakeTerminal([])
+    code, built = run([str(folder)], terminal)
+    assert code == 2 and terminal.questions == [] and built == []
+    assert "Put photos of your shelf" in capsys.readouterr().err
+
+
+def test_the_end_says_where_the_shelf_is_and_how_to_share_it(shelf_folder, monkeypatch):
+    monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-good")
+    (shelf_folder / "config.toml").write_text('name = "Lula"\ngoogle_books_api_key = "skip"\n')
+    terminal = FakeTerminal([])
+    run([str(shelf_folder), "--yes"], terminal)
+    assert "shelf.html" in terminal.text and "browser" in terminal.text and "share" in terminal.text.lower()

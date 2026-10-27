@@ -10,7 +10,7 @@ from pathlib import Path
 from shelf import photos as photo_tools
 from shelf import setup
 from shelf.books import dedupe, write_books_yaml
-from shelf.config import Config, ConfigError, load_config
+from shelf.config import PHOTO_EXTENSIONS, Config, ConfigError, load_config
 from shelf.covers import CoverCheck
 from shelf.googlebooks import GoogleBooks
 from shelf.openlibrary import OpenLibrary
@@ -153,6 +153,16 @@ def main(
     terminal = terminal or setup.Terminal()
     interactive = setup.is_interactive() if interactive is None else interactive
 
+    # photos come first: asking for keys only to find an empty folder would waste the person's time
+    if args.folder.is_dir() and not any(
+        p.suffix.lower() in PHOTO_EXTENSIONS for p in args.folder.iterdir() if p.is_file()
+    ):
+        print(
+            f"shelf: No photos in {args.folder}. Put photos of your shelf in it (.jpg, .heic, .png or .webp) "
+            "and run `uv run shelf` again.",
+            file=sys.stderr,
+        )
+        return 2
     if interactive and args.folder.is_dir() and (args.setup or setup.needs_setup(args.folder, os.environ)):
         setup.run_setup(
             args.folder,
@@ -171,6 +181,12 @@ def main(
         terminal.say("Nothing was spent.")
         return 0
     build(config)
+    page = config.folder / "shelf.html"
+    opener = "open" if sys.platform == "darwin" else "start" if os.name == "nt" else "xdg-open"
+    terminal.say()
+    terminal.say(f"Your shelf is ready: {page}")
+    terminal.say(f"Open it in your browser with `{opener} {page}`.")
+    terminal.say("To share it, send the file itself (WhatsApp, AirDrop, email) and open it in a browser.")
     return 0
 
 

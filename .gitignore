@@ -18,7 +18,8 @@ __pycache__/
 # Shelf generator: local config with the API key, cache and generated output.
 config.toml
 # Your shelf: photos, keys and the generated page never leave your machine.
-my-bookshelf/
+my-bookshelf/*
+!my-bookshelf/README.md
 .shelf/
 shelf.html
 !src/shelf/templates/shelf.html

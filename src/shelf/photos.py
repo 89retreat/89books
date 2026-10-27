@@ -5,6 +5,9 @@ from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageOps
+from pillow_heif import register_heif_opener
+
+register_heif_opener()  # iPhone photos are HEIC by default
 
 MAX_SIDE = 1600  # sent to the model, which needs to read the spines
 PAGE_SIDE = 1000  # embedded in the page

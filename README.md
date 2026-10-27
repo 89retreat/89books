@@ -11,24 +11,14 @@ e um retrato de você como leitor.
 
 ## Generate your shelf
 
-Requirements: [uv](https://docs.astral.sh/uv/) and an
-[OpenRouter](https://openrouter.ai/) account with some credit. A shelf of
-seven photos costs about US$ 0.17.
+**New here? Follow [GETTING_STARTED.md](GETTING_STARTED.md)**: from clone to
+your shelf in about 15 minutes.
 
-1. Put photos of your shelf, or of single shelves, in `my-bookshelf/` at the
-   root of the repository (`.jpg`, `.jpeg`, `.png` or `.webp`). Close-ups of
-   each shelf read best. Git ignores this folder.
-2. Run:
-
-   ```bash
-   uv run shelf
-   ```
-
-   The first time, it asks for your name as it should appear on the shelf,
-   explains how to get an OpenRouter key and an optional Google Books key,
-   checks each key and saves your answers in `my-bookshelf/config.toml`.
-   Before reading the photos it tells you the estimated cost and time and
-   asks you to confirm.
+In short: put photos of your shelf in `my-bookshelf/` (`.jpg`, `.heic`,
+`.png` or `.webp`) and run `uv run shelf`. The first time, it asks for your
+name and keys, checks them and saves them in `my-bookshelf/config.toml`;
+before reading the photos it tells you the estimated cost and asks you to
+confirm.
 
 Options: `uv run shelf --setup` asks for your name and keys again;
 `--yes` skips the cost question; `uv run shelf path/to/folder` uses another

@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-PHOTO_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+PHOTO_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}  # HEIC: iPhone photos
 CONFIG_FILE = "config.toml"
 
 
@@ -31,7 +31,10 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
         )
     photos = sorted(p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in PHOTO_EXTENSIONS)
     if not photos:
-        raise ConfigError(f"No photos in {folder}. Add .jpg, .jpeg, .png or .webp files of your shelf.")
+        raise ConfigError(
+            f"No photos in {folder}. Put photos of your shelf in it (.jpg, .heic, .png or .webp) "
+            "and run `uv run shelf` again."
+        )
 
     settings: dict = {}
     config_file = folder / CONFIG_FILE
