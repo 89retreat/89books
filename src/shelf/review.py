@@ -7,8 +7,10 @@ it would change, which keeps the call cheap.
 """
 
 import json
+import re
 
 from shelf import openrouter
+from shelf.text import normalize_title
 
 PROMPT = """Você revisa a lista de livros de uma estante pessoal brasileira. Cada linha mostra o que foi lido na lombada por reconhecimento automático de fotos e, quando houver, o que a Open Library e o Google Books encontraram para aquela leitura. As leituras podem ter erros (letras trocadas, gênero ou número errado, título truncado, nome do autor lido como título), e os catálogos podem ter encontrado o livro errado.
 
@@ -45,8 +47,18 @@ def parse_review(text: str, book_count: int) -> dict[int, dict]:
     start, end = text.find("{"), text.rfind("}")
     if start == -1 or end == -1:
         return {}
+    try:
+        items = json.loads(text[start : end + 1]).get("books") or []
+    except json.JSONDecodeError:
+        # a stray quote inside one title breaks the whole answer; keep every item that still reads
+        items = []
+        for chunk in re.findall(r"\{[^{}]*\}", text[start + 1 : end]):
+            try:
+                items.append(json.loads(chunk))
+            except json.JSONDecodeError:
+                continue
     entries: dict[int, dict] = {}
-    for item in json.loads(text[start : end + 1]).get("books") or []:
+    for item in items:
         if not isinstance(item, dict):
             continue
         number = item.get("n")
@@ -106,6 +118,18 @@ def settle(book: dict) -> dict:
         if book["title"] != read:
             book["read_as"] = read
     book["authors"] = book.get("authors") or ol_authors or gb_authors
+    return book
+
+
+def confirm(book: dict, found: dict) -> dict:
+    """A title found in Google Books for this book and author replaces the spelling read from the spine."""
+    book = dict(book)
+    if normalize_title(found["gb_title"]) != normalize_title(book["title"]):
+        book.setdefault("read_as", book["title"])
+        book["title"] = found["gb_title"]
+    book["source"] = "google_books"
+    book["authors"] = book.get("authors") or found["gb_authors"]
+    book["gb_cover"] = found.get("gb_cover")
     return book
 
 

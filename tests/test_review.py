@@ -85,3 +85,53 @@ def test_settle_prefers_review_then_open_library_then_google_books():
     assert (from_gb["title"], from_gb["source"]) == ("Continuo Preta", "google_books")
     as_read = settle({"title": "Cynefin", "authors": []})
     assert as_read == {"title": "Cynefin", "authors": [], "source": "photo"}
+
+
+def test_confirm_takes_the_catalogue_spelling_of_a_reviewed_title():
+    from shelf.review import confirm
+
+    book = {
+        "title": "Continuo Preto: A Vida de Sueli Carneiro",
+        "authors": ["Bianca Santana"],
+        "read_as": "Contínuo Preto",
+        "source": "review",
+    }
+    found = {"gb_title": "Continuo preta", "gb_authors": ["Bianca Santana"], "gb_cover": "https://x"}
+    confirmed = confirm(book, found)
+    assert confirmed["title"] == "Continuo preta"
+    assert confirmed["read_as"] == "Contínuo Preto" and confirmed["source"] == "google_books"
+    assert confirmed["gb_cover"] == "https://x"
+
+
+def test_confirm_gives_authors_to_a_book_read_from_the_photo_only():
+    from shelf.review import confirm
+
+    confirmed = confirm(
+        {"title": "Fumo sem Cortes", "authors": [], "source": "photo"},
+        {"gb_title": "Fumo sem cortes", "gb_authors": ["Autora"], "gb_cover": None},
+    )
+    assert confirmed["authors"] == ["Autora"] and confirmed["title"] == "Fumo sem Cortes"
+    assert "read_as" not in confirmed
+
+
+def test_confirm_keeps_the_title_when_only_case_or_accents_differ():
+    from shelf.review import confirm
+
+    confirmed = confirm(
+        {"title": "Regras para Radicais", "authors": ["Saul Alinsky"], "source": "photo"},
+        {"gb_title": "Regras para radicais", "gb_authors": ["Saul Alinsky"], "gb_cover": None},
+    )
+    assert confirmed["title"] == "Regras para Radicais" and "read_as" not in confirmed
+    assert confirmed["source"] == "google_books"
+
+
+def test_a_broken_answer_keeps_every_item_that_can_be_read():
+    text = """{"books": [
+      {"n": 1, "title": "Continuo preta", "authors": ["Bianca Santana"]},
+      {"n": 2, "title": "Homens Pretos "(Não)" Choram", "authors": ["X"]},
+      {"n": 3, "not_a_book": true}
+    ]}"""
+    assert parse_review(text, book_count=3) == {
+        0: {"title": "Continuo preta", "authors": ["Bianca Santana"]},
+        2: {"not_a_book": True},
+    }

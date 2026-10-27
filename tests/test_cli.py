@@ -128,3 +128,41 @@ def test_the_review_corrects_a_misread_title_before_the_page(shelf_folder):
     assert "read_as: Continuo Preto" in books_yaml and "not a book" in books_yaml
     assert any("Google Books" in line and "GOOGLE_BOOKS_API_KEY" in line for line in lines)
     assert any("1 corrected" in line for line in lines)
+
+
+def test_google_books_confirms_titles_after_the_review(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def recognize(image, api_key):
+        return [{"title": "Contínuo Preto", "authors": []}], 0.0
+
+    def review(books, api_key):
+        return {0: {"title": "Continuo Preto: A Vida de Sueli Carneiro", "authors": ["Bianca Santana"]}}, 0.0
+
+    class Second:
+        seen = []
+
+        def lookup(self, title, authors):
+            self.seen.append((title, authors))
+            return {"gb_title": "Continuo preta", "gb_authors": ["Bianca Santana"], "gb_cover": None}
+
+        def save(self):
+            pass
+
+    def portrait(books, api_key):
+        return {"lens": "Eu.", "themes": []}, 0.0
+
+    second = Second()
+    build_shelf(
+        config,
+        recognize=recognize,
+        library=FakeLibrary(),
+        portrait=portrait,
+        review=review,
+        second=second,
+        covers=FakeCovers(),
+        log=lambda line: None,
+    )
+    assert second.seen[0] == ("Continuo Preto: A Vida de Sueli Carneiro", ["Bianca Santana"])
+    books_yaml = (shelf_folder / "books.yaml").read_text(encoding="utf-8")
+    assert "title: Continuo preta" in books_yaml and "source: google_books" in books_yaml

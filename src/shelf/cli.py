@@ -15,7 +15,7 @@ from shelf.openlibrary import OpenLibrary
 from shelf.page import render
 from shelf.portrait import write_portrait
 from shelf.recognition import recognize
-from shelf.review import apply_review, review_books, settle
+from shelf.review import apply_review, confirm, review_books, settle
 from shelf.text import normalize_title
 
 CACHE_DIR = ".shelf"
@@ -65,16 +65,6 @@ def build_shelf(
         book.update(library.lookup(book["title"], book.get("authors") or []) or {})
     library.save()
 
-    if second is None:
-        log("  Skipping Google Books: set GOOGLE_BOOKS_API_KEY to check titles in a second catalogue.")
-    else:
-        log("Looking up the rest on Google Books...")
-        missing = [b for b in books if not b.get("work") or not (b.get("authors") or b.get("ol_authors"))]
-        for book in missing:
-            book.update(second.lookup(book["title"], book.get("authors") or []) or {})
-        second.save()
-        log(f"  {sum(1 for b in missing if b.get('gb_title'))} of {len(missing)} found.")
-
     log("Checking titles and authors across the shelf...")
     entries, spent = review(books, config.api_key)
     cost += spent
@@ -82,11 +72,26 @@ def build_shelf(
     books = [settle(b) for b in books]
     corrected = sum(1 for b in books if b.get("source") == "review")
     log(f"  {corrected} corrected, {len(left_out)} left out.")
+
+    if second is None:
+        log("  Skipping Google Books: set GOOGLE_BOOKS_API_KEY to check titles in a second catalogue.")
+    else:
+        # books no catalogue has confirmed yet, with the reviewed title and author, which Google Books needs
+        log("Confirming the rest on Google Books...")
+        unconfirmed = [i for i, b in enumerate(books) if b.get("source") in ("review", "photo")]
+        confirmed = 0
+        for i in unconfirmed:
+            found = second.lookup(books[i]["title"], books[i].get("authors") or [])
+            if found:
+                books[i] = confirm(books[i], found)
+                confirmed += 1
+        second.save()
+        log(f"  {confirmed} of {len(unconfirmed)} confirmed.")
     for book in books:
         # a corrected title was searched under the misreading; search again under the right one
-        if book.get("source") == "review" and normalize_title(book["title"]) != normalize_title(
-            book.get("read_as", "")
-        ):
+        if book.get("source") in ("review", "google_books") and normalize_title(
+            book["title"]
+        ) != normalize_title(book.get("read_as", "")):
             for key in ("work", "cover_id"):
                 book.pop(key, None)
             match = library.lookup(book["title"], book.get("authors") or []) or {}

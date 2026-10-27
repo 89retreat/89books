@@ -60,3 +60,26 @@ a última prateleira ainda soa como sobra.
   Navigator em 2026-10-27),
   sem numeral, sem parágrafo, separada por um fio. Colunas equilibradas e
   nenhuma fileira sem tábua. HTML sem chave e sem caminhos locais.
+
+2026-10-27, Driver, com a chave do Google Books:
+
+- Primeira rodada: 0 de 50 achados. O operador `intitle:` da API não devolve
+  nada nem para *Torto Arado*; a busca passou a ser texto livre com o autor,
+  e o Google Books passou para depois da conferência, quando o autor já veio
+  do modelo.
+- Segunda rodada: 33 confirmados, mas três livros errados, todos sem autor
+  (*Continuum*, *Sueli Carneiro* de Rosane Borges, "…à bioética"). Sem autor,
+  agora só vale grafia quase idêntica; com autor, o autor tem de bater; e uma
+  diferença só de maiúsculas não troca o título.
+- Duas rodadas caíram porque a conferência devolveu JSON com aspas soltas
+  num título. A leitura agora aproveita item por item. 61 testes passando.
+- Rodada final: 161 livros, 13 corrigidos pela conferência, 25 confirmados no
+  Google Books, 76 com capa (eram 61), 26 sem autor. As trocas feitas pelo
+  Google Books conferem (*Teoria King Kong*, *Tessituras e estratégias*,
+  *Ensaios sobre o conceito de cultura*, *Ó pa í, Prezada!*).
+- **Ainda não resolvido:** *Continuo Preto* ficou errado nesta rodada. O
+  reconhecimento muda de uma rodada para outra, e desta vez a conferência não
+  juntou o título à biografia nem trouxe a autora; sem autor, o Google Books
+  não acha o livro pelo título errado. Também ficou um "O Pai Prezado" ao
+  lado de *Ó pa í, Prezada!*.
+- Gasto do Driver nesta story: cerca de US$ 0,90 em seis gerações e testes.
