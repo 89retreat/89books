@@ -4,13 +4,14 @@ level: Delivery Story
 status: Active
 status_reason: US1 e US2 validadas pelo Navigator; falta a revisão de débitos antes de concluir
 updated: 2026-10-27
+former_title: Do clone à estante
 related:
   - ../index.md
 ---
 
 [< CV1](../index.md)
 
-# CV1.DS3 — Do clone à estante
+# CV1.DS3 — Minha estante pronta para compartilhar
 
 **Status:** Active
 

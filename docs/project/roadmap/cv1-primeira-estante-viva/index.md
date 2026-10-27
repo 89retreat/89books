@@ -47,7 +47,7 @@ capacidade verificável: o que não serve a ela foi para outras CVs.
 |------|----------------|---------|
 | [CV1.DS1](cv1-ds1-fundacao/index.md) | Fundação: reconhecimento de livros e decisões técnicas | Sabemos que foto e print viram lista de livros; decisões técnicas do MVP local registradas |
 | [CV1.DS2](cv1-ds2-a-estante-num-arquivo/index.md) | A estante num arquivo | O comando transforma uma pasta de fotos numa estante bonita, com o retrato de si, títulos e autores conferidos |
-| [CV1.DS3](cv1-ds3-do-clone-a-estante/index.md) | Do clone à estante | Uma pessoa sai de um clone limpo com a própria estante, guiada pelo guia e pelo terminal, sem pedir ajuda |
+| [CV1.DS3](cv1-ds3-minha-estante-pronta-para-compartilhar/index.md) | Minha estante pronta para compartilhar | Uma pessoa sai de um clone limpo com a própria estante, guiada pelo guia e pelo terminal, sem pedir ajuda |
 
 ## Scope
 

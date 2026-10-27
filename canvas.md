@@ -7,7 +7,7 @@
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · do clone à estante, pelo terminal | `██████░░░░` 5/7 |
-| ↳ **CV1.DS3 · Do clone à estante** | 🟢 ativa · onboarding sem fricção, em inglês | `░░░░░░░░░░` 0/2 |
+| ↳ **CV1.DS3 · Minha estante pronta para compartilhar** | 🟢 ativa · onboarding sem fricção, em inglês | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Guided setup in the terminal | 🔵 validada | `░░░░░░░░░░` |
 | 　　↳ US2 · Getting started, from clone to shelf | 🔵 validada | `░░░░░░░░░░` |
 | **CV2 · A Estante Cuidada e Visitável** | 🟡 planejada · depois do uso da CV1 | `░░░░░░░░░░` 0/4 |
@@ -38,7 +38,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS3 · Revisar débitos e concluir** | 🧭 validada | Decidir os débitos, renomear a DS e fechar US1 e US2 |
+| **CV1.DS3 · Autores com nome e sobrenome** | 🧭 feedback antes de fechar | Aprovar a regra dos nomes nas lombadas; depois revisar débitos e fechar US1 e US2 |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Depois da CV1.DS3: cada um sai de um clone limpo com a própria estante |
 
 ### ✅ Fundações assentadas
