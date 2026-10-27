@@ -77,7 +77,12 @@ Then eles aparecem no fim, numa prateleira sem numeral e mais leve,
 
 - Conferência pelo modelo, só texto, depois da Open Library.
 - Google Books como segunda fonte, com chave gratuita.
-- Sobrenome do autor nas lombadas.
+- Autor em primeiro plano nas lombadas (decisão do Navigator em 2026-10-27:
+  "é mais importante eu ver que você leu Kant ou Platão do que qual o livro
+  específico deles"): o autor no topo, grande; o título embaixo, menor.
+- Livros do mesmo autor juntos e da mesma cor dentro de cada prateleira.
+- Uma linha "Quem mais mora aqui" abaixo da lente, com os autores de dois ou
+  mais livros.
 - Prateleira das sobras sem numeral, mais leve, com título fixo.
 
 ## Out Of Scope

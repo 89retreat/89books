@@ -83,3 +83,22 @@ a última prateleira ainda soa como sobra.
   não acha o livro pelo título errado. Também ficou um "O Pai Prezado" ao
   lado de *Ó pa í, Prezada!*.
 - Gasto do Driver nesta story: cerca de US$ 0,90 em seis gerações e testes.
+
+2026-10-27, Driver, autores em primeiro plano:
+
+- O Navigator escolheu, entre três protótipos, o autor no topo da lombada,
+  grande, com o título embaixo, menor. Nomes de até 16 letras aparecem
+  inteiros (Milton Santos, bell hooks); os mais longos, pelo sobrenome.
+- Livros do mesmo autor ficam juntos e com a mesma cor dentro da prateleira
+  (os três *Mil Platôs*, de Deleuze). Abaixo da lente, "Quem mais mora aqui:
+  Gilles Deleuze · Jessé Souza · Milton Santos · bell hooks · David J.
+  Anderson".
+- A página foi gerada de novo a partir do retrato e da lista já existentes,
+  sem chamada paga. 111 das 136 lombadas visíveis têm autor; nenhum nome
+  cortado. 64 testes passando.
+- Achado na conferência: ao encolher a janela, as fileiras montadas para a
+  largura anterior seguravam o módulo largo, e a página ficava mais larga que
+  o celular. Esse defeito vinha da US2. A prateleira agora é esvaziada antes
+  de medir; conferido de 1440 para 390, de 390 para 1440 e de 1440 para 900.
+- Conhecido: a capa de *Os Clássicos da Política* é uma página de texto em
+  papel amarelado; o tom do papel faz a imagem passar no filtro de miolo.

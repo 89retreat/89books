@@ -7,7 +7,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup, escape
 
-from shelf.shelves import build_shelves, mosaic
+from shelf.shelves import build_shelves, frequent_authors, mosaic
 
 TEMPLATES = Path(__file__).parent / "templates"
 TITLE_FONT = Path(__file__).parent / "fonts" / "newsreader-italic-500-latin.woff2"
@@ -27,6 +27,7 @@ def render(name: str | None, photos: list[str], books: list[dict], portrait: dic
         name=name,
         photos=list(zip(photos, mosaic(len(photos)), strict=True)),
         lens=portrait["lens"],
+        authors=frequent_authors(books),
         shelves=build_shelves(books, portrait),
         title_font="data:font/woff2;base64," + base64.b64encode(TITLE_FONT.read_bytes()).decode(),
     )

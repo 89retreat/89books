@@ -40,3 +40,11 @@ def test_page_embeds_the_title_font():
     html = render(name=None, photos=[], books=[], portrait={"lens": "x", "themes": []})
     assert "font-family: 'Newsreader'" in html or 'font-family:"Newsreader"' in html
     assert "data:font/woff2;base64," in html
+
+
+def test_page_names_who_lives_on_the_shelf_and_puts_the_author_first():
+    books = [{"title": f"Livro {i}", "authors": ["Milton Santos"]} for i in range(2)]
+    html = render(name=None, photos=[], books=books, portrait={"lens": "x", "themes": []})
+    assert "Quem mais mora aqui" in html and "Milton Santos" in html
+    spine = html[html.index('class="spine') :]
+    assert spine.index("<b>Milton Santos</b>") < spine.index("<span>Livro")

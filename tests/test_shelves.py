@@ -1,4 +1,4 @@
-from shelf.shelves import REST_TITLE, SIDE_MAX, build_shelves, mosaic, roman, spine, tilt
+from shelf.shelves import REST_TITLE, SIDE_MAX, build_shelves, frequent_authors, mosaic, roman, spine, tilt
 
 
 def book(title, cover_id=None):
@@ -85,12 +85,45 @@ def test_first_shelf_stays_in_the_main_column_even_when_small():
     assert [s["place"] for s in build_shelves(books, portrait)] == ["wide", "side", "full"]
 
 
-def test_spine_shows_the_author_surname_and_grows_for_it():
-    assert spine("Continuo Preta", ["Sueli Carneiro"])["author"] == "Carneiro"
+def test_spine_names_the_author_in_full_when_short_and_by_surname_when_long():
+    assert spine("Continuo Preta", ["Bianca Santana"])["author"] == "Bianca Santana"
+    assert spine("The Will to Change", ["bell hooks"])["author"] == "bell hooks"
+    assert spine("Leviatã", ["Thomas Hobbes"])["author"] == "Thomas Hobbes"
     assert spine("Torto Arado", ["Itamar Vieira Junior"])["author"] == "Vieira Junior"
-    assert spine("The Will to Change", ["bell hooks"])["author"] == "hooks"
+    assert spine("Decolonialidade", ["Joaze Bernardino-Costa"])["author"] == "Bernardino-Costa"
     assert spine("Cynefin", [])["author"] == ""
     assert spine("Cynefin", ["Dave Snowden"])["width"] > spine("Cynefin", [])["width"]
+
+
+def test_books_by_the_same_author_share_a_colour_and_sit_together():
+    books = [
+        {"title": "Mil Platôs Vol. 1", "authors": ["Gilles Deleuze"]},
+        {"title": "Cynefin", "authors": []},
+        {"title": "Mil Platôs Vol. 2", "authors": ["Gilles Deleuze", "Félix Guattari"]},
+        {"title": "Pobreza urbana", "authors": ["Milton Santos"]},
+        {"title": "Mil Platôs Vol. 3", "authors": ["Gilles  Deleuze"]},
+    ]
+    portrait = {"lens": "x", "themes": [{"title": "T", "text": "", "books": [0, 1, 2, 3, 4]}]}
+    shelf = build_shelves(books, portrait)[0]["books"]
+    assert [b["title"] for b in shelf] == [
+        "Mil Platôs Vol. 1",
+        "Mil Platôs Vol. 2",
+        "Mil Platôs Vol. 3",
+        "Cynefin",
+        "Pobreza urbana",
+    ]
+    assert len({b["spine"]["color"] for b in shelf[:3]}) == 1
+
+
+def test_frequent_authors_are_those_with_two_books_or_more_most_present_first():
+    books = (
+        [{"title": f"M{i}", "authors": ["Milton Santos"]} for i in range(3)]
+        + [{"title": f"B{i}", "authors": ["bell hooks"]} for i in range(2)]
+        + [{"title": "D", "authors": ["Gilles Deleuze"]}, {"title": "X", "authors": []}]
+        + [{"title": "M3", "authors": ["Milton  Santos"]}]
+    )
+    assert frequent_authors(books) == ["Milton Santos", "bell hooks"]
+    assert frequent_authors(books[5:]) == []
 
 
 def test_a_google_books_cover_can_stand_face_out():

@@ -2,6 +2,7 @@
 
 import hashlib
 import re
+import unicodedata
 
 from shelf.text import THRESHOLD, similarity
 
@@ -46,20 +47,60 @@ def surname(author: str) -> str:
     return parts[-1] if parts else ""
 
 
+FULL_NAME_MAX = 16  # "Milton Santos" and "bell hooks" fit in full; longer names go by the surname
+AUTHORS_MIN_BOOKS = 2
+AUTHORS_SHOWN = 8
+
+
+def author_key(author: str) -> str:
+    """Same person across catalogues: "Donella H. Meadows" and "Donella Meadows" share first and last name."""
+    parts = re.sub(
+        r"[^a-z\s-]", "", unicodedata.normalize("NFKD", author).encode("ascii", "ignore").decode().lower()
+    ).split()
+    return f"{parts[0]} {parts[-1]}" if parts else ""
+
+
+def display_name(author: str) -> str:
+    author = " ".join(author.split())
+    return author if len(author) <= FULL_NAME_MAX else surname(author)
+
+
 def spine(title: str, authors: list[str] | None = None) -> dict:
+    # the author comes first on the spine, so books by the same author share a colour
+    first = (authors or [""])[0]
+    color, light = PALETTE[_digest(author_key(first) or title) % len(PALETTE)]
     h = _digest(title)
-    color, light = PALETTE[h % len(PALETTE)]
     label = title if len(title) <= LABEL_MAX else title[: LABEL_MAX - 2].rstrip() + "…"
-    author = surname(authors[0]) if authors else ""
+    author = display_name(first) if first else ""
     return {
         "color": color,
         "light": light,
         "height": 192 + (h >> 8) % 48,
-        # longer titles get thicker books, and the author's name needs a column of its own
-        "width": max(30, min(62, 26 + len(title) // 2 + (8 if author else 0))),
+        # the author's name gets its own column, wider than the title's
+        "width": max(30, min(64, 26 + len(title) // 2 + (12 if author else 0))),
         "label": label,
         "author": author,
     }
+
+
+def _by_author(books: list[dict]) -> list[dict]:
+    """Keeps the shelf order, but pulls each author's books next to the first one."""
+    groups: dict[str, list[dict]] = {}
+    for book in books:
+        key = author_key((book.get("authors") or [""])[0]) or f"#{len(groups)}"
+        groups.setdefault(key, []).append(book)
+    return [book for group in groups.values() for book in group]
+
+
+def frequent_authors(books: list[dict]) -> list[str]:
+    """Authors with at least two books on the shelf, most present first, in the form the page shows."""
+    counts: dict[str, list] = {}
+    for book in books:
+        first = (book.get("authors") or [""])[0]
+        if key := author_key(first):
+            counts.setdefault(key, [0, " ".join(first.split())])[0] += 1
+    ranked = sorted(counts.values(), key=lambda c: -c[0])
+    return [name for count, name in ranked if count >= AUTHORS_MIN_BOOKS][:AUTHORS_SHOWN]
 
 
 def tilt(title: str) -> tuple[float, int]:
@@ -103,6 +144,7 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
             title = books[i].get("ol_title") or books[i]["title"]
             face = any(similarity(c, title) >= THRESHOLD for c in cited)
             items.append(_book(books[i], face))
+        items = _by_author(items)
         shelves.append(
             {"title": theme["title"], "text": theme.get("text", ""), "books": items, "rest": False}
         )
@@ -114,7 +156,9 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
             {
                 "title": REST_TITLE,
                 "text": "",
-                "books": [_book(b, j % REST_FACE_EVERY == REST_FACE_EVERY // 2) for j, b in enumerate(rest)],
+                "books": _by_author(
+                    [_book(b, j % REST_FACE_EVERY == REST_FACE_EVERY // 2) for j, b in enumerate(rest)]
+                ),
                 "rest": True,
             }
         )
