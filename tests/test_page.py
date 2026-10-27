@@ -1,4 +1,5 @@
 from shelf.page import render
+from shelf.shelves import REST_TITLE
 
 PORTRAIT = {
     "lens": "Eu leio *Torto Arado* <b>",
@@ -30,7 +31,7 @@ def test_page_shows_themes_as_shelves_with_cited_cover_face_out():
     assert "Lula" in html and "A estante de" in html
     assert "Quando penso &lt;na&gt; terra" in html
     assert "https://covers.openlibrary.org/b/id/7-M.jpg?default=false" in html
-    assert "Quando não procuro nada em particular" in html
+    assert REST_TITLE in html
     assert "Cynefin" in html
     assert html.count('class="tile') == 2
 

@@ -13,10 +13,10 @@ def test_themes_become_shelves_and_leftovers_go_to_the_last_one():
     }
     shelves = build_shelves(books, portrait)
     assert [s["title"] for s in shelves] == ["Quando penso na terra", REST_TITLE]
-    assert [s["numeral"] for s in shelves] == ["I", "II"]
+    assert [s["numeral"] for s in shelves] == ["I", ""]
     assert [b["title"] for b in shelves[0]["books"]] == ["Torto Arado"]
     assert [b["title"] for b in shelves[1]["books"]] == ["Cynefin", "Kanban"]
-    assert shelves[1]["rest"] and "2 livros" in shelves[1]["text"]
+    assert shelves[1]["rest"] and shelves[1]["text"] == ""
 
 
 def test_no_last_shelf_when_every_book_has_a_theme():
@@ -83,3 +83,17 @@ def test_first_shelf_stays_in_the_main_column_even_when_small():
         "themes": [{"title": "A", "text": "", "books": [0]}, {"title": "B", "text": "", "books": [1]}],
     }
     assert [s["place"] for s in build_shelves(books, portrait)] == ["wide", "side", "full"]
+
+
+def test_spine_shows_the_author_surname_and_grows_for_it():
+    assert spine("Continuo Preta", ["Sueli Carneiro"])["author"] == "Carneiro"
+    assert spine("Torto Arado", ["Itamar Vieira Junior"])["author"] == "Vieira Junior"
+    assert spine("The Will to Change", ["bell hooks"])["author"] == "hooks"
+    assert spine("Cynefin", [])["author"] == ""
+    assert spine("Cynefin", ["Dave Snowden"])["width"] > spine("Cynefin", [])["width"]
+
+
+def test_a_google_books_cover_can_stand_face_out():
+    books = [{"title": "Continuo Preta", "authors": [], "cover_url": "https://books.google.com/x"}]
+    portrait = {"lens": "x", "themes": [{"title": "T", "text": "*Continuo Preta*", "books": [0]}]}
+    assert build_shelves(books, portrait)[0]["books"][0]["face"] is True

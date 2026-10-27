@@ -5,7 +5,7 @@ import re
 
 from shelf.text import THRESHOLD, similarity
 
-REST_TITLE = "Quando não procuro nada em particular"
+REST_TITLE = "Livros que um dia me chamaram a atenção"
 SIDE_MAX = 8  # shelves with this many books or fewer go to the side column on wide screens
 PHONE_PHOTOS = 5
 REST_FACE_EVERY = 9
@@ -35,16 +35,30 @@ def _digest(title: str) -> int:
     return int(hashlib.md5(title.encode()).hexdigest(), 16)
 
 
-def spine(title: str) -> dict:
+_SUFFIXES = {"jr", "jr.", "junior", "júnior", "filho", "neto", "sobrinho"}
+
+
+def surname(author: str) -> str:
+    """How a spine names the author: the last name, with a family suffix such as Junior kept."""
+    parts = author.split()
+    if len(parts) > 2 and parts[-1].lower() in _SUFFIXES:
+        return " ".join(parts[-2:])
+    return parts[-1] if parts else ""
+
+
+def spine(title: str, authors: list[str] | None = None) -> dict:
     h = _digest(title)
     color, light = PALETTE[h % len(PALETTE)]
     label = title if len(title) <= LABEL_MAX else title[: LABEL_MAX - 2].rstrip() + "…"
+    author = surname(authors[0]) if authors else ""
     return {
         "color": color,
         "light": light,
         "height": 192 + (h >> 8) % 48,
-        "width": max(30, min(58, 26 + len(title) // 2)),  # longer titles get thicker books
+        # longer titles get thicker books, and the author's name needs a column of its own
+        "width": max(30, min(62, 26 + len(title) // 2 + (8 if author else 0))),
         "label": label,
+        "author": author,
     }
 
 
@@ -59,14 +73,18 @@ def _cited(text: str) -> list[str]:
     return re.findall(r"\*([^*\n]+)\*", text)
 
 
+def _has_cover(book: dict) -> bool:
+    return bool(book.get("cover_id") or book.get("cover_url"))
+
+
 def _book(book: dict, face: bool) -> dict:
     title = book.get("ol_title") or book["title"]
     angle, lift = tilt(title)
     return {
         **book,
         "title": title,
-        "face": bool(face and book.get("cover_id")),
-        "spine": spine(title),
+        "face": bool(face and _has_cover(book)),
+        "spine": spine(title, book.get("authors")),
         "angle": angle,
         "lift": lift,
     }
@@ -91,19 +109,18 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
 
     rest = [b for i, b in enumerate(books) if i not in used]
     if rest:
-        count = f"Os outros {len(rest)} livros" if len(rest) > 1 else "O outro livro"
-        verb = "moram" if len(rest) > 1 else "mora"
+        # the closing shelf is not a theme of the portrait: no paragraph and no numeral
         shelves.append(
             {
                 "title": REST_TITLE,
-                "text": f"{count} que {verb} comigo, esperando a sua vez.",
+                "text": "",
                 "books": [_book(b, j % REST_FACE_EVERY == REST_FACE_EVERY // 2) for j, b in enumerate(rest)],
                 "rest": True,
             }
         )
 
     for n, shelf in enumerate(shelves, start=1):
-        shelf["numeral"] = roman(n)
+        shelf["numeral"] = "" if shelf["rest"] else roman(n)
         shelf["order"] = n
         small = n > 1 and len(shelf["books"]) <= SIDE_MAX  # the page always opens with the first shelf
         shelf["place"] = "full" if shelf["rest"] else ("side" if small else "wide")

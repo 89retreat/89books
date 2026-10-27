@@ -41,24 +41,22 @@ def test_a_dark_grey_cover_passes():
 def test_cover_check_downloads_once_and_caches(tmp_path):
     calls = []
 
-    def fetch(cover_id):
-        calls.append(cover_id)
-        return (
-            jpeg((128, 196), (250, 250, 250), ink=(40, 40, 40))
-            if cover_id == 1
-            else jpeg((180, 270), (30, 60, 120))
-        )
+    def fetch(url):
+        calls.append(url)
+        scan = jpeg((128, 196), (250, 250, 250), ink=(40, 40, 40))
+        return scan if "/1-M" in url else jpeg((180, 270), (30, 60, 120))
 
     check = CoverCheck(tmp_path / "covers.json", fetch=fetch)
     assert check.ok(1) is False and check.ok(2) is True
+    assert check.ok("https://books.google.com/x") is True
     check.save()
     again = CoverCheck(tmp_path / "covers.json", fetch=fetch)
     assert again.ok(1) is False and again.ok(2) is True
-    assert calls == [1, 2]
+    assert len(calls) == 3
 
 
 def test_cover_that_cannot_be_downloaded_is_kept_for_the_browser_to_decide(tmp_path):
-    def fetch(cover_id):
+    def fetch(url):
         raise OSError("offline")
 
     check = CoverCheck(tmp_path / "covers.json", fetch=fetch)

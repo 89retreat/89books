@@ -2,7 +2,7 @@
 code: CV1.DS2.US3
 level: User Story
 status: Active
-status_reason: puxada após o feedback do Lula; plano aguarda aprovação do Navigator
+status_reason: implementada; aguarda validação do Navigator e a chave do Google Books
 updated: 2026-10-27
 related:
   - ../cv1-ds2-us2-uma-estante-bonita/index.md

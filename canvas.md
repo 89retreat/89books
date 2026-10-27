@@ -10,7 +10,7 @@
 | ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `█████░░░░░` 2/4 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US3 · Os livros certos, com quem os escreveu | 🟢 ativa · feedback do Lula · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ US3 · Os livros certos, com quem os escreveu | 🟢 ativa · implementada · aguarda validação e chave do Google Books | `░░░░░░░░░░` |
 | 　　↳ US4 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
@@ -36,7 +36,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US3 · Aprovar o plano** | 🧭 planejada | Aprovar o plano: conferência pelo modelo, Google Books, autor na lombada e o título da última prateleira |
+| **CV1.DS2.US3 · Validar com o Lula** | 🧭 implementada | Escolher o título da última prateleira e abrir `~/Downloads/estante-lula-us3.html` com o Lula |
 | **Chave do Google Books** | 🧭 necessária para validar a US3 | Criar uma chave gratuita da Books API e pôr em `GOOGLE_BOOKS_API_KEY` |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 

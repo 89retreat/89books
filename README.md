@@ -30,7 +30,12 @@ seven photos costs about US$ 0.10.
    openrouter_api_key = "sk-or-..."
    name = "Lula"
    cover_photo = "photo-03.jpg"  # optional; the first photo by name otherwise
+   google_books_api_key = "..."  # optional; or GOOGLE_BOOKS_API_KEY
    ```
+
+   A free [Books API](https://developers.google.com/books/docs/v1/using#APIKey)
+   key lets the command check titles in Google Books, which knows more
+   Brazilian editions than Open Library. Without it, that step is skipped.
 
 3. Run:
 
@@ -48,8 +53,12 @@ The command writes into the same folder:
   text stand face out with their Open Library covers. Open it in a browser
   (Chrome or Safari); file previews such as Quick Look do not run the
   layout.
-- `books.yaml`: the list of recognized books.
-- `.shelf/`: a local cache of Open Library lookups.
+- `books.yaml`: the list of books. Before the page is built, the model
+  reviews the whole list to fix misread titles and authors and to merge
+  books read twice. When a title changed, `read_as` keeps what the photo
+  said and `source` says where the title came from; books dropped as
+  duplicates or as not being books are listed under `left_out`.
+- `.shelf/`: a local cache of catalogue lookups and cover checks.
 
 Photos are resized and stripped of metadata (EXIF) before they are sent to
 the model or embedded in the page. The page never contains your API key or

@@ -37,3 +37,22 @@ def test_books_yaml_lists_books_without_local_paths(tmp_path):
         "work": "/works/OL1W",
         "cover_id": 42,
     }
+
+
+def test_books_yaml_records_corrections_and_books_left_out(tmp_path):
+    path = tmp_path / "books.yaml"
+    write_books_yaml(
+        path,
+        [
+            {
+                "title": "Continuo Preta",
+                "authors": ["Sueli Carneiro"],
+                "read_as": "Continuo Preto",
+                "source": "review",
+            }
+        ],
+        left_out=[{"title": "Caneca", "reason": "not a book"}],
+    )
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert data["books"][0]["read_as"] == "Continuo Preto" and data["books"][0]["source"] == "review"
+    assert data["left_out"] == [{"title": "Caneca", "reason": "not a book"}]

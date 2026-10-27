@@ -10,10 +10,13 @@ from shelf import photos as photo_tools
 from shelf.books import dedupe, write_books_yaml
 from shelf.config import Config, ConfigError, load_config
 from shelf.covers import CoverCheck
+from shelf.googlebooks import GoogleBooks
 from shelf.openlibrary import OpenLibrary
 from shelf.page import render
 from shelf.portrait import write_portrait
 from shelf.recognition import recognize
+from shelf.review import apply_review, review_books, settle
+from shelf.text import normalize_title
 
 CACHE_DIR = ".shelf"
 
@@ -32,10 +35,15 @@ def build_shelf(
     library=None,
     portrait: Callable = write_portrait,
     covers=None,
+    second=None,
+    review: Callable = review_books,
     log: Callable[[str], None] = print,
 ) -> Result:
-    library = library or OpenLibrary(config.folder / CACHE_DIR / "openlibrary.json")
-    covers = covers or CoverCheck(config.folder / CACHE_DIR / "covers.json")
+    cache = config.folder / CACHE_DIR
+    library = library or OpenLibrary(cache / "openlibrary.json")
+    covers = covers or CoverCheck(cache / "covers.json")
+    if second is None and config.google_books_api_key:
+        second = GoogleBooks(cache / "googlebooks.json", config.google_books_api_key)
     cost = 0.0
     images: list[str] = []
     found: list[dict] = []
@@ -56,14 +64,46 @@ def build_shelf(
     for book in books:
         book.update(library.lookup(book["title"], book.get("authors") or []) or {})
     library.save()
+
+    if second is None:
+        log("  Skipping Google Books: set GOOGLE_BOOKS_API_KEY to check titles in a second catalogue.")
+    else:
+        log("Looking up the rest on Google Books...")
+        missing = [b for b in books if not b.get("work") or not (b.get("authors") or b.get("ol_authors"))]
+        for book in missing:
+            book.update(second.lookup(book["title"], book.get("authors") or []) or {})
+        second.save()
+        log(f"  {sum(1 for b in missing if b.get('gb_title'))} of {len(missing)} found.")
+
+    log("Checking titles and authors across the shelf...")
+    entries, spent = review(books, config.api_key)
+    cost += spent
+    books, left_out = apply_review(books, entries)
+    books = [settle(b) for b in books]
+    corrected = sum(1 for b in books if b.get("source") == "review")
+    log(f"  {corrected} corrected, {len(left_out)} left out.")
+    for book in books:
+        # a corrected title was searched under the misreading; search again under the right one
+        if book.get("source") == "review" and normalize_title(book["title"]) != normalize_title(
+            book.get("read_as", "")
+        ):
+            for key in ("work", "cover_id"):
+                book.pop(key, None)
+            match = library.lookup(book["title"], book.get("authors") or []) or {}
+            book.update({k: v for k, v in match.items() if k in ("work", "cover_id")})
+    library.save()
+
     rejected = 0
     for book in books:
         if book.get("cover_id") and not covers.ok(book["cover_id"]):
             book.pop("cover_id")
             rejected += 1
+        gb_cover = book.pop("gb_cover", None)
+        if not book.get("cover_id") and gb_cover and covers.ok(gb_cover):
+            book["cover_url"] = gb_cover
     covers.save()
     with_work = sum(1 for b in books if b.get("work"))
-    with_cover = sum(1 for b in books if b.get("cover_id"))
+    with_cover = sum(1 for b in books if b.get("cover_id") or b.get("cover_url"))
     log(f"  {with_work} found, {with_cover} with covers ({rejected} scans of pages left out).")
 
     log("Writing your portrait...")
@@ -73,7 +113,7 @@ def build_shelf(
     html_path = config.folder / "shelf.html"
     html_path.write_text(render(config.name, images, books, reader_portrait), encoding="utf-8")
     yaml_path = config.folder / "books.yaml"
-    write_books_yaml(yaml_path, books)
+    write_books_yaml(yaml_path, books, left_out)
     log(f"Done: {html_path.name} and {yaml_path.name} in {config.folder} (cost: US$ {cost:.2f})")
     return Result(html=html_path, books_yaml=yaml_path, books=len(books), cost=round(cost, 4))
 

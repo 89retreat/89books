@@ -1,7 +1,7 @@
 {%- macro spine_of(book) -%}
 <div class="spine{% if book.spine.light %} light{% endif %}" data-w="{{ book.spine.width }}"
      style="--c:{{ book.spine.color }};height:{{ book.spine.height }}px;width:{{ book.spine.width }}px"
-     title="{{ book.title }}{% if book.authors %} — {{ book.authors | join(', ') }}{% endif %}"><i></i><span>{{ book.spine.label }}</span><i></i></div>
+     title="{{ book.title }}{% if book.authors %} — {{ book.authors | join(', ') }}{% endif %}"><i></i><span>{{ book.spine.label }}</span>{% if book.spine.author %}<b>{{ book.spine.author }}</b>{% endif %}<i></i></div>
 {%- endmacro -%}
 <!doctype html>
 <html lang="pt-BR">
@@ -63,6 +63,10 @@
   .t { margin: 0 0 24px; font-size: 1rem; }
   .bay.wide .t { columns: 2 19em; column-gap: 32px; }
   .bay.full .t { columns: 2 21em; column-gap: 36px; }
+  /* The closing shelf is not a theme: lighter, no numeral, a quieter title. */
+  .bay.full { background: transparent; border-top: 1px solid #dedad2; border-radius: 0; margin-top: 28px; }
+  .bay.full header { border-bottom: 0; padding-bottom: 0; margin-bottom: 22px; }
+  .bay.full h2 { font-size: 1.2rem; color: #5b5b60; }
 
   /* Books. Without JavaScript the shelf is a single wrapping row; with it, one plank per row. */
   .shelf { margin-top: auto; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 3px;
@@ -87,6 +91,8 @@
   .spine i + i { border-top: 3px double currentColor; }
   .spine span { flex: 1; margin: 6px 0; writing-mode: vertical-rl; font: 600 .68rem/1 var(--sans);
                 letter-spacing: .03em; text-align: center; overflow: hidden; }
+  .spine b { writing-mode: vertical-rl; font: 400 .58rem/1 var(--sans); letter-spacing: .04em;
+             opacity: .8; max-height: 72px; overflow: hidden; white-space: nowrap; margin-bottom: 6px; }
   .face { margin: 0 5px; flex: 0 0 auto; transform-origin: bottom center;
           transform: translateY(var(--y)) rotate(var(--a)); }
   .face img { height: 232px; width: 154px; object-fit: cover; display: block; border-radius: 1px;
@@ -152,14 +158,14 @@
 
   {%- macro bay(shelf) %}
   <section class="bay {{ shelf.place }}" style="--o:{{ shelf.order }}" data-home="{{ shelf.place }}">
-    <header><span class="num">{{ shelf.numeral }}</span><h2>{{ shelf.title }}</h2></header>
-    <p class="t">{{ shelf.text | emphasize }}</p>
+    <header>{% if shelf.numeral %}<span class="num">{{ shelf.numeral }}</span>{% endif %}<h2>{{ shelf.title }}</h2></header>
+    {% if shelf.text %}<p class="t">{{ shelf.text | emphasize }}</p>{% endif %}
     <div class="shelf" data-max="{{ 3 if shelf.rest else 99 }}">
       {%- for book in shelf.books %}
       {%- if book.face %}
       <div class="face" style="--a:{{ '%.1f' | format(book.angle) }}deg;--y:{{ book.lift }}px"
            title="{{ book.title }}{% if book.authors %} — {{ book.authors | join(', ') }}{% endif %}"><img
-           src="https://covers.openlibrary.org/b/id/{{ book.cover_id }}-M.jpg?default=false" alt="{{ book.title }}"
+           src="{% if book.cover_id %}https://covers.openlibrary.org/b/id/{{ book.cover_id }}-M.jpg?default=false{% else %}{{ book.cover_url }}{% endif %}" alt="{{ book.title }}"
            loading="lazy" onload="coverLoaded(this)" onerror="coverFailed(this)"><template>{{ spine_of(book) }}</template></div>
       {%- else %}
       {{ spine_of(book) }}

@@ -33,27 +33,27 @@ def looks_like_cover(jpeg: bytes) -> bool:
     return not (spread < GREY and blank > BLANK)
 
 
-def _fetch(cover_id: int) -> bytes:
-    response = httpx.get(
-        URL.format(cover_id), headers={"User-Agent": USER_AGENT}, follow_redirects=True, timeout=30
-    )
+def _fetch(url: str) -> bytes:
+    response = httpx.get(url, headers={"User-Agent": USER_AGENT}, follow_redirects=True, timeout=30)
     response.raise_for_status()
     return response.content
 
 
 class CoverCheck:
-    """Remembers the verdict for each cover id, so each image is downloaded once."""
+    """Remembers the verdict for each cover, so each image is downloaded once."""
 
-    def __init__(self, cache_path: Path, fetch: Callable[[int], bytes] = _fetch):
+    def __init__(self, cache_path: Path, fetch: Callable[[str], bytes] = _fetch):
         self.cache_path = cache_path
         self.fetch = fetch
         self.cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
 
-    def ok(self, cover_id: int) -> bool:
-        key = str(cover_id)
+    def ok(self, cover: int | str) -> bool:
+        """`cover` is an Open Library cover id or the URL of an image from another catalogue."""
+        key = str(cover)
         if key not in self.cache:
             try:
-                self.cache[key] = looks_like_cover(self.fetch(cover_id))
+                url = cover if isinstance(cover, str) else URL.format(cover)
+                self.cache[key] = looks_like_cover(self.fetch(url))
             except (OSError, httpx.HTTPError, ValueError):
                 return True  # not cached: the page falls back to a spine if the image fails there too
         return self.cache[key]

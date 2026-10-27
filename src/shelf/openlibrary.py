@@ -56,6 +56,7 @@ class OpenLibrary:
                     found = {
                         "work": doc.get("key"),
                         "ol_title": doc.get("title"),
+                        "ol_authors": doc.get("author_name", [])[:3],
                         "cover_id": doc.get("cover_i"),
                     }
                     break

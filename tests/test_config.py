@@ -42,3 +42,11 @@ def test_unknown_cover_photo_is_a_clear_error(shelf_folder):
     (shelf_folder / "config.toml").write_text('cover_photo = "nope.jpg"\n')
     with pytest.raises(ConfigError, match="cover_photo"):
         load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"})
+
+
+def test_google_books_key_is_optional_and_read_from_env_or_config(shelf_folder):
+    assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key is None
+    env = {"OPENROUTER_API_KEY": "sk", "GOOGLE_BOOKS_API_KEY": "gb-env"}
+    assert load_config(shelf_folder, env=env).google_books_api_key == "gb-env"
+    (shelf_folder / "config.toml").write_text('google_books_api_key = "gb-file"\n')
+    assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key == "gb-file"

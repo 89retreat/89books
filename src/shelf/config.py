@@ -20,6 +20,7 @@ class Config:
     photos: list[Path]
     api_key: str
     name: str | None = None
+    google_books_api_key: str | None = None
 
 
 def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
@@ -52,4 +53,11 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
                 f'cover_photo = "{cover}" in {CONFIG_FILE} is not one of the photos in {folder}.'
             )
         photos = match + [p for p in photos if p.name != cover]
-    return Config(folder=folder, photos=photos, api_key=api_key, name=settings.get("name") or None)
+    google = (env.get("GOOGLE_BOOKS_API_KEY") or settings.get("google_books_api_key") or "").strip() or None
+    return Config(
+        folder=folder,
+        photos=photos,
+        api_key=api_key,
+        name=settings.get("name") or None,
+        google_books_api_key=google,
+    )
