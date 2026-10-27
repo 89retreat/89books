@@ -7,11 +7,12 @@
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `█████░░░░░` 4/8 |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `█████░░░░░` 2/4 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `████░░░░░░` 2/5 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Os livros certos, com quem os escreveu | 🟢 ativa · implementada · aguarda validação e chave do Google Books | `░░░░░░░░░░` |
 | 　　↳ US4 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ TS1 · Ler as fotos em faixas melhora o reconhecimento? | ⚪ planejada · espera erros demais nas estantes dos fundadores | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
 | 　　↳ US2 · Ver as estantes do grupo num só lugar | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
