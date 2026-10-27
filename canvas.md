@@ -6,11 +6,12 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `██████░░░░` 4/7 |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `███████░░░` 2/3 |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `█████░░░░░` 4/8 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `█████░░░░░` 2/4 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US3 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US3 · Os livros certos, com quem os escreveu | 🟢 ativa · feedback do Lula · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ US4 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
 | 　　↳ US2 · Ver as estantes do grupo num só lugar | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
@@ -35,8 +36,8 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US3 · Corrigir a estante e pedir outro retrato** | 🧭 próxima | Puxar a US3; a primeira geração real dela também exercita o descarte de capas e o layout final |
-| **Medir o Google Books** | 🧭 opcional · precisa de chave | Deixou de bloquear a US2: livros sem capa viram lombadas |
+| **CV1.DS2.US3 · Aprovar o plano** | 🧭 planejada | Aprovar o plano: conferência pelo modelo, Google Books, autor na lombada e o título da última prateleira |
+| **Chave do Google Books** | 🧭 necessária para validar a US3 | Criar uma chave gratuita da Books API e pôr em `GOOGLE_BOOKS_API_KEY` |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 
 ### ✅ Fundações assentadas
