@@ -1,5 +1,5 @@
 ---
-code: CV2
+code: CV3
 level: Value
 status: Planned
 status_reason: depende da retrospectiva da CV1
@@ -10,7 +10,7 @@ related:
 
 [< Roadmap](../index.md)
 
-# CV2 — A Estante no Telegram
+# CV3 — A Estante no Telegram
 
 **Status:** Planned
 
@@ -41,8 +41,8 @@ em torno das estantes?**
 
 | Code | Delivery Story | Outcome |
 |------|----------------|---------|
-| [CV2.DS1](cv2-ds1-o-bot-como-porta/index.md) | O bot como porta | A pessoa manda fotos ao bot e recebe o link da estante; apresenta a estante ao grupo dedicado quando quiser |
-| [CV2.DS2](cv2-ds2-movimentos-que-circulam/index.md) | Movimentos que circulam | "Comecei a ler" e insights chegam ao grupo dedicado com link para a estante |
+| [CV3.DS1](cv3-ds1-o-bot-como-porta/index.md) | O bot como porta | A pessoa manda fotos ao bot e recebe o link da estante; apresenta a estante ao grupo dedicado quando quiser |
+| [CV3.DS2](cv3-ds2-movimentos-que-circulam/index.md) | Movimentos que circulam | "Comecei a ler" e insights chegam ao grupo dedicado com link para a estante |
 
 ## Scope
 
@@ -57,4 +57,4 @@ grupo), Mini Apps do Telegram.
 
 ## Acceptance / Done Condition
 
-A definir quando a CV2 for puxada.
+A definir quando a CV3 for puxada.

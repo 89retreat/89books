@@ -2,8 +2,8 @@
 code: CV1
 level: Value
 status: Active
-status_reason: CV1.DS1 concluída; CV1.DS2 em andamento
-updated: 2026-10-26
+status_reason: DS1 e DS2 concluídas; DS3 (do clone à estante) a seguir
+updated: 2026-10-27
 related:
   - ../../exploration/es-001-a-estante-como-retrato/index.md
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
@@ -19,73 +19,64 @@ related:
 
 ## Intent
 
-Cada pessoa do grupo põe fotos da própria estante numa pasta, roda um script
-e recebe uma estante bonita num arquivo HTML: as fotos, os livros reconhecidos
-e um **retrato de si** (a lente que a estante revela e os temas que se
-repetem). Ela corrige aos poucos, gera o retrato de novo se não se reconhecer
-e decide se manda o arquivo, publica um link ou as duas coisas.
+**Capacidade:** uma pessoa do grupo, sozinha, sai de um clone do repositório
+com a própria estante pronta para compartilhar.
 
-Não há bot, servidor, login nem hospedagem. A estante é o prêmio pelo esforço
-do input.
+O caminho, sem fricção, pelo terminal:
 
-O experimento responde a uma pergunta: **uma estante bonita, com um retrato de
-si, dá vontade de ser mostrada e desperta visitas e conversas?**
+1. clona o repositório e lê o guia de primeiros passos;
+2. põe as fotos da estante na pasta `my-bookshelf/`;
+3. roda um comando. Se o ambiente não estiver configurado, o comando explica
+   como obter as chaves, pede as chaves e o nome da estante, testa e grava a
+   configuração;
+4. recebe a estante num arquivo HTML: fotos, livros com autores e um
+   **retrato de si**, pronta para mandar a quem quiser.
+
+Toda a superfície do terminal (comandos, perguntas, mensagens, guia) é em
+inglês. A estante gerada é em português do Brasil.
 
 Origem: [ES-001](../../exploration/es-001-a-estante-como-retrato/index.md),
 reorganizada pela
 [ES-002](../../exploration/es-002-a-estante-num-arquivo/index.md) em
-2026-10-26. A entrada pelo Telegram e os movimentos foram para a
-[CV2](../cv2-a-estante-no-telegram/index.md).
+2026-10-26 e pelo Navigator em 2026-10-27, que reescreveu a CV1 como uma
+capacidade verificável: o que não serve a ela foi para outras CVs.
 
 ## Delivery Arc
-
-Navegação. O status de cada DS vive no próprio `index.md`.
 
 | Code | Delivery Story | Outcome |
 |------|----------------|---------|
 | [CV1.DS1](cv1-ds1-fundacao/index.md) | Fundação: reconhecimento de livros e decisões técnicas | Sabemos que foto e print viram lista de livros; decisões técnicas do MVP local registradas |
-| [CV1.DS2](cv1-ds2-a-estante-num-arquivo/index.md) | A estante num arquivo | Cada pessoa roda o script sobre as próprias fotos e recebe uma estante bonita, com o retrato de si, que pode corrigir |
-| [CV1.DS3](cv1-ds3-estante-visitavel/index.md) | Estante visitável | A pessoa escolhe mandar o arquivo ou publicar um link, e outras pessoas visitam a estante |
-
-Ordem: DS1 → DS2 → DS3. A DS2 começa pela estante feia e completa (US1) e
-depois cuida da beleza (US2), porque o retrato já mostrou valor no
-experimento com o Lula.
+| [CV1.DS2](cv1-ds2-a-estante-num-arquivo/index.md) | A estante num arquivo | O comando transforma uma pasta de fotos numa estante bonita, com o retrato de si, títulos e autores conferidos |
+| [CV1.DS3](cv1-ds3-do-clone-a-estante/index.md) | Do clone à estante | Uma pessoa sai de um clone limpo com a própria estante, guiada pelo guia e pelo terminal, sem pedir ajuda |
 
 ## Scope
 
-Fora desta CV até o uso real pedir:
+Fora desta CV:
 
-- bot do Telegram, grupo dedicado e movimentos ("comecei a ler", insight):
-  ficam na CV2;
-- print do Kindle e seleção manual como portas de entrada;
-- sinalização do que a IA não teve certeza;
-- servidor, contas, login ou banco de dados;
-- feed, mensagens, resenhas, metas, estrelas;
-- organização espacial autoral, várias estantes por pessoa;
-- afinidade entre leitores, perfil público, descoberta de desconhecidos;
-- importação de Readwise, Goodreads ou highlights do Kindle.
+- corrigir a estante, pedir outro retrato e medir a leitura em faixas:
+  [CV2.DS1](../cv2-a-estante-visitavel/cv2-ds1-corrigir-a-estante/index.md);
+- publicar no GitHub Pages e reunir as estantes do grupo:
+  [CV2.DS2](../cv2-a-estante-visitavel/cv2-ds2-estante-visitavel/index.md);
+- bot do Telegram, grupo dedicado e movimentos:
+  [CV3](../cv3-a-estante-no-telegram/index.md);
+- print do Kindle, servidor, contas, login, feed, várias estantes por pessoa,
+  afinidade entre leitores, importações.
 
-## Open Decisions
-
-Registros com `status: Open` em
-[decisions/records/](../../decisions/records/): onde publicar no GitHub Pages
-e Navigator dos colaboradores.
+A primeira estante pode sair com alguns erros de leitura: "pronta para
+compartilhar" quer dizer gerada e bonita, não perfeita.
 
 ## Acceptance / Done Condition
 
-Todos do grupo inicial geraram a própria estante e a mostraram a alguém, por
-arquivo ou link. Os sinais abaixo foram respondidos numa retrospectiva
-registrada no worklog, que decide se a CV2 começa.
+O Navigator, e depois cada fundador, parte de um clone limpo numa máquina sem
+a configuração do projeto, segue só o guia e gera a própria estante sem pedir
+ajuda.
 
-Sinais a observar (perguntas ao uso, não métricas a otimizar):
+Sinais a observar na retrospectiva, registrada no worklog:
 
-- Rodar o script foi simples para todos? Onde travou?
-- As pessoas se reconheceram no retrato? Quantas pediram outro?
-- Quanto custou corrigir a estante?
-- As pessoas mostraram a estante sem serem lembradas? Para quem?
-- Quem recebeu uma estante a visitou, respondeu ou puxou conversa?
-- Que necessidade nova aparece primeiro?
+- Onde a pessoa hesitou ou travou?
+- Quanto tempo do clone à estante? Quanto custou?
+- A pessoa mostrou a estante a alguém?
 
 ## Validation Route
 
-Retrospectiva com o grupo, registrada em `docs/process/worklog/entries/`.
+O Navigator, num clone limpo, primeiro; depois os outros fundadores.

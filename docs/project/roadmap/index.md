@@ -79,7 +79,13 @@ Mirror. As CVs mudam raramente.
 | Code | Capability Value | Status |
 |------|-----------------|--------|
 | [CV1](cv1-primeira-estante-viva/index.md) | A Primeira Estante Viva | Active |
-| [CV2](cv2-a-estante-no-telegram/index.md) | A Estante no Telegram | Planned |
+| [CV2](cv2-a-estante-visitavel/index.md) | A Estante Cuidada e Visitável | Planned |
+| [CV3](cv3-a-estante-no-telegram/index.md) | A Estante no Telegram | Planned |
+
+Renumeração de 2026-10-27: a CV1 passou a ser a capacidade de ir do clone à
+estante. A antiga CV1.DS3 virou CV2.DS2; a antiga CV1.DS2.US4 e a CV1.DS2.TS1
+viraram CV2.DS1.US1 e CV2.DS1.TS1; a antiga CV2 (Telegram) virou CV3.
+Registros de stories concluídas antes dessa data mantêm os códigos antigos.
 
 ## How to Find Work
 

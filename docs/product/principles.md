@@ -45,7 +45,7 @@ matéria para perguntas; a resposta vem na conversa.
 
 O produto faz o livro aparecer entre as pessoas; não precisa hospedar a
 conversa. Na CV1, a pessoa leva a estante a quem quiser, por arquivo ou link;
-na CV2, os movimentos vão para um grupo dedicado do Telegram.
+na CV3, os movimentos vão para um grupo dedicado do Telegram.
 
 Na prática, nada de feed, comentários ou mensagens internas até o uso pedir.
 

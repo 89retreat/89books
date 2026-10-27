@@ -7,8 +7,8 @@ deciders:
   - grupo do dogfood
 supersedes:
 related:
-  - CV1.DS3.US1
-  - CV1.DS3.US2
+  - CV2.DS2.US1
+  - CV2.DS2.US2
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -26,7 +26,7 @@ Pending
 ## Rationale
 
 O repositório da org junta as estantes num só endereço e permite uma página
-com as estantes do grupo (CV1.DS3.US2). O repositório pessoal deixa cada um
+com as estantes do grupo (CV2.DS2.US2). O repositório pessoal deixa cada um
 dono das próprias fotos, inclusive para apagá-las, e não mistura permissões.
 
 Atenção: no plano gratuito, o GitHub Pages publica a partir de repositórios
@@ -42,4 +42,4 @@ decidir.
 
 ## Review Trigger
 
-Planejamento da CV1.DS3.US1.
+Planejamento da CV2.DS2.US1.

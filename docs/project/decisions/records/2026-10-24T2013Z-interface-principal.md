@@ -8,7 +8,7 @@ supersedes:
 related:
   - CV1.DS1.TS2
   - CV1.DS2
-  - CV2.DS1
+  - CV3.DS1
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -29,10 +29,10 @@ precisa instalar ou aprender.
 do OpenRouter e roda um script Python, que gera um HTML autocontido da sua
 estante. Não há web app, bot nem servidor.
 
-**CV2: o Telegram como porta.** A entrada e os movimentos passam para o bot
+**CV3: o Telegram como porta.** A entrada e os movimentos passam para o bot
 do Telegram; a estante continua sendo uma página, que abre também no
 navegador comum. A forma está descrita na
-[CV2](../../roadmap/cv2-a-estante-no-telegram/index.md).
+[CV3](../../roadmap/cv3-a-estante-no-telegram/index.md).
 
 ## Rationale
 
@@ -51,7 +51,7 @@ navegador comum. A forma está descrita na
 ## Options Considered
 
 - **Script local que gera HTML** (escolhida para a CV1).
-- **Bot como porta, estante como página** (escolhida para a CV2): menor
+- **Bot como porta, estante como página** (escolhida para a CV3): menor
   atrito para quem não programa; exige servidor.
 - **Web app com bot só para enviar**: proposta inicial da TS2; a revisão no
   web app perdeu o motivo quando a revisão obrigatória saiu.
@@ -61,9 +61,9 @@ navegador comum. A forma está descrita na
 ## Consequences
 
 - A CV1 se organiza em torno do script (CV1.DS2) e do compartilhamento
-  (CV1.DS3). A CV1.DS1.TS3 (esqueleto implantado) foi descartada.
-- O bot, o grupo dedicado e os movimentos vão para a CV2.
-- O código do script deve ficar reaproveitável pelo servidor da CV2.
+  (CV2.DS2). A CV1.DS1.TS3 (esqueleto implantado) foi descartada.
+- O bot, o grupo dedicado e os movimentos vão para a CV3.
+- O código do script deve ficar reaproveitável pelo servidor da CV3.
 
 ## Review Trigger
 

@@ -23,7 +23,7 @@ O roadmap tem duas CVs. A
 [CV1 A Primeira Estante Viva](roadmap/cv1-primeira-estante-viva/index.md) é um
 MVP local: cada pessoa roda um script sobre as fotos da própria estante e
 recebe um HTML bonito, com o retrato de si, para mandar ou publicar. A
-[CV2 A Estante no Telegram](roadmap/cv2-a-estante-no-telegram/index.md) leva
+[CV3 A Estante no Telegram](roadmap/cv3-a-estante-no-telegram/index.md) leva
 a entrada e os movimentos para um bot, depois da retrospectiva da CV1.
 
 O trabalho mais importante agora é fechar a `CV1.DS1` (validar as decisões da
@@ -42,7 +42,7 @@ Detalhes em [decisions/records/](decisions/records/).
   corrigida aos poucos.
 - **Metadados:** Open Library, ligando cada livro à obra; a estante não
   depende de capa.
-- **CV2:** o bot do Telegram vira a porta, e um grupo dedicado recebe só o
+- **CV3:** o bot do Telegram vira a porta, e um grupo dedicado recebe só o
   que cada pessoa escolhe compartilhar. A conversa acontece no Telegram, não
   dentro do produto.
 - Cada livro na estante guarda a sua origem (foto, Kindle ou seleção manual).
@@ -75,7 +75,7 @@ pelo [guia local](../process/development-guide.md).
   lente do leitor e os temas que se repetem.
 - **Estante**: a composição autoral dos livros de alguém. Pode abranger
   vários lugares da casa. A estante física e a virtual são a mesma estante.
-- **Movimento**: um acontecimento que dá vida à estante. Na CV2, apenas
+- **Movimento**: um acontecimento que dá vida à estante. Na CV3, apenas
   "comecei a ler" e "insight".
 - **Insight**: um registro curto feito durante a leitura (texto, talvez a foto
   de um trecho), ligado a um livro.

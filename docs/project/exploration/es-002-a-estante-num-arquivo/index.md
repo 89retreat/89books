@@ -8,12 +8,12 @@ source:
   - sessão em Explorer Mode do Mirror Mind (jornada 89-livros, história "O Telegram como Porta da Estante", id d6435720)
   - experimento do retrato com o Lula
 attractor: O Retrato de Si
-promoted_to: CV1 A Primeira Estante Viva (reorganizada) e CV2 A Estante no Telegram
+promoted_to: CV1 A Primeira Estante Viva (reorganizada) e CV3 A Estante no Telegram
 refinement_request:
 related:
   - ../es-001-a-estante-como-retrato/index.md
   - ../../roadmap/cv1-primeira-estante-viva/index.md
-  - ../../roadmap/cv2-a-estante-no-telegram/index.md
+  - ../../roadmap/cv3-a-estante-no-telegram/index.md
   - ../../roadmap/cv1-primeira-estante-viva/cv1-ds1-fundacao/cv1-ds1-ts2-registrar-decisoes-tecnicas-da-cv1/index.md
   - ../../../../spikes/reconhecimento/relatorio.md
 ---
@@ -138,10 +138,10 @@ O retrato fica fora do repositório.
 Promovida para Delivery em 2026-10-26 por decisão do Navigator (Alisson):
 
 - a [CV1](../../roadmap/cv1-primeira-estante-viva/index.md) foi reorganizada
-  em torno do script: CV1.DS2 A estante num arquivo e CV1.DS3 Estante
+  em torno do script: CV1.DS2 A estante num arquivo e CV2.DS2 Estante
   visitável; a CV1.DS1.TS3 (esqueleto implantado) foi descartada;
-- a [CV2](../../roadmap/cv2-a-estante-no-telegram/index.md) recebeu o bot, o
-  grupo dedicado e os movimentos (a antiga CV1.DS4 virou CV2.DS2);
+- a [CV3](../../roadmap/cv3-a-estante-no-telegram/index.md) recebeu o bot, o
+  grupo dedicado e os movimentos (a antiga CV1.DS4 virou CV3.DS2);
 - as decisões da CV1.DS1.TS2 foram reescritas para o MVP local; grupo do
   Telegram e privacidade dos insights ficaram `Decided`; a publicação no
   GitHub Pages abriu um registro novo.
