@@ -9,7 +9,7 @@
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · do clone à estante, pelo terminal | `██████░░░░` 5/7 |
 | ↳ **CV1.DS3 · Do clone à estante** | 🟢 ativa · onboarding sem fricção, em inglês | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Guided setup in the terminal | 🟢 ativa · implementada · validação do Navigator com a US2 | `░░░░░░░░░░` |
-| 　　↳ US2 · Getting started, from clone to shelf | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ US2 · Getting started, from clone to shelf | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
 | **CV2 · A Estante Cuidada e Visitável** | 🟡 planejada · depois do uso da CV1 | `░░░░░░░░░░` 0/4 |
 | ↳ **CV2.DS1 · Corrigir a estante** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Corrigir a estante e pedir outro retrato | 🟡 planejada · antes CV1.DS2.US4 | `░░░░░░░░░░` |
@@ -38,7 +38,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS3.US2 · Getting started, from clone to shelf** | 🧭 plano aguarda aprovação | Aprovar o plano: guia em inglês, `my-bookshelf/` no clone, fotos HEIC; depois validar a DS3 num clone limpo |
+| **CV1.DS3 · Validar do clone à estante** | 🧭 implementada | Clonar numa pasta nova, seguir só o `GETTING_STARTED.md` com as próprias fotos e gerar a estante |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Depois da CV1.DS3: cada um sai de um clone limpo com a própria estante |
 
 ### ✅ Fundações assentadas

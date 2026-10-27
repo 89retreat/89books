@@ -2,7 +2,7 @@
 code: CV1.DS3.US2
 level: User Story
 status: Active
-status_reason: puxada após a US1; plano aguarda aprovação do Navigator
+status_reason: implementada e seguida pelo Driver num clone limpo; aguarda a validação do Navigator para a DS3
 updated: 2026-10-27
 related:
   - ../index.md
