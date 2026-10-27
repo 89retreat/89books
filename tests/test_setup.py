@@ -1,5 +1,6 @@
 import tomllib
 
+import httpx
 import pytest
 
 from shelf.setup import estimate, needs_setup, run_setup, write_config
@@ -98,3 +99,37 @@ def test_estimate_grows_with_photos():
     cost, minutes = estimate(7)
     assert 0.10 <= cost <= 0.25 and 3 <= minutes <= 8
     assert estimate(14)[0] > cost
+
+
+class Answers:
+    """Google Books answering with a sequence of status codes."""
+
+    def __init__(self, *codes):
+        self.codes = list(codes)
+        self.calls = 0
+
+    def __call__(self, url, params, timeout):
+        self.calls += 1
+        return httpx.Response(self.codes.pop(0), request=httpx.Request("GET", url))
+
+
+def test_a_google_hiccup_is_not_a_bad_key():
+    from shelf.setup import check_google
+
+    answers = Answers(503, 503, 200)
+    assert check_google("AIza-good", get=answers, wait=lambda s: None)
+    assert answers.calls == 3
+
+
+def test_google_down_or_out_of_quota_does_not_reject_the_key():
+    from shelf.setup import check_google
+
+    assert check_google("AIza-good", get=Answers(503, 503, 503, 503), wait=lambda s: None)
+    assert check_google("AIza-good", get=Answers(429), wait=lambda s: None)
+
+
+def test_only_google_refusing_the_key_rejects_it():
+    from shelf.setup import check_google
+
+    assert not check_google("AIza-bad", get=Answers(400), wait=lambda s: None)
+    assert not check_google("AIza-bad", get=Answers(403), wait=lambda s: None)

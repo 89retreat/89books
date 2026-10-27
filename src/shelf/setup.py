@@ -5,6 +5,7 @@ Everything here is in English, as is the whole terminal surface; the shelf itsel
 
 import getpass
 import sys
+import time
 import tomllib
 from collections.abc import Callable, Mapping
 from pathlib import Path
@@ -60,16 +61,23 @@ def check_openrouter(key: str) -> tuple[bool, float | None]:
         return False, None
 
 
-def check_google(key: str) -> bool:
-    try:
-        response = httpx.get(
-            "https://www.googleapis.com/books/v1/volumes",
-            params={"q": "Torto Arado", "maxResults": 1, "key": key},
-            timeout=20,
-        )
-        return response.status_code == 200
-    except httpx.HTTPError:
-        return False
+def check_google(key: str, get: Callable = httpx.get, wait: Callable = time.sleep) -> bool:
+    """False only when Google refuses the key. The API answers 503 now and then and 429 when the day's
+    quota is used up; neither says anything about the key, so they do not send the person to paste it again."""
+    for attempt in range(4):
+        try:
+            response = get(
+                "https://www.googleapis.com/books/v1/volumes",
+                params={"q": "Torto Arado", "maxResults": 1, "key": key},
+                timeout=20,
+            )
+        except httpx.HTTPError:
+            wait(1 + attempt)
+            continue
+        if response.status_code < 500:
+            return response.status_code not in (400, 401, 403)
+        wait(1 + attempt)
+    return True
 
 
 def read_config(folder: Path) -> dict:
