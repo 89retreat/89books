@@ -56,6 +56,7 @@ a última prateleira ainda soa como sobra.
   chave está pendente.
 - Algumas autorias vêm só do conhecimento do modelo e não foram conferidas
   por mim, como *Homens Pretos (Não) Choram* atribuído a Wesley Carvalho.
-- Última prateleira: "Livros que um dia me chamaram a atenção" (provisório),
+- Última prateleira: "E mais livros que já me acompanharam" (escolhido pelo
+  Navigator em 2026-10-27),
   sem numeral, sem parágrafo, separada por um fio. Colunas equilibradas e
   nenhuma fileira sem tábua. HTML sem chave e sem caminhos locais.

@@ -5,7 +5,7 @@ import re
 
 from shelf.text import THRESHOLD, similarity
 
-REST_TITLE = "Livros que um dia me chamaram a atenção"
+REST_TITLE = "E mais livros que já me acompanharam"
 SIDE_MAX = 8  # shelves with this many books or fewer go to the side column on wide screens
 PHONE_PHOTOS = 5
 REST_FACE_EVERY = 9

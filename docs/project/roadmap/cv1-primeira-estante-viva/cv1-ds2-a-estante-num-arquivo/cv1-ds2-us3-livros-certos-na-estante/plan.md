@@ -6,7 +6,7 @@
 
 Conferir título e autoria de cada livro antes de montar a página, mostrar o
 autor nas lombadas e dar à prateleira das sobras um lugar mais leve, com um
-título que diga que são livros que um dia me chamaram a atenção.
+título que diga que são mais livros que já me acompanharam.
 
 ## Pull
 
@@ -51,9 +51,8 @@ sobras com cara de rodapé e título fixo.
   título, dentro da mesma lombada. A espessura passa a considerar título e
   sobrenome.
 - **Prateleira das sobras:** sem numeral, fundo mais leve, sempre na largura
-  toda e no fim da página. Título fixo, proposto: "Livros que um dia me
-  chamaram a atenção", sem parágrafo. O Navigator pode trocar o texto ao
-  aprovar o plano.
+  toda e no fim da página. Título fixo, escolhido pelo Navigator: "E mais livros que já me
+  acompanharam", sem parágrafo.
 - `books.yaml` passa a registrar, por livro, se o título foi corrigido e por
   qual fonte, para a US4 e para a pessoa entenderem de onde veio cada dado.
 - README: a chave do Google Books e o que a conferência faz.
@@ -85,7 +84,7 @@ Then a lombada mostra o sobrenome do autor, menor, embaixo do título
 Given livros que não entraram em nenhum tema
 When abro a estante
 Then eles aparecem no fim, numa prateleira sem numeral e mais leve,
-     com o título "Livros que um dia me chamaram a atenção"
+     com o título "E mais livros que já me acompanharam"
 ```
 
 ```text

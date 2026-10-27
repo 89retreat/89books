@@ -48,7 +48,7 @@ Depois de reconhecer as fotos, a estante passa por uma conferência
 automática: o modelo revisa a lista inteira, com o contexto de toda a
 estante, e o Google Books confirma título e autoria onde a Open Library não
 achou. Cada lombada mostra o autor. A prateleira das sobras deixa de dizer
-"sobra" e passa a dizer que são livros que um dia me chamaram a atenção.
+"sobra" e passa a dizer que são mais livros que já me acompanharam.
 
 ## Acceptance Behavior
 
@@ -70,7 +70,7 @@ Then a lombada mostra o sobrenome do autor, menor, embaixo do título
 Given livros que não entraram em nenhum tema
 When abro a estante
 Then eles aparecem no fim, numa prateleira sem numeral e mais leve,
-     com um título no sentido de livros que um dia me chamaram a atenção
+     com o título "E mais livros que já me acompanharam"
 ```
 
 ## Scope
