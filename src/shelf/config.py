@@ -26,7 +26,9 @@ class Config:
 def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
     folder = Path(folder)
     if not folder.is_dir():
-        raise ConfigError(f"Folder not found: {folder}")
+        raise ConfigError(
+            f"Folder not found: {folder}. Put photos of your shelf in my-bookshelf/ and run `uv run shelf` again."
+        )
     photos = sorted(p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in PHOTO_EXTENSIONS)
     if not photos:
         raise ConfigError(f"No photos in {folder}. Add .jpg, .jpeg, .png or .webp files of your shelf.")
@@ -42,8 +44,7 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
     api_key = (env.get("OPENROUTER_API_KEY") or settings.get("openrouter_api_key") or "").strip()
     if not api_key:
         raise ConfigError(
-            "No OpenRouter API key. Set OPENROUTER_API_KEY or add "
-            f'openrouter_api_key = "..." to {CONFIG_FILE} in the photos folder.'
+            "No OpenRouter API key. Run `uv run shelf` in a terminal to set it up, or set OPENROUTER_API_KEY."
         )
     cover = settings.get("cover_photo")
     if cover:
@@ -53,7 +54,10 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
                 f'cover_photo = "{cover}" in {CONFIG_FILE} is not one of the photos in {folder}.'
             )
         photos = match + [p for p in photos if p.name != cover]
-    google = (env.get("GOOGLE_BOOKS_API_KEY") or settings.get("google_books_api_key") or "").strip() or None
+    google = (env.get("GOOGLE_BOOKS_API_KEY") or settings.get("google_books_api_key") or "").strip()
+    google = (
+        None if google in ("", "skip") else google
+    )  # "skip" records that setup asked and the person declined
     return Config(
         folder=folder,
         photos=photos,

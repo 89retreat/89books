@@ -12,37 +12,29 @@ e um retrato de você como leitor.
 ## Generate your shelf
 
 Requirements: [uv](https://docs.astral.sh/uv/) and an
-[OpenRouter](https://openrouter.ai/) API key with some credit. A shelf of
-seven photos costs about US$ 0.10.
+[OpenRouter](https://openrouter.ai/) account with some credit. A shelf of
+seven photos costs about US$ 0.17.
 
-1. Put photos of your shelf, or of single shelves, in a folder
-   (`.jpg`, `.jpeg`, `.png` or `.webp`). Close-ups of each shelf read best.
-2. Provide the API key, either as an environment variable:
-
-   ```bash
-   export OPENROUTER_API_KEY=sk-or-...
-   ```
-
-   or in a `config.toml` inside the photos folder, which can also set your
-   name for the page title and the photo that opens the page:
-
-   ```toml
-   openrouter_api_key = "sk-or-..."
-   name = "Lula"
-   cover_photo = "photo-03.jpg"  # optional; the first photo by name otherwise
-   google_books_api_key = "..."  # optional; or GOOGLE_BOOKS_API_KEY
-   ```
-
-   A free [Books API](https://developers.google.com/books/docs/v1/using#APIKey)
-   key lets the command check titles in Google Books, which knows more
-   Brazilian editions than Open Library. Without it, that step is skipped.
-
-3. Run:
+1. Put photos of your shelf, or of single shelves, in `my-bookshelf/` at the
+   root of the repository (`.jpg`, `.jpeg`, `.png` or `.webp`). Close-ups of
+   each shelf read best. Git ignores this folder.
+2. Run:
 
    ```bash
-   uv sync
-   uv run shelf path/to/my-shelf
+   uv run shelf
    ```
+
+   The first time, it asks for your name as it should appear on the shelf,
+   explains how to get an OpenRouter key and an optional Google Books key,
+   checks each key and saves your answers in `my-bookshelf/config.toml`.
+   Before reading the photos it tells you the estimated cost and time and
+   asks you to confirm.
+
+Options: `uv run shelf --setup` asks for your name and keys again;
+`--yes` skips the cost question; `uv run shelf path/to/folder` uses another
+folder. Keys can also come from `OPENROUTER_API_KEY` and
+`GOOGLE_BOOKS_API_KEY`. In `config.toml`, `cover_photo = "photo-03.jpg"`
+chooses the photo that opens the page.
 
 The command writes into the same folder:
 

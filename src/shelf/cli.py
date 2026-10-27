@@ -1,12 +1,14 @@
 """Command line: `shelf <folder>` writes shelf.html and books.yaml into the folder."""
 
 import argparse
+import os
 import sys
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
 from shelf import photos as photo_tools
+from shelf import setup
 from shelf.books import dedupe, write_books_yaml
 from shelf.config import Config, ConfigError, load_config
 from shelf.covers import CoverCheck
@@ -123,19 +125,52 @@ def build_shelf(
     return Result(html=html_path, books_yaml=yaml_path, books=len(books), cost=round(cost, 4))
 
 
-def main(argv: list[str] | None = None) -> int:
+DEFAULT_FOLDER = Path("my-bookshelf")
+
+
+def main(
+    argv: list[str] | None = None,
+    terminal: setup.Terminal | None = None,
+    interactive: bool | None = None,
+    build: Callable = build_shelf,
+    check_openrouter: Callable = setup.check_openrouter,
+    check_google: Callable = setup.check_google,
+) -> int:
     parser = argparse.ArgumentParser(
         prog="shelf",
-        description="Generate a self-contained HTML bookshelf, with a reader portrait, from a folder of shelf photos.",
+        description="Turn photos of your bookshelf into a shareable HTML page with a reader portrait.",
     )
-    parser.add_argument("folder", type=Path, help="folder with photos of your shelf or shelves")
+    parser.add_argument(
+        "folder",
+        type=Path,
+        nargs="?",
+        default=DEFAULT_FOLDER,
+        help="folder with your shelf photos (default: my-bookshelf)",
+    )
+    parser.add_argument("--setup", action="store_true", help="ask for your name and keys again")
+    parser.add_argument("--yes", action="store_true", help="do not ask before spending")
     args = parser.parse_args(argv)
+    terminal = terminal or setup.Terminal()
+    interactive = setup.is_interactive() if interactive is None else interactive
+
+    if interactive and args.folder.is_dir() and (args.setup or setup.needs_setup(args.folder, os.environ)):
+        setup.run_setup(
+            args.folder,
+            os.environ,
+            terminal,
+            check_openrouter=check_openrouter,
+            check_google=check_google,
+            again=args.setup,
+        )
     try:
         config = load_config(args.folder)
     except ConfigError as exc:
         print(f"shelf: {exc}", file=sys.stderr)
         return 2
-    build_shelf(config)
+    if interactive and not args.yes and not setup.confirm_cost(len(config.photos), terminal):
+        terminal.say("Nothing was spent.")
+        return 0
+    build(config)
     return 0
 
 

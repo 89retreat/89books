@@ -50,3 +50,8 @@ def test_google_books_key_is_optional_and_read_from_env_or_config(shelf_folder):
     assert load_config(shelf_folder, env=env).google_books_api_key == "gb-env"
     (shelf_folder / "config.toml").write_text('google_books_api_key = "gb-file"\n')
     assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key == "gb-file"
+
+
+def test_a_skipped_google_books_key_means_no_key(shelf_folder):
+    (shelf_folder / "config.toml").write_text('google_books_api_key = "skip"\n')
+    assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key is None
