@@ -31,7 +31,7 @@
 
 | Decisão | Estado | Destrava |
 | --- | --- | --- |
-| **Publicação no GitHub Pages** · repositório da org ou pessoal | 🟡 aberta | CV2.DS2 |
+| **Publicação no GitHub Pages** · repositório da org ou pessoal | 🟡 aberta · repo agora público | CV2.DS2 |
 | **Navigator dos colaboradores** | 🟡 aberta · padrão provisório do Ariad | entrada de colaboradores |
 
 ## Próximas opções de trabalho
@@ -50,7 +50,7 @@
 | CV1.DS1 · Fundação: reconhecimento e decisões técnicas | ✅ concluída · spike validado, decisões do MVP local aceitas | `██████████` 2/2 |
 | CV1.DS2 · A estante num arquivo | ✅ concluída · comando, design aprovado, títulos e autores conferidos | `██████████` 3/3 |
 | Adoção do Ariad · AGENTS.md, guia local, princípios, decisões | ✅ assentada · Mirror lê o roadmap | `██████████` |
-| Repositório `89retreat/89books` | ✅ publicado · privado | `██████████` |
+| Repositório `89retreat/89books` | ✅ publicado · público desde 2026-10-27 | `██████████` |
 
 ### ⚪ Horizonte
 

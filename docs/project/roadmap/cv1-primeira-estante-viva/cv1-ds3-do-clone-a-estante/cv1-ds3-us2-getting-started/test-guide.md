@@ -46,6 +46,6 @@ uma foto do iPhone recusada, ou um arquivo pessoal no `git status`.
   abrir e como compartilhar.
 - Depois da geração, `git status` limpo; a página sem chaves nem caminhos
   locais. O clone foi apagado.
-- Não exercitado pelo Driver: o clone pelo GitHub com o convite, a instalação
+- Não exercitado pelo Driver: o clone pelo GitHub, a instalação
   do `uv` numa máquina nova e a criação de conta no OpenRouter. Ficam para a
   validação do Navigator.

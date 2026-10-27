@@ -15,8 +15,6 @@ most of it waiting.
   ```
 
   Then open a new terminal window.
-- **Access to the repository** `89retreat/89books`. It is private: accept the
-  GitHub invitation you received.
 - **An OpenRouter account with some credit.** A shelf of seven photos costs
   about US$ 0.17; US$ 5 of credit is plenty. You will create the key during
   setup, so you only need to sign up and add credit at

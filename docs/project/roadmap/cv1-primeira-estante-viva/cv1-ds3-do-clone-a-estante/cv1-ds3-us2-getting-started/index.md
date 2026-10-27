@@ -39,7 +39,7 @@ estante.
 Given a fresh clone
 When I follow GETTING_STARTED.md
 Then my-bookshelf/ is already there, and git ignores anything I put in it
-And I learn what I need before starting: git, uv, access to the repository and some OpenRouter credit
+And I learn what I need before starting: git, uv and some OpenRouter credit
 ```
 
 ```text

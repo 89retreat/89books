@@ -29,7 +29,7 @@ Navigator valida as duas juntas num clone limpo, com as próprias fotos.
 
 - **`GETTING_STARTED.md`** na raiz, em inglês, ligado no topo do README:
   1. o que você precisa: `git`, `uv` (com o comando de instalação),
-     acesso ao repositório privado `89retreat/89books` e uma conta no
+     uma conta no
      OpenRouter com algum crédito; custo e tempo por estante;
   2. clonar e entrar na pasta;
   3. fotografar: dicas curtas (uma prateleira por foto, de frente, com luz,
