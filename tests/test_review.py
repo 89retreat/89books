@@ -1,4 +1,13 @@
-from shelf.review import apply_review, book_lines, parse_review, settle
+from shelf.review import (
+    PROMPT,
+    apply_review,
+    book_lines,
+    long_names,
+    name_books,
+    parse_names,
+    parse_review,
+    settle,
+)
 
 
 def test_book_lines_show_what_was_read_and_what_the_catalogues_found():
@@ -135,3 +144,51 @@ def test_a_broken_answer_keeps_every_item_that_can_be_read():
         0: {"title": "Continuo preta", "authors": ["Bianca Santana"]},
         2: {"not_a_book": True},
     }
+
+
+def test_parse_names_reads_how_each_author_is_known():
+    text = (
+        '{"books": [], "known_as": {"Carolina Maria de Jesus": "Carolina Maria de Jesus", '
+        '"Gabriel José García Márquez": "García Márquez", "Ninguém": 3, "Vazio": " "}}'
+    )
+    assert parse_names(text) == {
+        "carolina jesus": "Carolina Maria de Jesus",
+        "gabriel marquez": "García Márquez",
+    }
+
+
+def test_parse_names_keeps_what_arrived_of_an_answer_cut_short():
+    text = '{"books": [{"n": 1, "title": "Um "erro""}], "known_as": {"João Ubaldo Osório Ribeiro": "João Ubaldo Ribeiro", "ANA FANI'
+    assert parse_names(text) == {"joao ribeiro": "João Ubaldo Ribeiro"}
+
+
+def test_only_long_names_are_asked_about():
+    books = [
+        {"title": "A", "authors": ["Abdias Nascimento"]},
+        {"title": "B", "authors": [], "ol_authors": ["Gabriel José de la Concordia García Márquez"]},
+        {"title": "C", "authors": ["Gabriel José García  Márquez de la Concordia"]},
+    ]
+    assert long_names(books) == [
+        "Gabriel José de la Concordia García Márquez",
+        "Gabriel José García Márquez de la Concordia",
+    ]
+
+
+def test_parse_names_tolerates_an_answer_without_names():
+    assert parse_names('{"books": []}') == {}
+    assert parse_names("not json") == {}
+
+
+def test_name_books_sets_known_as_for_the_first_author():
+    books = [
+        {"title": "Quarto de Despejo", "authors": ["Carolina Maria de Jesus"]},
+        {"title": "Sem autor", "authors": []},
+        {"title": "Outro", "authors": ["Fulano de Tal"]},
+    ]
+    named = name_books(books, {"carolina jesus": "Carolina Maria de Jesus"})
+    assert named[0]["known_as"] == "Carolina Maria de Jesus"
+    assert "known_as" not in named[1] and "known_as" not in named[2]
+
+
+def test_the_prompt_asks_for_known_names():
+    assert "known_as" in PROMPT

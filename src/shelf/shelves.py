@@ -39,15 +39,48 @@ def _digest(title: str) -> int:
 _SUFFIXES = {"jr", "jr.", "junior", "júnior", "filho", "neto", "sobrinho"}
 
 
-def surname(author: str) -> str:
-    """How a spine names the author: the last name, with a family suffix such as Junior kept."""
-    parts = author.split()
-    if len(parts) > 2 and parts[-1].lower() in _SUFFIXES:
-        return " ".join(parts[-2:])
-    return parts[-1] if parts else ""
+_PARTICLES = {
+    "de",
+    "da",
+    "do",
+    "das",
+    "dos",
+    "del",
+    "della",
+    "di",
+    "du",
+    "van",
+    "von",
+    "der",
+    "le",
+    "la",
+    "y",
+}
+_TITLES = {"dom", "frei", "padre", "dr", "dr.", "sir"}
+NAME_MAX = 24  # "Carolina Maria de Jesus" fits a spine; longer names are shortened
+LONG_NAME = 16  # past this the name takes two columns of the spine
 
 
-FULL_NAME_MAX = 16  # "Milton Santos" and "bell hooks" fit in full; longer names go by the surname
+def short_name(author: str) -> str:
+    """First name and last surname, never a surname alone: "Gabriel José García Márquez" is "Gabriel Márquez".
+
+    Names up to NAME_MAX are kept whole. A particle before the surname ("Miguel de Cervantes") and a
+    family suffix ("Itamar Vieira Junior") stay; titles such as Dom go; names in capitals are recased.
+    """
+    words = author.split()
+    if author.isupper():
+        words = [w.lower() if w.lower() in _PARTICLES else w.capitalize() for w in words]
+    words = [w for w in words if w.lower() not in _TITLES] or words
+    if len(" ".join(words)) <= NAME_MAX or len(words) < 3:
+        return " ".join(words)
+    last = len(words) - 1
+    if words[last].lower() in _SUFFIXES and last > 1:
+        last -= 1
+    if last > 1 and words[last - 1].lower() in _PARTICLES:
+        last -= 1
+    return " ".join([words[0], *words[last:]])
+
+
 AUTHORS_MIN_BOOKS = 2
 AUTHORS_SHOWN = 8
 
@@ -60,24 +93,28 @@ def author_key(author: str) -> str:
     return f"{parts[0]} {parts[-1]}" if parts else ""
 
 
-def display_name(author: str) -> str:
-    author = " ".join(author.split())
-    return author if len(author) <= FULL_NAME_MAX else surname(author)
+def display_name(author: str, known_as: str | None = None) -> str:
+    """The name readers know, from the review, when it fits; otherwise the author's short name."""
+    known_as = " ".join((known_as or "").split())
+    return known_as if known_as and len(known_as) <= NAME_MAX else short_name(author)
 
 
-def spine(title: str, authors: list[str] | None = None) -> dict:
+def spine(title: str, authors: list[str] | None = None, known_as: str | None = None) -> dict:
     # the author comes first on the spine, so books by the same author share a colour
     first = (authors or [""])[0]
     color, light = PALETTE[_digest(author_key(first) or title) % len(PALETTE)]
     h = _digest(title)
     label = title if len(title) <= LABEL_MAX else title[: LABEL_MAX - 2].rstrip() + "…"
-    author = display_name(first) if first else ""
+    author = display_name(first, known_as) if first else ""
     return {
         "color": color,
         "light": light,
         "height": 192 + (h >> 8) % 48,
         # the author's name gets its own column, wider than the title's
-        "width": max(30, min(64, 26 + len(title) // 2 + (12 if author else 0))),
+        # a long name breaks into a second column so the title keeps its room
+        "width": max(
+            30, min(72, 26 + len(title) // 2 + (0 if not author else 12 if len(author) <= LONG_NAME else 24))
+        ),
         "label": label,
         "author": author,
     }
@@ -98,7 +135,7 @@ def frequent_authors(books: list[dict]) -> list[str]:
     for book in books:
         first = (book.get("authors") or [""])[0]
         if key := author_key(first):
-            counts.setdefault(key, [0, " ".join(first.split())])[0] += 1
+            counts.setdefault(key, [0, display_name(first, book.get("known_as"))])[0] += 1
     ranked = sorted(counts.values(), key=lambda c: -c[0])
     return [name for count, name in ranked if count >= AUTHORS_MIN_BOOKS][:AUTHORS_SHOWN]
 
@@ -125,7 +162,7 @@ def _book(book: dict, face: bool) -> dict:
         **book,
         "title": title,
         "face": bool(face and _has_cover(book)),
-        "spine": spine(title, book.get("authors")),
+        "spine": spine(title, book.get("authors"), book.get("known_as")),
         "angle": angle,
         "lift": lift,
     }

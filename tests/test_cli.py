@@ -199,3 +199,26 @@ def test_every_catalogue_lookup_moves_the_progress(shelf_folder):
     first = steps.calls[1 : steps.calls.index(("finish",))]
     assert len(first) == 2 and all(c[0] == "step" for c in first)
     assert steps.calls.count(("finish",)) == sum(1 for c in steps.calls if c[0] == "start")
+
+
+def test_spines_use_the_name_the_review_gave(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def recognize(jpeg, api_key):
+        return [{"title": "Quarto de Despejo", "authors": ["Carolina Maria de Jesus Silva"]}], 0.0
+
+    def review(books, api_key):
+        return {}, 0.01, {"carolina silva": "Carolina Maria de Jesus"}
+
+    build_shelf(
+        config,
+        recognize=recognize,
+        library=FakeLibrary(),
+        portrait=fake_portrait,
+        review=review,
+        covers=FakeCovers(),
+        log=lambda line: None,
+    )
+    html = (shelf_folder / "shelf.html").read_text(encoding="utf-8")
+    assert "<b>Carolina Maria de Jesus</b>" in html
+    assert "known_as: Carolina Maria de Jesus" in (shelf_folder / "books.yaml").read_text(encoding="utf-8")

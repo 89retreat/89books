@@ -18,7 +18,7 @@ from shelf.page import render
 from shelf.portrait import write_portrait
 from shelf.progress import Progress
 from shelf.recognition import recognize
-from shelf.review import apply_review, confirm, review_books, settle
+from shelf.review import apply_review, confirm, name_books, review_books, settle
 from shelf.text import normalize_title
 
 CACHE_DIR = ".shelf"
@@ -74,7 +74,9 @@ def build_shelf(
     library.save()
 
     log("Checking titles and authors across the shelf...")
-    entries, spent = review(books, config.api_key)
+    # the review also says how each author is known; a review that does not still answers (entries, cost)
+    entries, spent, *rest = review(books, config.api_key)
+    names = rest[0] if rest else {}
     cost += spent
     books, left_out = apply_review(books, entries)
     books = [settle(b) for b in books]
@@ -98,6 +100,7 @@ def build_shelf(
         progress.finish()
         second.save()
         log(f"  {confirmed} of {len(unconfirmed)} confirmed.")
+    books = name_books(books, names)
     log("Fetching covers...")
     rejected = 0
     progress.start(len(books))

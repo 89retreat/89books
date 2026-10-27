@@ -1,4 +1,14 @@
-from shelf.shelves import REST_TITLE, SIDE_MAX, build_shelves, frequent_authors, mosaic, roman, spine, tilt
+from shelf.shelves import (
+    REST_TITLE,
+    SIDE_MAX,
+    build_shelves,
+    frequent_authors,
+    mosaic,
+    roman,
+    short_name,
+    spine,
+    tilt,
+)
 
 
 def book(title, cover_id=None):
@@ -85,14 +95,42 @@ def test_first_shelf_stays_in_the_main_column_even_when_small():
     assert [s["place"] for s in build_shelves(books, portrait)] == ["wide", "side", "full"]
 
 
-def test_spine_names_the_author_in_full_when_short_and_by_surname_when_long():
+def test_spine_never_shows_a_surname_alone():
     assert spine("Continuo Preta", ["Bianca Santana"])["author"] == "Bianca Santana"
     assert spine("The Will to Change", ["bell hooks"])["author"] == "bell hooks"
-    assert spine("Leviatã", ["Thomas Hobbes"])["author"] == "Thomas Hobbes"
-    assert spine("Torto Arado", ["Itamar Vieira Junior"])["author"] == "Vieira Junior"
-    assert spine("Decolonialidade", ["Joaze Bernardino-Costa"])["author"] == "Bernardino-Costa"
+    assert spine("Torto Arado", ["Itamar Vieira Junior"])["author"] == "Itamar Vieira Junior"
+    assert spine("Decolonialidade", ["Joaze Bernardino-Costa"])["author"] == "Joaze Bernardino-Costa"
     assert spine("Cynefin", [])["author"] == ""
     assert spine("Cynefin", ["Dave Snowden"])["width"] > spine("Cynefin", [])["width"]
+    assert (
+        spine("Cynefin", ["Deivison Mendes Faustino"])["width"] > spine("Cynefin", ["Dave Snowden"])["width"]
+    )
+
+
+def test_short_name_keeps_first_name_particle_last_surname_and_suffix():
+    assert short_name("Deivison Mendes Faustino") == "Deivison Mendes Faustino"
+    assert short_name("Lidia Ruth Sánchez Mata") == "Lidia Ruth Sánchez Mata"
+    assert short_name("Ronaldo de Oliveira Batista Ferreira") == "Ronaldo Ferreira"
+    assert short_name("Matheus Gonçalves de Albuquerque Neto") == "Matheus de Albuquerque Neto"
+    assert short_name("ANA FANI ALESSANDRI CARLOS") == "Ana Carlos"
+    assert short_name("BIANCA SANTANA") == "Bianca Santana"
+    assert short_name("Dom Paulo Evaristo Arns") == "Paulo Evaristo Arns"
+    assert short_name("Gabriel José de la Concordia García Márquez") == "Gabriel Márquez"
+    assert short_name("Plato") == "Plato"
+
+
+def test_the_name_readers_know_wins_when_it_fits():
+    assert spine("Cem Anos", ["Gabriel José de la Concordia García Márquez"], "García Márquez")["author"] == (
+        "García Márquez"
+    )
+    assert spine("Quarto de Despejo", ["Carolina Maria de Jesus"], "Carolina Maria de Jesus")["author"] == (
+        "Carolina Maria de Jesus"
+    )
+    assert (
+        spine("X", ["Fulano de Tal"], "Um nome longo demais para caber numa lombada")["author"]
+        == "Fulano de Tal"
+    )
+    assert spine("X", ["Fulano de Tal"], "")["author"] == "Fulano de Tal"
 
 
 def test_books_by_the_same_author_share_a_colour_and_sit_together():

@@ -10,6 +10,7 @@ import json
 import re
 
 from shelf import openrouter
+from shelf.shelves import NAME_MAX, author_key
 from shelf.text import normalize_title
 
 PROMPT = """Você revisa a lista de livros de uma estante pessoal brasileira. Cada linha mostra o que foi lido na lombada por reconhecimento automático de fotos e, quando houver, o que a Open Library e o Google Books encontraram para aquela leitura. As leituras podem ter erros (letras trocadas, gênero ou número errado, título truncado, nome do autor lido como título), e os catálogos podem ter encontrado o livro errado.
@@ -19,11 +20,17 @@ Use o contexto da estante inteira e o seu conhecimento de livros para conferir c
 - same_as: o número de outro item quando os dois forem o mesmo livro.
 - not_a_book: true quando o item não for um livro (um objeto, uma editora, uma coleção sem título).
 
+Depois, em known_as, diga como os autores de nome longo listados ao final são conhecidos pelos leitores, com no máximo 24 caracteres: o nome da capa dos livros, sempre com nome e sobrenome, nunca só o sobrenome. Exemplos: "Gabriel García Márquez", "João Ubaldo Ribeiro", "Ana Fani A. Carlos". Para uma instituição ou evento, um nome curto. A chave é o nome exatamente como listado.
+
 Responda apenas com JSON:
-{{"books": [{{"n": 3, "title": "...", "authors": ["..."]}}, {{"n": 7, "same_as": 2}}, {{"n": 9, "not_a_book": true}}]}}
+{{"books": [{{"n": 3, "title": "...", "authors": ["..."]}}, {{"n": 7, "same_as": 2}}, {{"n": 9, "not_a_book": true}}],
+ "known_as": {{"Gabriel José de la Concordia García Márquez": "Gabriel García Márquez"}}}}
 
 Livros:
-{books}"""
+{books}
+
+Autores de nome longo:
+{long_names}"""
 
 
 def _who(title: str | None, authors: list[str] | None) -> str:
@@ -73,6 +80,45 @@ def parse_review(text: str, book_count: int) -> dict[int, dict]:
             authors = [a.strip() for a in item.get("authors") or [] if isinstance(a, str) and a.strip()]
             entries[number - 1] = {"title": item["title"].strip(), "authors": authors}
     return entries
+
+
+def long_names(books: list[dict]) -> list[str]:
+    """First authors whose names do not fit a spine: the only ones the rule would have to shorten."""
+    names: dict[str, str] = {}
+    for book in books:
+        first = " ".join(
+            ((book.get("authors") or book.get("ol_authors") or book.get("gb_authors") or [""])[0]).split()
+        )
+        if len(first) > NAME_MAX:
+            names.setdefault(author_key(first), first)
+    return list(names.values())
+
+
+def parse_names(text: str) -> dict[str, str]:
+    """How each author is known, keyed by author_key so catalogue spellings of the same person match.
+
+    Read pair by pair, so an answer cut short or broken by a stray quote in a title still yields the names.
+    """
+    start = text.find('"known_as"')
+    if start == -1:
+        return {}
+    names = {}
+    for author, name in re.findall(r'"([^"\n]+)"\s*:\s*"([^"\n]*)"', text[start:]):
+        if name.strip() and author_key(author):
+            names[author_key(author)] = " ".join(name.split())
+    return names
+
+
+def name_books(books: list[dict], names: dict[str, str]) -> list[dict]:
+    """Records the name readers know for each book's first author, when the review gave one."""
+    named = []
+    for book in books:
+        book = dict(book)
+        first = (book.get("authors") or [""])[0]
+        if known := names.get(author_key(first)):
+            book["known_as"] = known
+        named.append(book)
+    return named
 
 
 def apply_review(books: list[dict], entries: dict[int, dict]) -> tuple[list[dict], list[dict]]:
@@ -133,8 +179,11 @@ def confirm(book: dict, found: dict) -> dict:
     return book
 
 
-def review_books(books: list[dict], api_key: str) -> tuple[dict[int, dict], float]:
+def review_books(books: list[dict], api_key: str) -> tuple[dict[int, dict], float, dict[str, str]]:
     text, cost = openrouter.complete(
-        api_key, PROMPT.format(books=book_lines(books)), max_tokens=6000, temperature=0
+        api_key,
+        PROMPT.format(books=book_lines(books), long_names="\n".join(long_names(books)) or "(nenhum)"),
+        max_tokens=10000,
+        temperature=0,
     )
-    return parse_review(text, len(books)), cost
+    return parse_review(text, len(books)), cost, parse_names(text)
