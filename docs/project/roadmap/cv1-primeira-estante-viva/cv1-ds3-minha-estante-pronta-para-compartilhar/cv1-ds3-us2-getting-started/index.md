@@ -1,8 +1,8 @@
 ---
 code: CV1.DS3.US2
 level: User Story
-status: Validated
-status_reason: validada pelo Navigator em 2026-10-27: clone limpo do repositório público, só o guia, as próprias fotos
+status: Done
+status_reason: validada pelo Navigator em 2026-10-27; fechada com a DS3, débitos adiados
 updated: 2026-10-27
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV1.DS3.US2 — Getting started, from clone to shelf
 
-**Status:** Validated
+**Status:** Done
 **Type:** User Story
 
 ---

@@ -1,8 +1,8 @@
 ---
 code: CV1.DS3.US3
 level: User Story
-status: Active
-status_reason: implementada; testada sobre a estante do Lula; aguarda a validação do Navigator
+status: Done
+status_reason: validada pelo Navigator em 2026-10-27 sobre a estante do Lula; débitos adiados para a CV2.DS1
 updated: 2026-10-27
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV1.DS3.US3 — Authors by the name readers know
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---

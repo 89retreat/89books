@@ -6,11 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · do clone à estante, pelo terminal | `██████░░░░` 5/8 |
-| ↳ **CV1.DS3 · Minha estante pronta para compartilhar** | 🟢 ativa · onboarding sem fricção, em inglês | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Guided setup in the terminal | 🔵 validada | `░░░░░░░░░░` |
-| 　　↳ US2 · Getting started, from clone to shelf | 🔵 validada | `░░░░░░░░░░` |
-| 　　↳ US3 · Authors by the name readers know | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · falta a estante de cada fundador | `██████████` 8/8 |
 | **CV2 · A Estante Cuidada e Visitável** | 🟡 planejada · depois do uso da CV1 | `░░░░░░░░░░` 0/4 |
 | ↳ **CV2.DS1 · Corrigir a estante** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Corrigir a estante e pedir outro retrato | 🟡 planejada · antes CV1.DS2.US4 | `░░░░░░░░░░` |
@@ -39,8 +35,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS3.US3 · Authors by the name readers know** | 🧭 implementada | Abrir a estante do Lula com os novos nomes; depois revisar débitos e fechar a DS3 |
-| **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Depois da CV1.DS3: cada um sai de um clone limpo com a própria estante |
+| **Abrir o projeto aos colaboradores** | 🧭 repo público · Rafael, Lula, Raphael | Cada fundador sai de um clone limpo com a própria estante; retrospectiva no worklog |
 
 ### ✅ Fundações assentadas
 
@@ -50,6 +45,7 @@
 | ES-002 · A Estante num Arquivo | ✅ promovida · CV1 reorganizada, Telegram numa CV própria (hoje CV3) | `██████████` |
 | CV1.DS1 · Fundação: reconhecimento e decisões técnicas | ✅ concluída · spike validado, decisões do MVP local aceitas | `██████████` 2/2 |
 | CV1.DS2 · A estante num arquivo | ✅ concluída · comando, design aprovado, títulos e autores conferidos | `██████████` 3/3 |
+| CV1.DS3 · Minha estante pronta para compartilhar | ✅ concluída · configuração guiada, guia, HEIC, autores pelo nome | `██████████` 3/3 |
 | Adoção do Ariad · AGENTS.md, guia local, princípios, decisões | ✅ assentada · Mirror lê o roadmap | `██████████` |
 | Repositório `89retreat/89books` | ✅ publicado · público desde 2026-10-27 | `██████████` |
 

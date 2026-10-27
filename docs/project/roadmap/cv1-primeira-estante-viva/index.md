@@ -2,7 +2,7 @@
 code: CV1
 level: Value
 status: Active
-status_reason: DS1 e DS2 concluídas; DS3 (do clone à estante) a seguir
+status_reason: DS1, DS2 e DS3 concluídas; falta cada fundador sair de um clone limpo com a própria estante
 updated: 2026-10-27
 related:
   - ../../exploration/es-001-a-estante-como-retrato/index.md
