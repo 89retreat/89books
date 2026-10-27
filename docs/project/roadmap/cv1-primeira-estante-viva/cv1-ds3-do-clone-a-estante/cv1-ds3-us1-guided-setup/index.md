@@ -1,8 +1,8 @@
 ---
 code: CV1.DS3.US1
 level: User Story
-status: Active
-status_reason: implementada e validada pelo Driver num clone limpo; validação do Navigator junto com a US2
+status: Validated
+status_reason: validada pelo Navigator em 2026-10-27, junto da US2, num clone limpo com as próprias fotos
 updated: 2026-10-27
 related:
   - ../index.md
@@ -12,7 +12,7 @@ related:
 
 # CV1.DS3.US1 — Guided setup in the terminal
 
-**Status:** Active
+**Status:** Validated
 **Type:** User Story
 
 ---

@@ -1,8 +1,8 @@
 ---
 code: CV1.DS3.US2
 level: User Story
-status: Active
-status_reason: implementada e seguida pelo Driver num clone limpo; aguarda a validação do Navigator para a DS3
+status: Validated
+status_reason: validada pelo Navigator em 2026-10-27: clone limpo do repositório público, só o guia, as próprias fotos
 updated: 2026-10-27
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV1.DS3.US2 — Getting started, from clone to shelf
 
-**Status:** Active
+**Status:** Validated
 **Type:** User Story
 
 ---

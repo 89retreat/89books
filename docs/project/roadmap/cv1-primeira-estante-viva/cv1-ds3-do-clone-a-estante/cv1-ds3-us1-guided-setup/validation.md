@@ -20,7 +20,7 @@ Evidence: Automated tests with simulated input and network; real setup and gener
 
 Route: In a clean clone with your own photos in my-bookshelf/, run uv run shelf (together with US2, in the DS3 validation)
 
-Navigator accepted: no
+Navigator accepted: yes (2026-10-27, with US2, as the DS3 validation)
 
 Expected observation: Asks name and keys with instructions, checks keys, saves config, confirms cost, generates the shelf
 
@@ -30,4 +30,4 @@ Fail condition: Confusing question, bad key found mid-generation, surprise cost,
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

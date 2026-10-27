@@ -2,11 +2,11 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
-- uv run pytest (85 passed); ruff clean; Driver followed GETTING_STARTED.md in a clean clone: empty folder reported before any question, HEIC photo read (25 books), estimate US$0.17 vs spend US$0.18, final message with path and sharing, git status clean throughout
+- uv run pytest (89 passed); ruff clean; Driver followed GETTING_STARTED.md in a clean clone
 
 Checks status: passed
 
@@ -14,13 +14,13 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Automated tests with simulated network; Driver's clean-clone run following the guide
+Evidence: Navigator cloned the public repository into a new folder, followed GETTING_STARTED.md with his own photos and reached his shelf (DS3 validated together with US1)
 
 ## Navigator Validation
 
 Route: Clone into a new folder, follow only GETTING_STARTED.md with your own photos in my-bookshelf/, run uv run shelf, open the shelf, check git status
 
-Navigator accepted: no
+Navigator accepted: yes
 
 Expected observation: Guide covers every step; setup asks and checks; shelf opens; nothing personal in git status
 
@@ -30,4 +30,4 @@ Fail condition: A guide step missing or broken, an iPhone photo refused, or a pe
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none
