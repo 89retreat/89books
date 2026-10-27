@@ -6,7 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `█████░░░░░` 4/8 |
+| **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `██████░░░░` 5/8 |
 | ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `██████░░░░` 3/5 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
