@@ -1,8 +1,8 @@
 ---
 code: CV1.DS2.US3
 level: User Story
-status: Active
-status_reason: implementada; aguarda validação do Navigator e a chave do Google Books
+status: Done
+status_reason: validada pelo Navigator em 2026-10-27; débitos adiados para a US4, a TS1 e a página por URL
 updated: 2026-10-27
 related:
   - ../cv1-ds2-us2-uma-estante-bonita/index.md
@@ -13,7 +13,7 @@ related:
 
 # CV1.DS2.US3 — Os livros certos, com quem os escreveu
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---

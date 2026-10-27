@@ -7,10 +7,10 @@
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
 | **CV1 · A Primeira Estante Viva** | 🟢 ativa · MVP local, a estante num arquivo | `█████░░░░░` 4/8 |
-| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `████░░░░░░` 2/5 |
+| ↳ **CV1.DS2 · A estante num arquivo** | 🟢 ativa · story por story | `██████░░░░` 3/5 |
 | 　　↳ US1 · Gerar minha estante a partir de uma pasta de fotos | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Uma estante bonita, mesmo sem capas | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US3 · Os livros certos, com quem os escreveu | 🟢 ativa · implementada · aguarda validação e chave do Google Books | `░░░░░░░░░░` |
+| 　　↳ US3 · Os livros certos, com quem os escreveu | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US4 · Corrigir a estante e pedir outro retrato | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ TS1 · Ler as fotos em faixas melhora o reconhecimento? | ⚪ planejada · espera erros demais nas estantes dos fundadores | `░░░░░░░░░░` |
 | ↳ **CV1.DS3 · Estante visitável** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
@@ -37,8 +37,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV1.DS2.US3 · Validar com o Lula** | 🧭 implementada | Escolher o título da última prateleira e abrir `~/Downloads/estante-lula-us3.html` com o Lula |
-| **Chave do Google Books** | 🧭 necessária para validar a US3 | Criar uma chave gratuita da Books API e pôr em `GOOGLE_BOOKS_API_KEY` |
+| **CV1.DS2.US4 · Corrigir a estante e pedir outro retrato** | 🧭 próxima | Puxar a US4: corrigir no `books.yaml`, gerar de novo sem reconhecer as fotos e pedir outro retrato |
 | **Abrir o projeto aos colaboradores** | 🧭 convites enviados · Rafael, Lula, Raphael | Aguardar aceite e decidir o Navigator dos colaboradores |
 
 ### ✅ Fundações assentadas

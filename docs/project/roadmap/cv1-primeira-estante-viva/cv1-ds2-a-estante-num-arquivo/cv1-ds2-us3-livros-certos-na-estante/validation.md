@@ -2,11 +2,11 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
-- uv run pytest (53 passed); ruff clean; real run on Lula's photos without a Google Books key: 164 books, 19 titles corrected, 2 duplicates merged, books without author 31/164 (was 71/152), US$0.16; 'Continuo Preta' still wrong without Google Books
+- uv run pytest (64 passed); ruff clean; real runs on Lula's photos with both keys; author-first spines, same-author grouping and 'Quem mais mora aqui' checked at 1440, 900 and 390 px, including window resize
 
 Checks status: passed
 
@@ -14,20 +14,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Automated end-to-end test with simulated network (misread title corrected before the page); real run by the Driver
+Evidence: Automated end-to-end tests with simulated network; real generations by the Driver
 
 ## Navigator Validation
 
-Route: Open ~/Downloads/estante-lula-us3.html with Lula; ideally regenerate with GOOGLE_BOOKS_API_KEY
+Route: Open ~/Downloads/estante-lula-us3.html, sent to Lula
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: Corrected titles, author surnames on spines, closing shelf without numeral titled as books that once caught my attention
+Expected observation: Corrected titles, author-first spines, same-author groups, closing shelf 'E mais livros que já me acompanharam'
 
-Pass condition: Lula recognizes titles and authors and the closing shelf no longer reads as leftovers
+Pass condition: Navigator and Lula recognize titles and authors
 
-Fail condition: A right book turned wrong, books missing without reason, or the closing shelf still reads as leftovers
+Fail condition: Right books turned wrong, books missing without reason, closing shelf reads as leftovers
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none
