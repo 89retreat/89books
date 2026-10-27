@@ -166,3 +166,36 @@ def test_google_books_confirms_titles_after_the_review(shelf_folder):
     assert second.seen[0] == ("Continuo Preto: A Vida de Sueli Carneiro", ["Bianca Santana"])
     books_yaml = (shelf_folder / "books.yaml").read_text(encoding="utf-8")
     assert "title: Continuo preta" in books_yaml and "source: google_books" in books_yaml
+
+
+class Steps:
+    def __init__(self):
+        self.calls = []
+
+    def start(self, total):
+        self.calls.append(("start", total))
+
+    def step(self, title):
+        self.calls.append(("step", title))
+
+    def finish(self):
+        self.calls.append(("finish",))
+
+
+def test_every_catalogue_lookup_moves_the_progress(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    steps = Steps()
+    build_shelf(
+        config,
+        recognize=fake_recognize,
+        library=FakeLibrary(),
+        portrait=fake_portrait,
+        review=no_review,
+        covers=FakeCovers(),
+        log=lambda line: None,
+        progress=steps,
+    )
+    assert steps.calls[0] == ("start", 2)  # two books after merging duplicates
+    first = steps.calls[1 : steps.calls.index(("finish",))]
+    assert len(first) == 2 and all(c[0] == "step" for c in first)
+    assert steps.calls.count(("finish",)) == sum(1 for c in steps.calls if c[0] == "start")

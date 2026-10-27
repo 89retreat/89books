@@ -16,6 +16,7 @@ from shelf.googlebooks import GoogleBooks
 from shelf.openlibrary import OpenLibrary
 from shelf.page import render
 from shelf.portrait import write_portrait
+from shelf.progress import Progress
 from shelf.recognition import recognize
 from shelf.review import apply_review, confirm, review_books, settle
 from shelf.text import normalize_title
@@ -40,7 +41,9 @@ def build_shelf(
     second=None,
     review: Callable = review_books,
     log: Callable[[str], None] = print,
+    progress=None,
 ) -> Result:
+    progress = progress or Progress()
     cache = config.folder / CACHE_DIR
     library = library or OpenLibrary(cache / "openlibrary.json")
     covers = covers or CoverCheck(cache / "covers.json")
@@ -63,8 +66,11 @@ def build_shelf(
     log(f"Recognized {len(books)} books.")
 
     log("Looking them up on Open Library...")
+    progress.start(len(books))
     for book in books:
+        progress.step(book["title"])
         book.update(library.lookup(book["title"], book.get("authors") or []) or {})
+    progress.finish()
     library.save()
 
     log("Checking titles and authors across the shelf...")
@@ -82,14 +88,21 @@ def build_shelf(
         log("Confirming the rest on Google Books...")
         unconfirmed = [i for i, b in enumerate(books) if b.get("source") in ("review", "photo")]
         confirmed = 0
+        progress.start(len(unconfirmed))
         for i in unconfirmed:
+            progress.step(books[i]["title"])
             found = second.lookup(books[i]["title"], books[i].get("authors") or [])
             if found:
                 books[i] = confirm(books[i], found)
                 confirmed += 1
+        progress.finish()
         second.save()
         log(f"  {confirmed} of {len(unconfirmed)} confirmed.")
+    log("Fetching covers...")
+    rejected = 0
+    progress.start(len(books))
     for book in books:
+        progress.step(book["title"])
         # a corrected title was searched under the misreading; search again under the right one
         if book.get("source") in ("review", "google_books") and normalize_title(
             book["title"]
@@ -98,16 +111,14 @@ def build_shelf(
                 book.pop(key, None)
             match = library.lookup(book["title"], book.get("authors") or []) or {}
             book.update({k: v for k, v in match.items() if k in ("work", "cover_id")})
-    library.save()
-
-    rejected = 0
-    for book in books:
         if book.get("cover_id") and not covers.ok(book["cover_id"]):
             book.pop("cover_id")
             rejected += 1
         gb_cover = book.pop("gb_cover", None)
         if not book.get("cover_id") and gb_cover and covers.ok(gb_cover):
             book["cover_url"] = gb_cover
+    progress.finish()
+    library.save()
     covers.save()
     with_work = sum(1 for b in books if b.get("work"))
     with_cover = sum(1 for b in books if b.get("cover_id") or b.get("cover_url"))
