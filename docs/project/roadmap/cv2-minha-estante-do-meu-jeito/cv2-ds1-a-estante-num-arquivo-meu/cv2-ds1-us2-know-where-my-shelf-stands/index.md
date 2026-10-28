@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US2
 level: User Story
-status: Validated
-status_reason: Navigator aprovou painel, check e resolução de pasta; debt review sem nova dívida aguarda confirmação
+status: Done
+status_reason: Navigator aprovou painel, check, resolução de pasta e debt review; coherence e Done concluídos
 updated: 2026-10-28
 related:
   - ../index.md
@@ -15,7 +15,7 @@ related:
 
 # CV2.DS1.US2 — Know where my shelf stands
 
-**Status:** Validated
+**Status:** Done
 **Type:** User Story
 
 ---
