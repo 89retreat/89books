@@ -2,7 +2,7 @@
 code: CV2.DS1
 level: Delivery Story
 status: Active
-status_reason: TS1 e TS2 concluídas; próxima candidata é US1
+status_reason: TS1 e TS2 concluídas; US1 puxada em 2026-10-28
 updated: 2026-10-28
 related:
   - ../index.md
@@ -36,7 +36,7 @@ DS2 e a DS3.
 |------|-------|------|---------|--------|
 | [CV2.DS1.TS1](cv2-ds1-ts1-a-shelf-core/index.md) | A shelf core a server could run | Technical Story | As operações da estante (gerar, desenhar, guardar versão, restaurar) ficam num núcleo que recebe dados e devolve resultado, sem perguntar nem imprimir; o comando só pergunta, confirma e mostra. A revisão passa a ter uma só forma de resposta. | Done |
 | [CV2.DS1.TS2](cv2-ds1-ts2-shelf-yaml-v1/index.md) | shelf.yaml, version 1 | Technical Story | O formato do arquivo, com `version: 1`, na ordem em que a página aparece, e uma única validação que aponta cada erro com o número da linha e nunca grava nada; testes servem de contrato do formato. | Done |
-| CV2.DS1.US1 | Create once, draw for free | User Story | `create` gera a estante das fotos e grava o `shelf.yaml` (recusa se ele existir); `draw` redesenha o `shelf.html` em segundos, sem chamadas pagas; `open` abre a página. Uma estante da CV1 vira `shelf.yaml` sem novo reconhecimento. | Planned |
+| [CV2.DS1.US1](cv2-ds1-us1-create-once-draw-for-free/index.md) | Create once, draw for free | User Story | `create` gera a estante das fotos e grava o `shelf.yaml` (recusa se ele existir); `draw` redesenha o `shelf.html` em segundos, sem chamadas pagas; `open` abre a página. Uma estante da CV1 vira `shelf.yaml` sem novo reconhecimento. | Active |
 | CV2.DS1.US2 | Know where my shelf stands | User Story | `uv run shelf` sozinho nunca gasta: mostra fotos, livros, quando o arquivo foi editado e desenhado e quantas versões há, e sugere o próximo comando; `check` aponta erros do arquivo com o número da linha. | Planned |
 | CV2.DS1.US3 | Never lose an edit | User Story | `draw` guarda uma versão em `history/` quando o arquivo mudou; `recreate` guarda uma versão, confirma o custo e refaz das fotos; `history` lista as versões e `restore` devolve uma, guardando antes a atual. Mantém as 20 mais recentes. | Planned |
 

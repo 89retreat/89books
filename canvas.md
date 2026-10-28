@@ -10,7 +10,7 @@
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `████░░░░░░` 2/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
-| 　　↳ US1 · Create once, draw for free | 🟡 planejada · `create`, `draw`, `open` | `░░░░░░░░░░` |
+| 　　↳ US1 · Create once, draw for free | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
 | 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.US1 · Create once, draw for free** | 🧭 próxima a puxar | Planejar `create`, `draw`, `open` e a conversão da saída CV1 sem novo reconhecimento |
+| **CV2.DS1.US1 · Create once, draw for free** | 🧭 plano aguarda aprovação | Aprovar os verbos, a migração CV1 com apenas novo retrato e a rota de validação em cópia descartável |
 
 ### ✅ Fundações assentadas
 
