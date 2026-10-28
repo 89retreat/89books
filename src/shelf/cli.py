@@ -427,7 +427,7 @@ def main(
             return _error(exc)
         if result.version is not None:
             terminal.say(f"Saved version: {result.version}")
-        terminal.say(f"Drawn for free: {result.html} ({result.books} books).")
+        terminal.say(f"Drawn for free: {result.html} ({_count(result.books, 'book')}).")
         terminal.say(f"Open it with `uv run shelf open --folder {folder}`.")
         return 0
 
@@ -491,7 +491,8 @@ def main(
     if recreating:
         terminal.say(f"Saved current source: {recreated.version}")
         terminal.say(
-            f"Recreated {recreated.shelf_yaml} with {recreated.books} books (cost: US$ {recreated.cost:.2f})."
+            f"Recreated {recreated.shelf_yaml} with {_count(recreated.books, 'book')} "
+            f"(cost: US$ {recreated.cost:.2f})."
         )
     else:
         terminal.say(f"Your editable shelf is ready: {result.shelf_yaml}")

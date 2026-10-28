@@ -1,8 +1,8 @@
 ---
 code: CV2.DS2.US1
 level: User Story
-status: Active
-status_reason: puxada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
+status: Implemented
+status_reason: hide/show reversível passou em 163 testes e E2E gratuito; aguarda validação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS2.US1 — Hide books from my shelf
 
-**Status:** Active
+**Status:** Implemented
 **Type:** User Story
 
 ---

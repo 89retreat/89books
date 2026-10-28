@@ -21,6 +21,7 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 - `create` never replaces an existing `shelf.yaml`.
 - `draw` snapshots changed source bytes; `restore` and `recreate` save the current source before replacement.
 - At most 20 managed files stay in `history/`, which git ignores.
+- Add `hidden: true` to a book and draw to omit it without deleting it; remove the line to show it again.
 
 Everything in this folder is ignored by git except this README: photos,
 `config.toml`, `shelf.yaml`, `shelf.html`, a legacy `books.yaml` and the

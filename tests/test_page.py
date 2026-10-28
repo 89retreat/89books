@@ -1,4 +1,5 @@
-from shelf.page import render
+from shelf.page import render, render_file
+from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
 from shelf.shelves import REST_TITLE
 
 PORTRAIT = {
@@ -34,6 +35,77 @@ def test_page_shows_themes_as_shelves_with_cited_cover_face_out():
     assert REST_TITLE in html
     assert "Cynefin" in html
     assert html.count('class="tile') == 2
+
+
+def test_hidden_book_has_no_face_or_spine_and_does_not_sustain_frequent_author():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[
+                    ShelfBook(
+                        title="Livro escondido",
+                        authors=["Milton Santos"],
+                        face=True,
+                        cover="https://example.test/hidden.jpg",
+                        hidden=True,
+                    ),
+                    ShelfBook(title="Livro visível", authors=["Milton Santos"]),
+                ],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert "Livro escondido" not in html
+    assert "https://example.test/hidden.jpg" not in html
+    assert "Livro visível" in html
+    assert "Quem mais mora aqui" not in html
+
+
+def test_hidden_false_and_absent_stay_visible_in_source_order():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[
+                    ShelfBook(title="Primeiro", hidden=False),
+                    ShelfBook(title="Oculto", hidden=True),
+                    ShelfBook(title="Terceiro"),
+                ],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert "Oculto" not in html
+    assert html.index("Primeiro") < html.index("Terceiro")
+
+
+def test_all_hidden_books_leave_authored_shelf_title_and_text_untouched():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Minha prateleira continua aqui",
+                text="Meu texto continua exatamente aqui.",
+                books=[ShelfBook(title="Livro oculto", hidden=True)],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert "Minha prateleira continua aqui" in html
+    assert "Meu texto continua exatamente aqui." in html
+    assert "Livro oculto" not in html
 
 
 def test_page_embeds_the_title_font():

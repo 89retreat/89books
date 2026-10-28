@@ -319,6 +319,23 @@ def test_missing_cover_photo_never_replaces_the_page(shelf_folder):
     assert page.read_bytes() == before
 
 
+def test_draw_hides_book_without_deleting_it_and_snapshots_the_choice(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    cynefin = next(book for section in shelf.shelves for book in section.books if book.title == "Cynefin")
+    cynefin.hidden = True
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+    source = path.read_bytes()
+
+    result = draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 30))
+
+    assert result.books == 1 and result.version.read_bytes() == source
+    assert b"hidden: true" in source and b"Cynefin" in source
+    assert "Cynefin" not in result.html.read_text(encoding="utf-8")
+
+
 def test_draw_snapshots_exact_changed_bytes_and_does_not_repeat_unchanged_source(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
     create_with_fakes(config)

@@ -1,8 +1,10 @@
 import ast
 from pathlib import Path
 
+import pytest
+
 from shelf import core
-from shelf.core import Services, Shelf, create, draw, generate
+from shelf.core import Services, Shelf, create, draw, generate, hide_book, show_book
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
 from shelf.shelves import REST_TITLE
 from tests.test_cli import FakeCovers, FakeLibrary, fake_portrait, fake_recognize, no_review
@@ -145,6 +147,57 @@ def test_draw_needs_no_service_and_returns_the_page_from_shelf_file():
     html = draw(shelf, ["data:image/jpeg;base64,YWJj"])
     assert "A estante de <span>Lula</span>" in html and "Torto Arado" in html
     assert "https://example.test/torto.jpg" in html and "Livro escondido" not in html
+
+
+def test_hide_and_show_book_are_pure_named_operations_that_preserve_everything_else():
+    original = ShelfFile(
+        name="Lula",
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                text="Meu texto.",
+                books=[
+                    ShelfBook(
+                        title="Torto Arado",
+                        authors=["Itamar Vieira Junior"],
+                        known_as="Itamar Vieira Junior",
+                        face=True,
+                        cover="https://example.test/cover.jpg",
+                        source="open_library",
+                        photo="photo.jpg",
+                        work="/works/1",
+                    ),
+                    ShelfBook(title="Outro"),
+                ],
+            )
+        ],
+    )
+
+    hidden = hide_book(original, 0, 0)
+    shown = show_book(hidden, 0, 0)
+
+    assert original.shelves[0].books[0].hidden is None
+    assert hidden is not original and hidden.shelves[0] is not original.shelves[0]
+    assert hidden.shelves[0].books[0].hidden is True
+    assert hidden.shelves[0].books[0].title == "Torto Arado"
+    assert hidden.shelves[0].books[0].cover == "https://example.test/cover.jpg"
+    assert hidden.shelves[0].books[1] is original.shelves[0].books[1]
+    assert shown.shelves[0].books[0].hidden is None
+    assert [book.title for book in shown.shelves[0].books] == ["Torto Arado", "Outro"]
+
+
+def test_hide_and_show_reject_negative_or_missing_positions():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="x",
+        shelves=[ShelfSection(title="One", books=[ShelfBook(title="Book")])],
+    )
+    for operation in (hide_book, show_book):
+        for shelf_index, book_index in ((-1, 0), (0, -1), (1, 0), (0, 1)):
+            with pytest.raises(IndexError):
+                operation(shelf, shelf_index, book_index)
 
 
 def test_the_core_never_talks_to_the_terminal():

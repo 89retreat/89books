@@ -350,10 +350,11 @@ def test_draw_reports_only_a_new_version_when_action_saved_one(shelf_folder):
         ["draw", "--folder", str(shelf_folder)],
         terminal=terminal,
         interactive=False,
-        draw_action=lambda folder: cli.DrawResult(Path(folder) / "shelf.html", 12, version),
+        draw_action=lambda folder: cli.DrawResult(Path(folder) / "shelf.html", 1, version),
     )
 
     assert code == 0 and f"Saved version: {version}" in terminal.text
+    assert "(1 book)." in terminal.text
 
 
 def test_draw_and_open_need_no_key_or_setup(shelf_folder, monkeypatch):

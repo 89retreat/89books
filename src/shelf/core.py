@@ -6,7 +6,7 @@ go through the `log` and `progress` given by the caller, and the result comes ba
 """
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from shelf import photos as photo_tools
@@ -130,6 +130,27 @@ def create(
 def draw(shelf: ShelfFile, images: list[str]) -> str:
     """Draws the page from the editable source and prepared photos. Costs nothing."""
     return render_file(shelf, images)
+
+
+def hide_book(shelf: ShelfFile, shelf_index: int, book_index: int) -> ShelfFile:
+    """Returns a shelf copy with one selected book hidden, for any client UI."""
+    return _set_book_hidden(shelf, shelf_index, book_index, True)
+
+
+def show_book(shelf: ShelfFile, shelf_index: int, book_index: int) -> ShelfFile:
+    """Returns a shelf copy with the hidden mark removed from one selected book."""
+    return _set_book_hidden(shelf, shelf_index, book_index, None)
+
+
+def _set_book_hidden(shelf: ShelfFile, shelf_index: int, book_index: int, hidden: bool | None) -> ShelfFile:
+    if shelf_index < 0 or book_index < 0:
+        raise IndexError("shelf and book positions must not be negative")
+    section = shelf.shelves[shelf_index]
+    books = list(section.books)
+    books[book_index] = replace(books[book_index], hidden=hidden)
+    sections = list(shelf.shelves)
+    sections[shelf_index] = replace(section, books=books)
+    return replace(shelf, shelves=sections)
 
 
 def _shelf_file(generated: Shelf) -> ShelfFile:

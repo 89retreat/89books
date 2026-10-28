@@ -121,6 +121,33 @@ The last `draw` is explicit: restoring or recreating never changes the page
 behind your back. At most 20 managed versions are kept. Unknown files inside
 `history/` are never removed.
 
+## Hide a book without deleting it
+
+Add `hidden: true` to that book in `shelf.yaml`:
+
+```yaml
+shelves:
+  - title: Quando penso
+    books:
+      - title: A book I do not want to show
+        authors: [Author]
+        hidden: true
+```
+
+Then validate and redraw for free:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
+The book remains in `shelf.yaml` and history, but has no cover or spine and
+does not count toward “Quem mais mora aqui”. Remove the `hidden` line and draw
+again to bring it back in the same position. `hidden: false` is also visible.
+The lens and shelf text are your writing and are not rewritten automatically
+if they mention the hidden title.
+
 ### What `--project` means
 
 `--project` is an option of `uv`, not of 89 Books. You normally do not need it.

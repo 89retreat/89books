@@ -26,4 +26,24 @@ oferecer um autor frequente adequado.
 
 ## Validation Evidence
 
-A registrar depois da implementação e da validação do Navigator.
+### Automated — passed
+
+- `uv run pytest`: 163 passed.
+- `uv run ruff check . && uv run ruff format --check .`: passed.
+- Pure hide/show operations return copies and preserve all book metadata.
+- Page fixtures cover frequent authors, false/absent visibility, order and an
+  authored shelf with every book hidden.
+
+### Driver E2E — passed
+
+A free synthetic shelf with two books and one shared author was drawn with one
+book hidden. `check` reported 2 total/1 visible; draw rendered 1 book and saved
+a version; status reported 2 total/1 visible/1 hidden. The hidden title, cover
+and frequent-author surface were absent. Removing the mark saved a second
+version, rendered both books and restored “Quem mais mora aqui”. No keys or
+network were available.
+
+### Navigator — pending
+
+Hide and show one chosen book on a disposable copy and confirm the visual
+result and counts.
