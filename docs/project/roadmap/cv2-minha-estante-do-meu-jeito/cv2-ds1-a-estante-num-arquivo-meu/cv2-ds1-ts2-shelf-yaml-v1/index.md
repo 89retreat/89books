@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.TS2
 level: Technical Story
-status: Active
-status_reason: puxada em 2026-10-28; plano aguarda aprovação do Navigator
+status: Done
+status_reason: contrato v1 implementado e aceito por 117 testes, incluindo 11 testes específicos do formato
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS1.TS2 — shelf.yaml, version 1
 
-**Status:** Active
+**Status:** Done
 **Type:** Technical Story
 
 ---

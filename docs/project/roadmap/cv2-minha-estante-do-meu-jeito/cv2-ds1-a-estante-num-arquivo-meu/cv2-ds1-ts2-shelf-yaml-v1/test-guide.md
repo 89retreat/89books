@@ -22,4 +22,18 @@ desta Technical Story.
 
 ## Validation Evidence
 
-A registrar depois da implementação.
+2026-10-28, Driver:
+
+- `uv run pytest tests/test_shelf_file.py`: 11 testes passando.
+- `uv run pytest`: 117 testes passando.
+- `uv run ruff check . && uv run ruff format --check .`: limpo.
+- O teste de arquitetura falhou, como devia, quando um `import pathlib` e,
+  separadamente, um `print` foram acrescentados de propósito ao módulo.
+- O round trip preserva `face: false`, `hidden: false`, `cover: none`, capas em
+  URL, textos multilinha e proveniência; o dumper produz saída idêntica depois
+  da segunda rodada.
+- Um arquivo com oito problemas devolveu os oito, ordenados por linha e com
+  caminhos como `shelves[0].books[1].authors`; nenhum documento parcial foi
+  retornado.
+- Aceite automático conforme a política permanente de Technical Stories
+  aprovada pelo Navigator em 2026-10-28.
