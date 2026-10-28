@@ -14,7 +14,7 @@
 | 　　↳ US2 · Know where my shelf stands | ✅ concluída | `██████████` |
 | 　　↳ US3 · Never lose an edit | ✅ concluída | `██████████` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Hide books from my shelf | 🟠 implementada · aguarda validação | `███████░░░` |
+| 　　↳ US1 · Hide books from my shelf | 🟣 validada · aguarda confirmação do review | `█████████░` |
 | 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚪ planejada · só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS2.US1 · Hide books from my shelf** | 🧪 aguarda validação | Esconder um livro numa cópia, conferir página/contagens e remover a marca para trazê-lo de volta |
+| **CV2.DS2.US1 · Hide books from my shelf** | 🔍 review aguarda confirmação | Confirmar que não há dívida nova; depois executar coherence e Done |
 
 ### ✅ Fundações assentadas
 

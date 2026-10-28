@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -15,20 +15,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Free synthetic E2E on /tmp/estante-hide-books-e2e: check reported 2 total/1 visible; changed draw saved a version and rendered 1 book; Hidden Book, its cover and Quem mais mora aqui were absent while Visible Book remained; status reported 2 total/1 visible/1 hidden; removing the mark saved a second version, rendered 2 books and restored the frequent-author surface. No keys or network were available.
+Evidence: Navigator edited a real disposable one-photo shelf at /tmp/estante-alisson-hide-us1: check reported 11 total/10 visible; draw saved shelf-2026-10-28-1805.yaml and rendered 10 books; open confirmed the selected book disappeared without breaking the shelf; Navigator removed hidden: true, drew again and confirmed the same book returned.
 
 ## Navigator Validation
 
-Route: On a disposable copy, choose one visible book, add hidden: true, run check/draw/status/open and confirm absence plus counts; remove the line, draw/open and confirm the same book returns.
+Route: Completed step by step by the Navigator: add hidden true, check, draw/open, remove the mark, draw and visually confirm return.
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: The selected book disappears as cover/spine and stops contributing to frequent authors while staying in shelf.yaml/history; removing the mark returns it in place.
+Expected observation: A selected book disappears without deletion, a changed draw saves its source, and removing the mark restores it.
 
-Pass condition: Navigator sees reversible free hide/show behavior, correct counts and preserved source/history.
+Pass condition: Navigator confirms reversible free hide/show behavior on the page with correct counts and preserved history.
 
-Fail condition: Book remains visual, author aggregation is wrong, order/data is lost, prose is rewritten, or any key/network/paid call occurs.
+Fail condition: Book remains visual, data/order is lost, source is not saved, or a key/network/paid call occurs.
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

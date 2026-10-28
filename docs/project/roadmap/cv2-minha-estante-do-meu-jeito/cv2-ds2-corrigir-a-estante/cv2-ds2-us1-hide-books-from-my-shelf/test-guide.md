@@ -43,7 +43,10 @@ and frequent-author surface were absent. Removing the mark saved a second
 version, rendered both books and restored “Quem mais mora aqui”. No keys or
 network were available.
 
-### Navigator — pending
+### Navigator — passed
 
-Hide and show one chosen book on a disposable copy and confirm the visual
-result and counts.
+The Navigator hid one book in `/tmp/estante-alisson-hide-us1`. `check` showed
+11 total and 10 visible; draw saved `shelf-2026-10-28-1805.yaml` and rendered
+10 books. Opening the page confirmed the book disappeared without breaking the
+shelf. The Navigator removed the mark, drew again and confirmed that the book
+returned.
