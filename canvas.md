@@ -19,7 +19,7 @@
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa | `██░░░░░░░░` 1/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US2 · Face out or spine, my choice | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US2 · Face out or spine, my choice | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US3 · Choose the photo that represents my shelf | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US4 · Write my own shelf titles and texts | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US2 · Face out or spine, my choice** | 🟡 planejada | Escolher explicitamente capa de frente ou lombada sem apagar a escolha |
+| **CV2.DS3.US2 · Face out or spine, my choice** | 🧭 plano aguarda aprovação | Aprovar true/false/automático, fallback seguro e criação sem escolhas congeladas |
 
 ### ✅ Fundações assentadas
 
