@@ -189,6 +189,43 @@ uv run shelf draw
 uv run shelf open
 ```
 
+## Arrange books and shelves
+
+The order of `shelves` and each shelf's `books` list is the authored order of
+your page. To move a book, move its **complete YAML block**, including fields
+you do not want to lose:
+
+```yaml
+shelves:
+  - title: Uma prateleira minha
+    text: ''
+    books:
+      - title: Torto Arado
+        authors: [Itamar Vieira Junior]
+        known_as: Itamar Vieira Junior
+        cover: covers/torto-arado.jpg
+        source: open_library
+        work: /works/OL123W
+```
+
+You may reorder whole shelf blocks or add a shelf with `title`, optional `text`
+and a `books` list. Remove a shelf only after its books have been moved; manual
+YAML editing is powerful, while history and `restore` are the safety net.
+
+A custom last shelf remains an ordinary numbered shelf even when `text` is
+empty. Only the generated closing shelf named “E mais livros que já me
+acompanharam” receives the quieter closing treatment.
+
+After each arrangement:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
+These commands do not call a catalogue or model and do not cost anything.
+
 ### What `--project` means
 
 `--project` is an option of `uv`, not of 89 Books. You normally do not need it.

@@ -7,11 +7,15 @@ from shelf import core
 from shelf.core import (
     Services,
     Shelf,
+    add_shelf_section,
     correct_book_identity,
     create,
     draw,
     generate,
     hide_book,
+    move_book,
+    move_shelf_section,
+    remove_shelf_section,
     set_book_cover,
     show_book,
 )
@@ -274,6 +278,100 @@ def test_correct_book_identity_rejects_empty_reader_data(title, authors, known_a
     )
     with pytest.raises(ValueError):
         correct_book_identity(shelf, 0, 0, title=title, authors=authors, known_as=known_as)
+
+
+def test_move_book_is_pure_and_preserves_the_complete_book_in_cross_and_same_shelf_moves():
+    complete = ShelfBook(
+        title="Torto Arado",
+        authors=["Itamar Vieira Junior"],
+        known_as="Itamar Vieira Junior",
+        hidden=True,
+        face=False,
+        cover="covers/torto.jpg",
+        read_as="Torto Erado",
+        source="review",
+        photo="photo.jpg",
+        work="/works/1",
+    )
+    other = ShelfBook(title="Outro")
+    target = ShelfBook(title="Destino")
+    original = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="x",
+        shelves=[
+            ShelfSection(title="Origem", books=[complete, other]),
+            ShelfSection(title="Destino", books=[target]),
+        ],
+    )
+
+    crossed = move_book(original, 0, 0, 1, 0)
+    reordered = move_book(original, 0, 0, 0, None)
+
+    assert [book.title for book in original.shelves[0].books] == ["Torto Arado", "Outro"]
+    assert [book.title for book in crossed.shelves[0].books] == ["Outro"]
+    assert [book.title for book in crossed.shelves[1].books] == ["Torto Arado", "Destino"]
+    assert crossed.shelves[1].books[0] is complete
+    assert crossed.shelves[1].books[0] == complete
+    assert crossed.shelves[1].books[1] is target
+    assert [book.title for book in reordered.shelves[0].books] == ["Outro", "Torto Arado"]
+    assert reordered.shelves[0].books[1] is complete
+
+
+def test_shelf_section_operations_are_pure_ordered_and_refuse_implicit_book_deletion():
+    first = ShelfSection(title="Primeira", books=[ShelfBook(title="A")])
+    second = ShelfSection(title="Segunda", books=[ShelfBook(title="B")])
+    original = ShelfFile(cover_photo="photo.jpg", lens="x", shelves=[first, second])
+
+    added = add_shelf_section(original, "Minha seção", text="Meu texto", position=1)
+    appended = add_shelf_section(original, "Última")
+    moved = move_shelf_section(added, 1, 0)
+    moved_to_end = move_shelf_section(added, 0, None)
+    removed = remove_shelf_section(moved, 0)
+
+    assert [section.title for section in original.shelves] == ["Primeira", "Segunda"]
+    assert [section.title for section in added.shelves] == ["Primeira", "Minha seção", "Segunda"]
+    assert added.shelves[1] == ShelfSection(title="Minha seção", text="Meu texto", books=[])
+    assert [section.title for section in appended.shelves] == ["Primeira", "Segunda", "Última"]
+    assert [section.title for section in moved.shelves] == ["Minha seção", "Primeira", "Segunda"]
+    assert [section.title for section in moved_to_end.shelves] == ["Minha seção", "Segunda", "Primeira"]
+    assert [section.title for section in removed.shelves] == ["Primeira", "Segunda"]
+    assert removed.shelves[0] is first and removed.shelves[1] is second
+    with pytest.raises(ValueError, match="not empty"):
+        remove_shelf_section(original, 0)
+
+
+def test_move_and_section_operations_validate_indexes_positions_and_text():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="x",
+        shelves=[ShelfSection(title="One", books=[ShelfBook(title="Book")])],
+    )
+
+    invalid = [
+        lambda: move_book(shelf, -1, 0, 0),
+        lambda: move_book(shelf, 0, -1, 0),
+        lambda: move_book(shelf, 0, 0, -1),
+        lambda: move_book(shelf, 1, 0, 0),
+        lambda: move_book(shelf, 0, 1, 0),
+        lambda: move_book(shelf, 0, 0, 1),
+        lambda: move_book(shelf, 0, 0, 0, 2),
+        lambda: add_shelf_section(shelf, "New", position=-1),
+        lambda: add_shelf_section(shelf, "New", position=2),
+        lambda: move_shelf_section(shelf, -1, 0),
+        lambda: move_shelf_section(shelf, 1, 0),
+        lambda: move_shelf_section(shelf, 0, 1),
+        lambda: remove_shelf_section(shelf, -1),
+        lambda: remove_shelf_section(shelf, 1),
+    ]
+    for operation in invalid:
+        with pytest.raises(IndexError):
+            operation()
+    for operation in (
+        lambda: add_shelf_section(shelf, ""),
+        lambda: add_shelf_section(shelf, "New", text=None),
+    ):
+        with pytest.raises(ValueError):
+            operation()
 
 
 def test_hide_show_and_corrections_reject_negative_or_missing_positions():

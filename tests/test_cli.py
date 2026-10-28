@@ -16,7 +16,7 @@ from shelf.cli import (
     save_version,
 )
 from shelf.config import load_config
-from shelf.shelf_file import ShelfYamlError, dump_shelf, parse_shelf
+from shelf.shelf_file import ShelfSection, ShelfYamlError, dump_shelf, parse_shelf
 from shelf.shelves import REST_TITLE
 
 
@@ -321,6 +321,32 @@ def test_draw_reflects_file_edits_and_shelf_order(shelf_folder):
     html = (shelf_folder / "shelf.html").read_text(encoding="utf-8")
     assert "Eu escolho como esta página me apresenta." in html
     assert html.index(REST_TITLE) < html.index("Quando penso na terra")
+
+
+def test_draw_follows_a_complete_book_move_into_a_custom_last_shelf(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    origin = next(
+        section for section in shelf.shelves if any(book.title == "Torto Arado" for book in section.books)
+    )
+    book = next(book for book in origin.books if book.title == "Torto Arado")
+    origin.books.remove(book)
+    shelf.shelves.append(ShelfSection(title="Uma prateleira minha", books=[book]))
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+    source = path.read_bytes()
+
+    result = draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 20, 0))
+    html = result.html.read_text(encoding="utf-8")
+    title = html.index("Uma prateleira minha")
+    section = html[html.rfind("<section", 0, title) : html.index("</section>", title)]
+
+    assert 'class="bay side"' in section and '<span class="num">III</span>' in section
+    assert "Torto Arado" in section and "Itamar Vieira Junior" in section
+    assert result.version.read_bytes() == source
+    moved = parse_shelf(source.decode("utf-8")).shelves[-1].books[0]
+    assert moved.source == "open_library" and moved.work == "/works/OL1W"
 
 
 def test_invalid_yaml_or_missing_cover_photo_never_replaces_the_page(shelf_folder):

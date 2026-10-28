@@ -24,6 +24,18 @@ Em `/tmp/89books-ds3-us1-validation`:
 4. esvaziá-la, removê-la e redesenhar;
 5. confirmar redraw gratuito e novas entradas de histórico sem ler versões.
 
-## Validation Evidence
+## Automated Evidence — 2026-10-28
 
-A registrar depois da implementação e da validação do Navigator.
+- `uv run ruff check .` — passed.
+- `uv run ruff format --check .` — passed, 220 files formatted.
+- `uv run pytest` — 191 passed.
+- E2E gratuito em `/tmp/89books-ds3-us1-validation`: três seções e três
+  livros foram validados e desenhados; a seção customizada final recebeu
+  numeral III e visual regular, o livro completo preservou identidade e a
+  antiga seção canônica fora do fim recebeu numeral II.
+
+## Navigator Evidence
+
+Pendente: abrir a estante descartável e confirmar “Livro movido inteiro” em
+“Uma prateleira minha”, com “Nome escolhido” e numeral III. Depois, reordenar
+a seção ou esvaziá-la/removê-la para validar a autoria completa da ordem.

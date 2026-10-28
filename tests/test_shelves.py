@@ -1,3 +1,4 @@
+from shelf.shelf_file import ShelfBook, ShelfSection
 from shelf.shelves import (
     REST_TITLE,
     SIDE_MAX,
@@ -5,6 +6,7 @@ from shelf.shelves import (
     frequent_authors,
     mosaic,
     roman,
+    shelves_from_file,
     short_name,
     spine,
     tilt,
@@ -13,6 +15,48 @@ from shelf.shelves import (
 
 def book(title, cover_id=None):
     return {"title": title, "authors": [], "cover_id": cover_id}
+
+
+def test_file_shelves_keep_literal_section_and_book_order_without_author_grouping():
+    sections = [
+        ShelfSection(
+            title="Primeira",
+            text="Texto.",
+            books=[
+                ShelfBook(title="A1", authors=["Autora"]),
+                ShelfBook(title="Outro", authors=["Outra"]),
+                ShelfBook(title="A2", authors=["Autora"]),
+            ],
+        ),
+        ShelfSection(title="Segunda", text="Texto.", books=[ShelfBook(title="Final")]),
+    ]
+
+    visible, shelves = shelves_from_file(sections)
+
+    assert [shelf["title"] for shelf in shelves] == ["Primeira", "Segunda"]
+    assert [book["title"] for book in shelves[0]["books"]] == ["A1", "Outro", "A2"]
+    assert [book["title"] for book in visible] == ["A1", "Outro", "A2", "Final"]
+    assert [shelf["numeral"] for shelf in shelves] == ["I", "II"]
+    assert [shelf["order"] for shelf in shelves] == [1, 2]
+
+
+def test_only_the_canonical_last_section_is_the_generated_closing_shelf():
+    custom = [
+        ShelfSection(title="Primeira", text="Texto.", books=[]),
+        ShelfSection(title="Uma prateleira minha", text="", books=[]),
+    ]
+    canonical = [
+        ShelfSection(title="Primeira", text="Texto.", books=[]),
+        ShelfSection(title=REST_TITLE, text="", books=[]),
+    ]
+
+    _, custom_shelves = shelves_from_file(custom)
+    _, canonical_shelves = shelves_from_file(canonical)
+
+    assert not custom_shelves[1]["rest"]
+    assert custom_shelves[1]["numeral"] == "II" and custom_shelves[1]["place"] == "side"
+    assert canonical_shelves[1]["rest"]
+    assert canonical_shelves[1]["numeral"] == "" and canonical_shelves[1]["place"] == "full"
 
 
 def test_themes_become_shelves_and_leftovers_go_to_the_last_one():

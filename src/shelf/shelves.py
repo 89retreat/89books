@@ -224,7 +224,7 @@ def shelves_from_file(
     cover_assets = cover_assets or {}
     last = len(sections) - 1
     for index, section in enumerate(sections):
-        rest = index == last and not section.text
+        rest = index == last and section.title == REST_TITLE and not section.text
         cited = _cited(section.text)
         items = []
         for book_index, book in enumerate(section.books):

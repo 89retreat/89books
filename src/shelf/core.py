@@ -174,6 +174,83 @@ def set_book_cover(
     return _replace_book(shelf, shelf_index, book_index, lambda book: replace(book, cover=cover))
 
 
+def move_book(
+    shelf: ShelfFile,
+    from_shelf_index: int,
+    book_index: int,
+    to_shelf_index: int,
+    position: int | None = None,
+) -> ShelfFile:
+    """Moves one complete book to an authored position without mutating the source."""
+    if from_shelf_index < 0 or book_index < 0 or to_shelf_index < 0:
+        raise IndexError("shelf and book positions must not be negative")
+    source = shelf.shelves[from_shelf_index]
+    target = shelf.shelves[to_shelf_index]
+    source_books = list(source.books)
+    book = source_books.pop(book_index)
+    sections = list(shelf.shelves)
+    if from_shelf_index == to_shelf_index:
+        source_books.insert(_insertion_position(position, len(source_books)), book)
+        sections[from_shelf_index] = replace(source, books=source_books)
+    else:
+        target_books = list(target.books)
+        target_books.insert(_insertion_position(position, len(target_books)), book)
+        sections[from_shelf_index] = replace(source, books=source_books)
+        sections[to_shelf_index] = replace(target, books=target_books)
+    return replace(shelf, shelves=sections)
+
+
+def add_shelf_section(
+    shelf: ShelfFile,
+    title: str,
+    *,
+    text: str = "",
+    position: int | None = None,
+) -> ShelfFile:
+    """Adds an empty authored shelf section at one position or at the end."""
+    if not isinstance(title, str) or not title.strip():
+        raise ValueError("shelf title must not be empty")
+    if not isinstance(text, str):
+        raise ValueError("shelf text must be text")
+    sections = list(shelf.shelves)
+    sections.insert(_insertion_position(position, len(sections)), ShelfSection(title=title, text=text))
+    return replace(shelf, shelves=sections)
+
+
+def move_shelf_section(
+    shelf: ShelfFile,
+    shelf_index: int,
+    position: int | None = None,
+) -> ShelfFile:
+    """Moves one complete shelf section to an authored position."""
+    if shelf_index < 0:
+        raise IndexError("shelf position must not be negative")
+    sections = list(shelf.shelves)
+    section = sections.pop(shelf_index)
+    sections.insert(_insertion_position(position, len(sections)), section)
+    return replace(shelf, shelves=sections)
+
+
+def remove_shelf_section(shelf: ShelfFile, shelf_index: int) -> ShelfFile:
+    """Removes an empty section; books must be moved explicitly before their shelf is removed."""
+    if shelf_index < 0:
+        raise IndexError("shelf position must not be negative")
+    sections = list(shelf.shelves)
+    section = sections[shelf_index]
+    if section.books:
+        raise ValueError(f'Shelf "{section.title}" is not empty; move its books before removing it')
+    sections.pop(shelf_index)
+    return replace(shelf, shelves=sections)
+
+
+def _insertion_position(position: int | None, length: int) -> int:
+    if position is None:
+        return length
+    if not isinstance(position, int) or position < 0 or position > length:
+        raise IndexError(f"insertion position must be between 0 and {length}")
+    return position
+
+
 def hide_book(shelf: ShelfFile, shelf_index: int, book_index: int) -> ShelfFile:
     """Returns a shelf copy with one selected book hidden, for any client UI."""
     return _set_book_hidden(shelf, shelf_index, book_index, True)
