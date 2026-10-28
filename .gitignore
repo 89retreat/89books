@@ -25,3 +25,4 @@ shelf.html
 !src/shelf/templates/shelf.html
 shelf.yaml
 books.yaml
+**/history/shelf-*.yaml

@@ -26,8 +26,9 @@ uv run shelf open     # free: opens the page
 
 The first `create` asks for your name and keys, checks them, shows the
 estimated cost and waits for confirmation. It never replaces an existing
-`shelf.yaml`. `draw` needs no API key and makes no network call; if the file is
-invalid, it reports the lines and preserves the previous page. The command
+`shelf.yaml`. `draw` needs no API key and makes no network call; it saves a
+changed source in `history/` before replacing the page. If the file is invalid,
+it reports the lines and preserves the previous page. The command
 without a verb shows photos, books, edit/draw times, version count, current
 state and the next safe verb; `check` lists every YAML problem.
 
@@ -41,9 +42,12 @@ Other commands and options:
 ```bash
 uv run shelf                         # status and next safe action; never spends
 uv run shelf check                   # validate shelf.yaml with line numbers
+uv run shelf history                 # list saved versions without reading them
+uv run shelf restore VERSION         # save the current source, then restore one
+uv run shelf recreate                # paid: save the source, then rebuild from photos
 uv run shelf setup                   # change name or keys
 uv run shelf draw --folder other/    # use another folder
-uv run shelf create --yes            # skip a cost confirmation already decided
+uv run shelf create --yes            # explicit consent in scripts or automation
 ```
 
 Without `--folder`, the current directory is used when it already contains a
@@ -59,7 +63,8 @@ The shelf folder contains:
   covers and drawn spines. File previews such as Quick Look do not run its
   layout; open it in Chrome or Safari.
 - `config.toml`: your name and API keys, kept local and ignored by git.
-- `.shelf/`: local catalogue and cover caches.
+- `.shelf/`: local catalogue, cover caches and the last-drawn content marker.
+- `history/`: at most 20 exact `shelf.yaml` versions, kept local and ignored by git.
 - `books.yaml`, when present: the CV1 output used only for the first migration.
   It is no longer the source after `shelf.yaml` exists.
 

@@ -1,7 +1,19 @@
+import os
+from datetime import datetime, timedelta
+
 import pytest
 
 from shelf import cli
-from shelf.cli import CommandError, create_shelf, draw_shelf, open_shelf
+from shelf.cli import (
+    CommandError,
+    create_shelf,
+    draw_shelf,
+    list_history,
+    open_shelf,
+    recreate_shelf,
+    restore_shelf,
+    save_version,
+)
 from shelf.config import load_config
 from shelf.shelf_file import ShelfYamlError, dump_shelf, parse_shelf
 from shelf.shelves import REST_TITLE
@@ -55,6 +67,18 @@ def create_with_fakes(config, **overrides):
         log=lambda line: None,
     )
     return create_shelf(config, **{**arguments, **overrides})
+
+
+def recreate_with_fakes(config, **overrides):
+    arguments = dict(
+        recognize=fake_recognize,
+        library=FakeLibrary(),
+        portrait=fake_portrait,
+        review=no_review,
+        covers=FakeCovers(),
+        log=lambda line: None,
+    )
+    return recreate_shelf(config, **{**arguments, **overrides})
 
 
 def all_books(shelf):
@@ -293,6 +317,166 @@ def test_missing_cover_photo_never_replaces_the_page(shelf_folder):
     with pytest.raises(CommandError, match="cover_photo"):
         draw_shelf(shelf_folder)
     assert page.read_bytes() == before
+
+
+def test_draw_snapshots_exact_changed_bytes_and_does_not_repeat_unchanged_source(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = shelf_folder / "shelf.yaml"
+    first_bytes = source.read_bytes()
+    now = datetime(2026, 10, 28, 19, 30)
+
+    first = draw_shelf(shelf_folder, now=now)
+    unchanged = draw_shelf(shelf_folder, now=now)
+    source.write_bytes(first_bytes.replace(b"Eu olho a terra.", b"Eu escolho a terra."))
+    changed_bytes = source.read_bytes()
+    changed = draw_shelf(shelf_folder, now=now)
+
+    assert first.version.name == "shelf-2026-10-28-1930.yaml"
+    assert first.version.read_bytes() == first_bytes
+    assert unchanged.version is None
+    assert changed.version.name == "shelf-2026-10-28-1930-02.yaml"
+    assert changed.version.read_bytes() == changed_bytes
+    assert len(list_history(shelf_folder)) == 2
+    assert (shelf_folder / ".shelf" / "last-drawn.sha256").exists()
+
+
+def test_invalid_draw_does_not_snapshot_or_change_page_or_marker(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 30))
+    page = (shelf_folder / "shelf.html").read_bytes()
+    marker = (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes()
+    versions = [entry.name for entry in list_history(shelf_folder)]
+    (shelf_folder / "shelf.yaml").write_text("version: one\n", encoding="utf-8")
+
+    with pytest.raises(ShelfYamlError):
+        draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 31))
+
+    assert (shelf_folder / "shelf.html").read_bytes() == page
+    assert (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes() == marker
+    assert [entry.name for entry in list_history(shelf_folder)] == versions
+
+
+def test_history_lists_metadata_without_opening_version_contents(shelf_folder, monkeypatch):
+    version = shelf_folder / "history" / "shelf-2026-10-28-1930.yaml"
+    version.parent.mkdir()
+    version.write_text("private contents", encoding="utf-8")
+    (version.parent / "notes.yaml").write_text("unmanaged", encoding="utf-8")
+
+    monkeypatch.setattr(type(version), "read_bytes", lambda self: (_ for _ in ()).throw(AssertionError()))
+    entries = list_history(shelf_folder)
+
+    assert [(entry.name, entry.size) for entry in entries] == [(version.name, len(b"private contents"))]
+
+
+def test_restore_saves_even_broken_current_bytes_before_installing_valid_version(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    valid = (shelf_folder / "shelf.yaml").read_bytes()
+    drawn = draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 30))
+    page = (shelf_folder / "shelf.html").read_bytes()
+    marker = (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes()
+    broken = b"version: one\nmy unfinished edit\n"
+    (shelf_folder / "shelf.yaml").write_bytes(broken)
+
+    result = restore_shelf(
+        shelf_folder,
+        drawn.version.name,
+        now=datetime(2026, 10, 28, 19, 31),
+    )
+
+    assert result.changed and result.saved_current.read_bytes() == broken
+    assert (shelf_folder / "shelf.yaml").read_bytes() == valid
+    assert (shelf_folder / "shelf.html").read_bytes() == page
+    assert (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes() == marker
+    assert len(list_history(shelf_folder)) == 2
+
+
+def test_restore_rejects_traversal_missing_and_invalid_versions_before_backup(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = (shelf_folder / "shelf.yaml").read_bytes()
+    history = shelf_folder / "history"
+    history.mkdir()
+    invalid = history / "shelf-2026-10-28-1930.yaml"
+    invalid.write_text("version: one\n", encoding="utf-8")
+
+    with pytest.raises(CommandError, match="Unknown version"):
+        restore_shelf(shelf_folder, "../shelf-2026-10-28-1930.yaml")
+    with pytest.raises(CommandError, match="Unknown version"):
+        restore_shelf(shelf_folder, "shelf-2026-10-28-1940.yaml")
+    with pytest.raises(ShelfYamlError):
+        restore_shelf(shelf_folder, invalid.name)
+
+    assert (shelf_folder / "shelf.yaml").read_bytes() == source
+    assert [entry.name for entry in list_history(shelf_folder)] == [invalid.name]
+
+
+def test_recreate_generates_first_then_saves_current_and_replaces_only_source(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = shelf_folder / "shelf.yaml"
+    source.write_bytes(
+        source.read_bytes().replace(b"Eu olho a terra.", "Minha edição insubstituível.".encode())
+    )
+    before = source.read_bytes()
+    (shelf_folder / "shelf.html").write_text("previous page", encoding="utf-8")
+
+    result = recreate_with_fakes(config, now=datetime(2026, 10, 28, 19, 30))
+
+    assert result.version.read_bytes() == before
+    assert b"Minha edi" not in source.read_bytes()
+    assert (shelf_folder / "shelf.html").read_text() == "previous page"
+    assert result.books == 2 and result.cost == 0.05
+
+
+def test_failed_recreate_never_snapshots_or_replaces_source(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = (shelf_folder / "shelf.yaml").read_bytes()
+
+    def fail(*args, **kwargs):
+        raise RuntimeError("model failed")
+
+    with pytest.raises(RuntimeError, match="model failed"):
+        recreate_with_fakes(config, recognize=fail)
+
+    assert (shelf_folder / "shelf.yaml").read_bytes() == source
+    assert list_history(shelf_folder) == []
+
+
+def test_recreate_replace_failure_keeps_source_and_the_completed_backup(shelf_folder, monkeypatch):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = (shelf_folder / "shelf.yaml").read_bytes()
+
+    monkeypatch.setattr(cli, "_replace", lambda *args: (_ for _ in ()).throw(OSError("disk full")))
+    with pytest.raises(OSError, match="disk full"):
+        recreate_with_fakes(config, now=datetime(2026, 10, 28, 19, 30))
+
+    assert (shelf_folder / "shelf.yaml").read_bytes() == source
+    assert list_history(shelf_folder)[0].name == "shelf-2026-10-28-1930.yaml"
+
+
+def test_snapshot_retention_keeps_twenty_managed_and_unknown_files(shelf_folder):
+    history = shelf_folder / "history"
+    history.mkdir()
+    start = datetime(2026, 10, 27, 0, 0)
+    for index in range(20):
+        moment = start + timedelta(minutes=index)
+        path = history / moment.strftime("shelf-%Y-%m-%d-%H%M.yaml")
+        path.write_text(str(index), encoding="utf-8")
+        timestamp = moment.timestamp()
+        os.utime(path, (timestamp, timestamp))
+    unknown = history / "notes.yaml"
+    unknown.write_text("keep me", encoding="utf-8")
+
+    save_version(shelf_folder, b"new", now=datetime(2026, 10, 28, 19, 30))
+
+    assert len(list_history(shelf_folder)) == 20
+    assert not (history / "shelf-2026-10-27-0000.yaml").exists()
+    assert unknown.read_text() == "keep me"
 
 
 def test_open_uses_a_file_uri_and_requires_a_page(shelf_folder):

@@ -63,19 +63,25 @@ uv run shelf create
 uv run shelf
 uv run shelf check
 
-# draw and open the page from shelf.yaml (free)
+# draw, inspect history and restore the source (free)
 uv run shelf draw
+uv run shelf history
+uv run shelf restore VERSION
 uv run shelf open
+
+# save the source and rebuild it from photos (paid and confirmed)
+uv run shelf recreate
 
 # change name or keys (free)
 uv run shelf setup
 ```
 
 A CV2 usa um comando por situação sobre `shelf.yaml`. Já existem `create`,
-`check`, `draw`, `open` e `setup`; o comando sem verbo mostra o estado e o
-próximo gesto, sem gastar. Sem `--folder`, a pasta atual vence quando já parece
-uma estante; caso contrário, o fallback é `my-bookshelf/`. `recreate`,
-`history` e `restore` chegam na story seguinte. A tabela completa está na
+`check`, `draw`, `history`, `restore`, `recreate`, `open` e `setup`; o comando
+sem verbo mostra o estado e o próximo gesto, sem gastar. Sem `--folder`, a
+pasta atual vence quando já parece uma estante; caso contrário, o fallback é
+`my-bookshelf/`. `draw` guarda uma fonte alterada; `restore` e `recreate`
+guardam a atual antes de substituí-la. A tabela completa está na
 [CV2](../project/roadmap/cv2-minha-estante-do-meu-jeito/index.md#commands).
 
 O spike da TS1 continua em `spikes/reconhecimento/`, com comandos próprios

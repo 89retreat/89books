@@ -30,4 +30,24 @@ Não comparar o conteúdo das versões reais sem autorização adicional.
 
 ## Validation Evidence
 
-A registrar depois da implementação e da validação do Navigator.
+### Automated — passed
+
+- `uv run pytest`: 157 passed.
+- `uv run ruff check . && uv run ruff format --check .`: passed.
+- Pure history planning has no filesystem, current-clock, environment or
+  terminal access.
+- Successful, refused and failed recreation paths use fake paid services.
+
+### Driver E2E — free route passed
+
+On `/tmp/estante-alisson-validacao-us3`, the first changed draw saved an exact
+version, an unchanged draw added none, and `history` listed only name, time and
+size. A deliberately broken current source was saved before the selected
+valid version was restored. The page hash survived, `check` passed and the
+panel reported two versions.
+
+### Navigator — pending
+
+Validate the free route step by step. Then run `recreate`, first decline it,
+and decide whether to approve the displayed estimate for one photo. No full
+paid shelf is needed.

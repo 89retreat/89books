@@ -2,7 +2,7 @@
 code: CV2.DS1
 level: Delivery Story
 status: Active
-status_reason: TS1, TS2, US1 e US2 concluídas; US3 puxada em 2026-10-28
+status_reason: TS1, TS2, US1 e US2 concluídas; US3 implementada e aguardando validação
 updated: 2026-10-28
 related:
   - ../index.md
@@ -38,7 +38,7 @@ DS2 e a DS3.
 | [CV2.DS1.TS2](cv2-ds1-ts2-shelf-yaml-v1/index.md) | shelf.yaml, version 1 | Technical Story | O formato do arquivo, com `version: 1`, na ordem em que a página aparece, e uma única validação que aponta cada erro com o número da linha e nunca grava nada; testes servem de contrato do formato. | Done |
 | [CV2.DS1.US1](cv2-ds1-us1-create-once-draw-for-free/index.md) | Create once, draw for free | User Story | `create` gera a estante das fotos e grava o `shelf.yaml` (recusa se ele existir); `draw` redesenha o `shelf.html` em segundos, sem chamadas pagas; `open` abre a página. Uma estante da CV1 vira `shelf.yaml` sem novo reconhecimento. | Done |
 | [CV2.DS1.US2](cv2-ds1-us2-know-where-my-shelf-stands/index.md) | Know where my shelf stands | User Story | `uv run shelf` sozinho nunca gasta: mostra fotos, livros, quando o arquivo foi editado e desenhado e quantas versões há, e sugere o próximo comando; `check` aponta erros do arquivo com o número da linha. | Done |
-| [CV2.DS1.US3](cv2-ds1-us3-never-lose-an-edit/index.md) | Never lose an edit | User Story | `draw` guarda uma versão em `history/` quando o arquivo mudou; `recreate` guarda uma versão, confirma o custo e refaz das fotos; `history` lista as versões e `restore` devolve uma, guardando antes a atual. Mantém as 20 mais recentes. | Active |
+| [CV2.DS1.US3](cv2-ds1-us3-never-lose-an-edit/index.md) | Never lose an edit | User Story | `draw` guarda uma versão em `history/` quando o arquivo mudou; `recreate` guarda uma versão, confirma o custo e refaz das fotos; `history` lista as versões e `restore` devolve uma, guardando antes a atual. Mantém as 20 mais recentes. | Implemented |
 
 ## Done Condition
 

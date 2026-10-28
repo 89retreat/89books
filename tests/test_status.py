@@ -68,6 +68,29 @@ def test_newer_source_is_stale_and_updated_page_is_ready():
     assert ready.versions == 3
 
 
+def test_drawn_hash_detects_content_change_even_when_mtime_does_not():
+    changed = inspect(
+        ShelfFacts(
+            source_text=source(),
+            source_modified=10,
+            page_modified=20,
+            source_hash="new",
+            last_drawn_hash="old",
+        )
+    )
+    ready = inspect(
+        ShelfFacts(
+            source_text=source(),
+            source_modified=30,
+            page_modified=20,
+            source_hash="same",
+            last_drawn_hash="same",
+        )
+    )
+    assert changed.state == "stale" and changed.next_command == "draw"
+    assert ready.state == "ready" and ready.next_command == "open"
+
+
 def test_status_core_has_no_filesystem_terminal_environment_or_clock_access():
     tree = ast.parse(MODULE.read_text(encoding="utf-8"))
     calls = {

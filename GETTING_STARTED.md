@@ -87,7 +87,10 @@ seconds and does not call the model.
 | `uv run shelf` | Shows the selected folder, photos, books, edit/draw times, versions and next safe command. | None. | None. |
 | `uv run shelf create` | Reads the photos and creates `shelf.yaml` once. A CV1 shelf reuses its saved catalogue and pays only for a new portrait. | Paid and confirmed before the model call. | Creates `shelf.yaml` and local caches; never replaces an existing source. |
 | `uv run shelf check` | Validates `shelf.yaml` and lists every problem with its line and path. | None; no key or network. | None. |
-| `uv run shelf draw` | Draws `shelf.html` from the current `shelf.yaml`. | None; no key or network. | Creates or atomically replaces `shelf.html`. |
+| `uv run shelf draw` | Saves a changed source, then draws `shelf.html`. Repeating it unchanged creates no new version. | None; no key or network. | May add `history/shelf-….yaml`; atomically replaces `shelf.html` and the local draw marker. |
+| `uv run shelf history` | Lists saved version names, dates and sizes without opening or comparing their contents. | None. | None. |
+| `uv run shelf restore VERSION` | Validates the named version, saves the current source even if broken, and restores the selected bytes. | None. | Adds one history version and atomically replaces `shelf.yaml`; leaves the page untouched. |
+| `uv run shelf recreate` | Rebuilds the source from photos after saving the current one. It never draws automatically. | Paid and confirmed before the model call. | Adds one history version and atomically replaces `shelf.yaml`; leaves the page untouched. |
 | `uv run shelf open` | Opens the generated page in the default browser. | None. | None. |
 | `uv run shelf setup` | Saves your name and keys and checks whether the keys work. | Free key-check requests; no model call. | May change the local `config.toml`. |
 | `uv run shelf --help` | Shows the available commands and options. | None. | None. |
@@ -98,13 +101,25 @@ seconds and does not call the model.
 | --- | --- |
 | `--folder PATH` | Uses that shelf folder explicitly. It always wins over automatic selection. |
 | no `--folder` | Uses the current directory when it already looks like a shelf; otherwise uses `my-bookshelf/`. |
-| `create --yes` | Skips a cost confirmation you have already decided, but creation remains paid. |
+| `create --yes` or `recreate --yes` | Explicitly consents to spending without an interactive question. Paid commands refuse non-interactive use without it. |
 
 For example:
 
 ```bash
 uv run shelf draw --folder path/to/my-shelf
 ```
+
+`history` prints the exact ID accepted by `restore`:
+
+```bash
+uv run shelf history
+uv run shelf restore shelf-2026-10-28-1930.yaml
+uv run shelf draw
+```
+
+The last `draw` is explicit: restoring or recreating never changes the page
+behind your back. At most 20 managed versions are kept. Unknown files inside
+`history/` are never removed.
 
 ### What `--project` means
 

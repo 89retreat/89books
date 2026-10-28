@@ -22,6 +22,19 @@ def fake_create(calls):
     return create
 
 
+def fake_recreate(calls):
+    def recreate(config, log=None, **kwargs):
+        calls.append(("recreate", config))
+        return cli.RecreateResult(
+            shelf_yaml=config.folder / "shelf.yaml",
+            version=config.folder / "history" / "shelf-2026-10-28-1900.yaml",
+            books=10,
+            cost=0.04,
+        )
+
+    return recreate
+
+
 def fake_draw(calls):
     def draw(folder, **kwargs):
         calls.append(("draw", Path(folder)))
@@ -45,6 +58,7 @@ def run(argv, terminal, interactive=True):
         terminal=terminal,
         interactive=interactive,
         create_action=fake_create(calls),
+        recreate_action=fake_recreate(calls),
         draw_action=fake_draw(calls),
         open_action=fake_open(calls),
         check_openrouter=openrouter,
@@ -124,7 +138,7 @@ def test_status_panel_shows_ready_counts_dates_versions_and_next_open(tmp_path, 
     os.utime(folder / "shelf.html", (2000, 2000))
     history = folder / "history"
     history.mkdir()
-    (history / "shelf-1.yaml").write_text("one")
+    (history / "shelf-2026-10-28-1900.yaml").write_text("one")
     (history / "notes.txt").write_text("not a version")
     monkeypatch.chdir(folder)
     terminal = FakeTerminal([])
@@ -253,6 +267,93 @@ def test_cv1_migration_confirms_only_a_new_portrait_and_passes_the_legacy_text(s
     assert "books.yaml" in terminal.text and "portrait" in terminal.text.lower()
     assert "US$ 0.03" in terminal.text
     assert len(terminal.questions) == 1  # no Google Books setup; only cost confirmation
+
+
+def test_declining_recreate_keeps_source_history_and_actions_untouched(shelf_folder, monkeypatch):
+    configured(shelf_folder, monkeypatch)
+    source = shelf_folder / "shelf.yaml"
+    source.write_text("mine\n")
+    terminal = FakeTerminal(["n"])
+
+    code, calls = run(["recreate", "--folder", str(shelf_folder)], terminal)
+
+    assert code == 0 and calls == []
+    assert source.read_text() == "mine\n" and not (shelf_folder / "history").exists()
+    assert "Nothing was spent" in terminal.text
+
+
+def test_recreate_yes_is_explicit_spending_consent_and_reports_backup(shelf_folder, monkeypatch):
+    configured(shelf_folder, monkeypatch)
+    (shelf_folder / "shelf.yaml").write_text("mine\n")
+    terminal = FakeTerminal([])
+
+    code, calls = run(["recreate", "--folder", str(shelf_folder), "--yes"], terminal)
+
+    assert code == 0 and calls[0][0] == "recreate"
+    assert "Saved current source" in terminal.text and "US$ 0.04" in terminal.text
+    assert terminal.questions == []
+
+
+@pytest.mark.parametrize("command,source_exists", [("create", False), ("recreate", True)])
+def test_noninteractive_paid_commands_require_yes_before_setup_or_action(
+    command, source_exists, shelf_folder, monkeypatch, capsys
+):
+    configured(shelf_folder, monkeypatch)
+    if source_exists:
+        (shelf_folder / "shelf.yaml").write_text("mine\n")
+    terminal = FakeTerminal([])
+
+    code, calls = run([command, "--folder", str(shelf_folder)], terminal, interactive=False)
+
+    assert code == 2 and calls == [] and terminal.questions == []
+    assert "--yes" in capsys.readouterr().err
+
+
+def test_history_and_restore_are_free_explicit_commands(shelf_folder):
+    entry = cli.history_core.HistoryEntry("shelf-2026-10-28-1900.yaml", 1000, 2048)
+    terminal = FakeTerminal([])
+    restored = []
+
+    def restore(folder, version):
+        restored.append((Path(folder), version))
+        return cli.RestoreResult(
+            shelf_yaml=Path(folder) / "shelf.yaml",
+            version=Path(folder) / "history" / version,
+            saved_current=Path(folder) / "history" / "shelf-2026-10-28-1901.yaml",
+            changed=True,
+        )
+
+    history_code = cli.main(
+        ["history", "--folder", str(shelf_folder)],
+        terminal=terminal,
+        interactive=False,
+        history_action=lambda folder: [entry],
+    )
+    restore_code = cli.main(
+        ["restore", entry.name, "--folder", str(shelf_folder)],
+        terminal=terminal,
+        interactive=False,
+        restore_action=restore,
+    )
+
+    assert history_code == restore_code == 0
+    assert entry.name in terminal.text and "2.0 KB" in terminal.text
+    assert "Saved current source" in terminal.text and "Next:" in terminal.text
+    assert restored == [(shelf_folder, entry.name)] and terminal.questions == []
+
+
+def test_draw_reports_only_a_new_version_when_action_saved_one(shelf_folder):
+    terminal = FakeTerminal([])
+    version = shelf_folder / "history" / "shelf-2026-10-28-1900.yaml"
+
+    code = cli.main(
+        ["draw", "--folder", str(shelf_folder)],
+        terminal=terminal,
+        interactive=False,
+        draw_action=lambda folder: cli.DrawResult(Path(folder) / "shelf.html", 12, version),
+    )
+
+    assert code == 0 and f"Saved version: {version}" in terminal.text
 
 
 def test_draw_and_open_need_no_key_or_setup(shelf_folder, monkeypatch):

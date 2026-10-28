@@ -17,3 +17,5 @@ def test_my_bookshelf_keeps_only_its_readme_in_git():
     assert ignored("my-bookshelf/.shelf/covers.json")
     assert not ignored("my-bookshelf/README.md")
     assert ignored("another-shelf/shelf.yaml")
+    assert ignored("another-shelf/history/shelf-2026-10-28-1900.yaml")
+    assert not ignored("another-shelf/history/notes.yaml")

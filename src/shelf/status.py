@@ -16,6 +16,8 @@ class ShelfFacts:
     source_text: str | None = None
     source_modified: float | None = None
     page_modified: float | None = None
+    source_hash: str | None = None
+    last_drawn_hash: str | None = None
 
 
 @dataclass(frozen=True)
@@ -52,7 +54,10 @@ def inspect(facts: ShelfFacts) -> ShelfStatus:
     }
     if facts.page_modified is None:
         return _result(facts, "not_drawn", next_command="draw", **details)
-    if facts.source_modified is not None and facts.source_modified > facts.page_modified:
+    if facts.last_drawn_hash is not None:
+        if facts.source_hash != facts.last_drawn_hash:
+            return _result(facts, "stale", next_command="draw", **details)
+    elif facts.source_modified is not None and facts.source_modified > facts.page_modified:
         return _result(facts, "stale", next_command="draw", **details)
     return _result(facts, "ready", next_command="open", **details)
 
