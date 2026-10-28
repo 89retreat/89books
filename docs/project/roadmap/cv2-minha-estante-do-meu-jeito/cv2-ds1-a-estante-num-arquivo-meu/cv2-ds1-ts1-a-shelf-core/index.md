@@ -2,7 +2,7 @@
 code: CV2.DS1.TS1
 level: Technical Story
 status: Active
-status_reason: puxada em 2026-10-28 como primeira story da CV2; plano aguarda aprovação do Navigator
+status_reason: implementada; aguarda a revisão do Navigator da fronteira entre núcleo e terminal
 updated: 2026-10-28
 related:
   - ../index.md

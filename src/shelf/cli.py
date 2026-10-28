@@ -1,4 +1,7 @@
-"""Command line: `shelf <folder>` writes shelf.html and books.yaml into the folder."""
+"""Command line: asks, confirms and shows; the shelf itself is made by shelf.core.
+
+`shelf <folder>` writes shelf.html and books.yaml into the folder.
+"""
 
 import argparse
 import os
@@ -7,19 +10,17 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+from shelf import core, setup
 from shelf import photos as photo_tools
-from shelf import setup
-from shelf.books import dedupe, write_books_yaml
+from shelf.books import write_books_yaml
 from shelf.config import PHOTO_EXTENSIONS, Config, ConfigError, load_config
 from shelf.covers import CoverCheck
 from shelf.googlebooks import GoogleBooks
 from shelf.openlibrary import OpenLibrary
-from shelf.page import render
 from shelf.portrait import write_portrait
 from shelf.progress import Progress
 from shelf.recognition import recognize
-from shelf.review import apply_review, confirm, name_books, review_books, settle
-from shelf.text import normalize_title
+from shelf.review import review_books
 
 CACHE_DIR = ".shelf"
 
@@ -43,100 +44,26 @@ def build_shelf(
     log: Callable[[str], None] = print,
     progress=None,
 ) -> Result:
-    progress = progress or Progress()
+    """Generates the shelf with the core and writes it into the folder, with its caches in .shelf/."""
     cache = config.folder / CACHE_DIR
-    library = library or OpenLibrary(cache / "openlibrary.json")
-    covers = covers or CoverCheck(cache / "covers.json")
     if second is None and config.google_books_api_key:
         second = GoogleBooks(cache / "googlebooks.json", config.google_books_api_key)
-    cost = 0.0
-    images: list[str] = []
-    found: list[dict] = []
-
-    log(f"Recognizing books in {len(config.photos)} photos...")
-    for path in config.photos:
-        jpeg = photo_tools.prepare(path)
-        images.append(photo_tools.data_uri(photo_tools.prepare(path, photo_tools.PAGE_SIDE)))
-        books, spent = recognize(jpeg, config.api_key)
-        cost += spent
-        found.extend({**book, "photo": path.name} for book in books)
-        log(f"  {path.name}: {len(books)} books")
-
-    books = dedupe(found)
-    log(f"Recognized {len(books)} books.")
-
-    log("Looking them up on Open Library...")
-    progress.start(len(books))
-    for book in books:
-        progress.step(book["title"])
-        book.update(library.lookup(book["title"], book.get("authors") or []) or {})
-    progress.finish()
-    library.save()
-
-    log("Checking titles and authors across the shelf...")
-    # the review also says how each author is known; a review that does not still answers (entries, cost)
-    entries, spent, *rest = review(books, config.api_key)
-    names = rest[0] if rest else {}
-    cost += spent
-    books, left_out = apply_review(books, entries)
-    books = [settle(b) for b in books]
-    corrected = sum(1 for b in books if b.get("source") == "review")
-    log(f"  {corrected} corrected, {len(left_out)} left out.")
-
-    if second is None:
-        log("  Skipping Google Books: set GOOGLE_BOOKS_API_KEY to check titles in a second catalogue.")
-    else:
-        # books no catalogue has confirmed yet, with the reviewed title and author, which Google Books needs
-        log("Confirming the rest on Google Books...")
-        unconfirmed = [i for i, b in enumerate(books) if b.get("source") in ("review", "photo")]
-        confirmed = 0
-        progress.start(len(unconfirmed))
-        for i in unconfirmed:
-            progress.step(books[i]["title"])
-            found = second.lookup(books[i]["title"], books[i].get("authors") or [])
-            if found:
-                books[i] = confirm(books[i], found)
-                confirmed += 1
-        progress.finish()
-        second.save()
-        log(f"  {confirmed} of {len(unconfirmed)} confirmed.")
-    books = name_books(books, names)
-    log("Fetching covers...")
-    rejected = 0
-    progress.start(len(books))
-    for book in books:
-        progress.step(book["title"])
-        # a corrected title was searched under the misreading; search again under the right one
-        if book.get("source") in ("review", "google_books") and normalize_title(
-            book["title"]
-        ) != normalize_title(book.get("read_as", "")):
-            for key in ("work", "cover_id"):
-                book.pop(key, None)
-            match = library.lookup(book["title"], book.get("authors") or []) or {}
-            book.update({k: v for k, v in match.items() if k in ("work", "cover_id")})
-        if book.get("cover_id") and not covers.ok(book["cover_id"]):
-            book.pop("cover_id")
-            rejected += 1
-        gb_cover = book.pop("gb_cover", None)
-        if not book.get("cover_id") and gb_cover and covers.ok(gb_cover):
-            book["cover_url"] = gb_cover
-    progress.finish()
-    library.save()
-    covers.save()
-    with_work = sum(1 for b in books if b.get("work"))
-    with_cover = sum(1 for b in books if b.get("cover_id") or b.get("cover_url"))
-    log(f"  {with_work} found, {with_cover} with covers ({rejected} scans of pages left out).")
-
-    log("Writing your portrait...")
-    reader_portrait, spent = portrait(books, config.api_key)
-    cost += spent
-
+    services = core.Services(
+        recognize=recognize,
+        review=review,
+        portrait=portrait,
+        library=library or OpenLibrary(cache / "openlibrary.json"),
+        covers=covers or CoverCheck(cache / "covers.json"),
+        second=second,
+    )
+    shelf = core.generate(config.photos, config.api_key, config.name, services, log, progress or Progress())
+    images = [photo_tools.data_uri(photo_tools.prepare(p, photo_tools.PAGE_SIDE)) for p in config.photos]
     html_path = config.folder / "shelf.html"
-    html_path.write_text(render(config.name, images, books, reader_portrait), encoding="utf-8")
+    html_path.write_text(core.draw(shelf, images), encoding="utf-8")
     yaml_path = config.folder / "books.yaml"
-    write_books_yaml(yaml_path, books, left_out)
-    log(f"Done: {html_path.name} and {yaml_path.name} in {config.folder} (cost: US$ {cost:.2f})")
-    return Result(html=html_path, books_yaml=yaml_path, books=len(books), cost=round(cost, 4))
+    write_books_yaml(yaml_path, shelf.books, shelf.left_out)
+    log(f"Done: {html_path.name} and {yaml_path.name} in {config.folder} (cost: US$ {shelf.cost:.2f})")
+    return Result(html=html_path, books_yaml=yaml_path, books=len(shelf.books), cost=shelf.cost)
 
 
 DEFAULT_FOLDER = Path("my-bookshelf")

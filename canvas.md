@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `░░░░░░░░░░` 0/13 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `░░░░░░░░░░` 0/5 |
-| 　　↳ TS1 · A shelf core a server could run | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
+| 　　↳ TS1 · A shelf core a server could run | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
 | 　　↳ TS2 · shelf.yaml, version 1 | 🟡 planejada · formato e validação com linha | `░░░░░░░░░░` |
 | 　　↳ US1 · Create once, draw for free | 🟡 planejada · `create`, `draw`, `open` | `░░░░░░░░░░` |
 | 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.TS1 · A shelf core a server could run** | 🧭 plano aguarda aprovação | Aprovar o plano: `core.generate` e `core.draw`, terminal fino, comportamento igual |
+| **CV2.DS1.TS1 · A shelf core a server could run** | 🧭 implementada | Revisar a fronteira entre `core.py` e `cli.py`; depois puxar a TS2 (`shelf.yaml`) |
 
 ### ✅ Fundações assentadas
 

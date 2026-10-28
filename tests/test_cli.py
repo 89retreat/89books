@@ -30,7 +30,7 @@ def fake_recognize(image: bytes, api_key: str):
 
 
 def no_review(books, api_key):
-    return {}, 0.0
+    return {}, 0.0, {}
 
 
 def fake_portrait(books, api_key):
@@ -100,10 +100,14 @@ def test_the_review_corrects_a_misread_title_before_the_page(shelf_folder):
 
     def review(books, api_key):
         titles = [b["title"] for b in books]
-        return {
-            titles.index("Continuo Preto"): {"title": "Continuo Preta", "authors": ["Sueli Carneiro"]},
-            titles.index("Caneca"): {"not_a_book": True},
-        }, 0.01
+        return (
+            {
+                titles.index("Continuo Preto"): {"title": "Continuo Preta", "authors": ["Sueli Carneiro"]},
+                titles.index("Caneca"): {"not_a_book": True},
+            },
+            0.01,
+            {},
+        )
 
     def portrait(books, api_key):
         return {
@@ -137,7 +141,11 @@ def test_google_books_confirms_titles_after_the_review(shelf_folder):
         return [{"title": "Contínuo Preto", "authors": []}], 0.0
 
     def review(books, api_key):
-        return {0: {"title": "Continuo Preto: A Vida de Sueli Carneiro", "authors": ["Bianca Santana"]}}, 0.0
+        return (
+            {0: {"title": "Continuo Preto: A Vida de Sueli Carneiro", "authors": ["Bianca Santana"]}},
+            0.0,
+            {},
+        )
 
     class Second:
         seen = []
