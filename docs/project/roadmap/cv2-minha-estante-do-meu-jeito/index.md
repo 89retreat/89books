@@ -2,7 +2,7 @@
 code: CV2
 level: Value
 status: Active
-status_reason: DS1 em andamento desde 2026-10-28
+status_reason: DS2.US2 concluída e DS3.US1 puxada em 2026-10-28
 updated: 2026-10-28
 related:
   - ../cv1-primeira-estante-viva/index.md

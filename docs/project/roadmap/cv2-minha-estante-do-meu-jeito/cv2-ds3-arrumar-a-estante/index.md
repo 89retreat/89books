@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3
 level: Delivery Story
-status: Planned
-status_reason: criada na reescrita da CV2 em 2026-10-28; depende da CV2.DS1
+status: Active
+status_reason: US1 puxada pelo Navigator em 2026-10-28 após a conclusão de CV2.DS2.US2
 updated: 2026-10-28
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV2.DS3 — Arrumar a estante
 
-**Status:** Planned
+**Status:** Active
 
 ---
 
@@ -32,7 +32,7 @@ autoral, que estava fora da CV1, entra aqui.
 
 | Code | Story | Type | Outcome | Status |
 |------|-------|------|---------|--------|
-| CV2.DS3.US1 | Put each book on the shelf I choose | User Story | Mover as linhas de um livro no arquivo muda a prateleira e a ordem dele na página; posso criar, apagar e reordenar prateleiras. | Planned |
+| [CV2.DS3.US1](cv2-ds3-us1-put-each-book-on-the-shelf-i-choose/index.md) | Put each book on the shelf I choose | User Story | Mover as linhas de um livro no arquivo muda a prateleira e a ordem dele na página; posso criar, apagar e reordenar prateleiras. | Active |
 | CV2.DS3.US2 | Face out or spine, my choice | User Story | Com `face: true`, o livro fica de frente; sem a marca, mostra a lombada. Uma prateleira com livros demais de frente quebra em mais fileiras. Quem não marcou nada segue a regra automática. | Planned |
 | CV2.DS3.US3 | Choose the photo that represents my shelf | User Story | `cover_photo` no `shelf.yaml` escolhe a foto em destaque no mosaico, a que representa a estante; sai do `config.toml`. | Planned |
 | CV2.DS3.US4 | Write my own shelf titles and texts | User Story | Reescrevo a abertura (`lens`) e o título e o texto de cada prateleira; a página mostra o que escrevi, com itálico em `*título*` como hoje. | Planned |

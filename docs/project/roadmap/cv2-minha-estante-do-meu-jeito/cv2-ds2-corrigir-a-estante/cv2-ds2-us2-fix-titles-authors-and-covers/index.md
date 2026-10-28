@@ -1,8 +1,8 @@
 ---
 code: CV2.DS2.US2
 level: User Story
-status: Active
-status_reason: implementação concluída em 2026-10-28 com 184 testes; aguarda validação do Navigator
+status: Done
+status_reason: validada e fechada pelo Navigator em 2026-10-28; 185 testes, E2E gratuito e CR001 concluídos
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS2.US2 — Fix titles, authors and covers
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---

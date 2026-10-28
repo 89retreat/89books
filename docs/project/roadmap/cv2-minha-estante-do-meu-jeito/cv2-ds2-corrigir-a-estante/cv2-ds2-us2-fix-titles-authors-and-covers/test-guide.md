@@ -44,4 +44,4 @@ gigante real.
   capas à Open Library. O CR001 corrigiu-o para “Capas de catálogos ou arquivos
   locais”; regressão automatizada e E2E descartável passaram.
 
-Pendente apenas a aceitação explícita do Navigator antes do Review.
+O Navigator aprovou explicitamente a validação e autorizou o fechamento em 2026-10-28.
