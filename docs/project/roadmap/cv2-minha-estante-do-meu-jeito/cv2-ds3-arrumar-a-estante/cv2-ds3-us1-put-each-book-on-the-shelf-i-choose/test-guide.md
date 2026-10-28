@@ -36,6 +36,6 @@ Em `/tmp/89books-ds3-us1-validation`:
 
 ## Navigator Evidence
 
-Pendente: abrir a estante descartável e confirmar “Livro movido inteiro” em
-“Uma prateleira minha”, com “Nome escolhido” e numeral III. Depois, reordenar
-a seção ou esvaziá-la/removê-la para validar a autoria completa da ordem.
+O Navigator confirmou “Livro movido inteiro” em “Uma prateleira minha”, com
+“Nome escolhido” e numeral III, e aprovou explicitamente a validação e o
+fechamento em 2026-10-28.

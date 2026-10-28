@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US1
 level: User Story
-status: Active
-status_reason: implementação concluída em 2026-10-28 com 191 testes; aguarda validação do Navigator
+status: Done
+status_reason: validada e fechada pelo Navigator em 2026-10-28; 191 testes e E2E gratuito aprovados
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS3.US1 — Put each book on the shelf I choose
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---
