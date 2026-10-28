@@ -15,8 +15,8 @@
 | 　　↳ US3 · Never lose an edit | ✅ concluída | `██████████` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟢 ativa | `███░░░░░░░` 1/3 |
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
-| 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
-| 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚪ planejada · só com erros demais | `░░░░░░░░░░` |
+| 　　↳ US2 · Fix titles, authors and covers | 🟢 ativa · aguarda plano | `░░░░░░░░░░` |
+| 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US2 · Face out or spine, my choice | 🟡 planejada | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS2.US2 · Fix titles, authors and covers** | 🧭 próxima a abrir | Corrigir o que a leitura errou sem perder a estante editada |
+| **CV2.DS2.US2 · Fix titles, authors and covers** | 🧭 aberta · aguarda plano | Corrigir dados e capas no YAML sem nova leitura paga das fotos |
 
 ### ✅ Fundações assentadas
 
