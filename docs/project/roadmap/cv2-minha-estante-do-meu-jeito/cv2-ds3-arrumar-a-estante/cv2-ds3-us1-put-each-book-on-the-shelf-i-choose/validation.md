@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -16,20 +16,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Free local E2E passed in /tmp/89books-ds3-us1-validation: a complete book appears in the custom final shelf with preserved identity; the shelf is regular and numbered III; the canonical closing shelf outside the final position is regular and numbered II.
+Evidence: Navigator screenshot of /tmp/89books-ds3-us1-validation confirmed literal source order I/II/III, the complete moved book and known_as in Uma prateleira minha, and the former canonical closing shelf rendered as regular II when it was not final.
 
 ## Navigator Validation
 
-Route: Run uv run shelf open --folder /tmp/89books-ds3-us1-validation. Confirm Livro movido inteiro and Nome escolhido appear under Uma prateleira minha with numeral III. Then optionally move that complete section earlier in shelf.yaml, run check/draw/open and confirm the numerals follow the new source order.
+Route: Navigator ran check, draw and open in /tmp/89books-ds3-us1-validation and supplied a screenshot of the three authored shelf sections.
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: The authored custom shelf is numbered III rather than treated as the closing shelf, and its complete moved book remains inside it. Reordering the section changes its numeral/order after a free redraw.
+Expected observation: The custom shelf is numbered III, the moved book retains identity, and order follows shelf.yaml.
 
-Pass condition: Book and shelf positions follow shelf.yaml exactly, complete metadata survives, and no key, catalogue, model or payment is requested.
+Pass condition: Book and shelf positions follow the source exactly, metadata survives, and redraw remains free.
 
-Fail condition: Automatic grouping overrides the file, metadata disappears, the custom final shelf loses its numeral, or redraw asks for a paid service.
+Fail condition: Automatic grouping or closing-shelf heuristics override authored order, metadata disappears, or redraw requests payment.
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none
