@@ -6,15 +6,15 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████░░░░░░` 5/13 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `█████░░░░░` 6/13 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 resultado agregado pendente | `██████████` 5/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
 | 　　↳ US1 · Create once, draw for free | ✅ concluída · validada com uma estante nova | `██████████` |
 | 　　↳ US2 · Know where my shelf stands | ✅ concluída | `██████████` |
 | 　　↳ US3 · Never lose an edit | ✅ concluída | `██████████` |
-| ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Hide books from my shelf | 🟣 validada · aguarda confirmação do review | `█████████░` |
+| ↳ **CV2.DS2 · Corrigir a estante** | 🟢 ativa | `███░░░░░░░` 1/3 |
+| 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚪ planejada · só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS2.US1 · Hide books from my shelf** | 🔍 review aguarda confirmação | Confirmar que não há dívida nova; depois executar coherence e Done |
+| **CV2.DS2.US2 · Fix titles, authors and covers** | 🧭 próxima a abrir | Corrigir o que a leitura errou sem perder a estante editada |
 
 ### ✅ Fundações assentadas
 

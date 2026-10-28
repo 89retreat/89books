@@ -1,8 +1,8 @@
 ---
 code: CV2.DS2.US1
 level: User Story
-status: Validated
-status_reason: Navigator escondeu e trouxe de volta um livro numa estante real descartável; debt review sem nova dívida aguarda confirmação
+status: Done
+status_reason: Navigator escondeu e trouxe de volta um livro numa estante real descartável; review, coherence e Done concluídos
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS2.US1 — Hide books from my shelf
 
-**Status:** Validated
+**Status:** Done
 **Type:** User Story
 
 ---
