@@ -6,11 +6,11 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `██░░░░░░░░` 2/13 |
-| ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `████░░░░░░` 2/5 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `███░░░░░░░` 3/13 |
+| ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `██████░░░░` 3/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
-| 　　↳ US1 · Create once, draw for free | 🟣 validada · aguarda review | `░░░░░░░░░░` |
+| 　　↳ US1 · Create once, draw for free | ✅ concluída · validada com uma estante nova | `██████████` |
 | 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
 | 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.US1 · Create once, draw for free** | 🔎 aguarda review | Rever: 1 livro errado vai para DS2; decidir depois se o padrão deve ser `my-bookshelf/` ou a pasta atual |
+| **CV2.DS1.US2 · Know where my shelf stands** | 🧭 próxima a puxar | Planejar o painel gratuito e `check`; levar a dúvida `my-bookshelf/` versus pasta atual para a UX dos comandos |
 
 ### ✅ Fundações assentadas
 

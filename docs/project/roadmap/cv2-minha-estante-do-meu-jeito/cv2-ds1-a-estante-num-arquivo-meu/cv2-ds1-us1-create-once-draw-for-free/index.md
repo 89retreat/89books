@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US1
 level: User Story
-status: Validated
-status_reason: Navigator validou em 2026-10-28 create, draw, open, edição, proteção contra erro e página no celular
+status: Done
+status_reason: Navigator validou em 2026-10-28 create, draw, open, edição, proteção contra erro e página no celular; review sem nova dívida
 updated: 2026-10-28
 related:
   - ../index.md
@@ -16,7 +16,7 @@ related:
 
 # CV2.DS1.US1 — Create once, draw for free
 
-**Status:** Validated
+**Status:** Done
 **Type:** User Story
 
 ---
