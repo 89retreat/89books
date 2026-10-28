@@ -12,7 +12,7 @@
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
 | 　　↳ US1 · Create once, draw for free | ✅ concluída · validada com uma estante nova | `██████████` |
 | 　　↳ US2 · Know where my shelf stands | ✅ concluída | `██████████` |
-| 　　↳ US3 · Never lose an edit | 🟠 implementada · aguarda validação | `███████░░░` |
+| 　　↳ US3 · Never lose an edit | 🟣 validada · aguarda confirmação do review | `█████████░` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
 | 　　↳ US1 · Hide books from my shelf | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.US3 · Never lose an edit** | 🧪 aguarda validação | Validar histórico/restore gratuitamente e depois decidir sobre um único recreate pago de uma foto |
+| **CV2.DS1.US3 · Never lose an edit** | 🔍 review aguarda confirmação | Confirmar que não há dívida nova; depois executar coherence e Done |
 
 ### ✅ Fundações assentadas
 

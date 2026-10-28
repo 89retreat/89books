@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US3
 level: User Story
-status: Implemented
-status_reason: histórico, restore e recreate passaram em 157 testes e E2E gratuito; aguarda validação do Navigator
+status: Validated
+status_reason: Navigator recuperou e abriu a estante após histórico, restore e um recreate de uma foto; debt review sem nova dívida aguarda confirmação
 updated: 2026-10-28
 related:
   - ../index.md
@@ -15,7 +15,7 @@ related:
 
 # CV2.DS1.US3 — Never lose an edit
 
-**Status:** Implemented
+**Status:** Validated
 **Type:** User Story
 
 ---

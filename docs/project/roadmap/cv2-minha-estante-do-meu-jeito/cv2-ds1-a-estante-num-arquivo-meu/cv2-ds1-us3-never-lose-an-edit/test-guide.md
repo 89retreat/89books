@@ -46,8 +46,11 @@ size. A deliberately broken current source was saved before the selected
 valid version was restored. The page hash survived, `check` passed and the
 panel reported two versions.
 
-### Navigator — pending
+### Navigator — passed
 
-Validate the free route step by step. Then run `recreate`, first decline it,
-and decide whether to approve the displayed estimate for one photo. No full
-paid shelf is needed.
+The Navigator completed the free route step by step: initial empty history,
+changed draw, unchanged draw, metadata-only history, broken source restore and
+valid check. `recreate` was first declined with no spend; then the Navigator
+explicitly approved the one-photo run after seeing US$0.09 estimated. Actual
+cost was US$0.03. The prior source was restored, explicitly drawn and opened;
+the Navigator confirmed the shelf was correct.
