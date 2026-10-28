@@ -18,7 +18,7 @@
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa | `░░░░░░░░░░` 0/5 |
-| 　　↳ US1 · Put each book on the shelf I choose | 🟢 ativa · aguarda plano | `░░░░░░░░░░` |
+| 　　↳ US1 · Put each book on the shelf I choose | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US2 · Face out or spine, my choice | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US3 · Choose the photo that represents my shelf | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US4 · Write my own shelf titles and texts | 🟡 planejada | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US1 · Put each book on the shelf I choose** | 🧭 aberta · aguarda plano | Caracterizar mover, ordenar, criar e remover prateleiras sem ampliar a story |
+| **CV2.DS3.US1 · Put each book on the shelf I choose** | 🧭 plano aguarda aprovação | Aprovar ordem literal, operações puras e fechamento canônico sem mudar o schema |
 
 ### ✅ Fundações assentadas
 

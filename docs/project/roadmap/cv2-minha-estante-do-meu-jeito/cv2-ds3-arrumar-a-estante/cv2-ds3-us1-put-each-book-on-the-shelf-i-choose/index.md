@@ -2,7 +2,7 @@
 code: CV2.DS3.US1
 level: User Story
 status: Active
-status_reason: puxada pelo Navigator em 2026-10-28 depois da conclusão de CV2.DS2.US2; aguarda plano
+status_reason: puxada, preparada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
@@ -31,11 +31,52 @@ So that a página mostre cada livro no lugar que eu escolhi.
 Mover a entrada completa de um livro entre listas `books` muda a prateleira e
 a posição dele na página após um `draw` gratuito. Reordenar, criar ou remover
 prateleiras no arquivo também muda a página, sem catálogo, modelo ou perda de
-metadados do livro.
+metadados do livro. Uma prateleira criada pela pessoa continua regular mesmo
+quando é a última e não tem texto; só a seção intitulada “E mais livros que já
+me acompanharam” conserva o tratamento visual de fechamento.
 
-## Boundary
+## Acceptance Behavior
 
-A story foi puxada e preparada, mas ainda não tem plano aprovado. Não iniciar
-implementação. O plano deve caracterizar o comportamento já existente antes
-de decidir o mínimo que falta e incluir uma operação pura de movimento para
-uma futura interface.
+```text
+Given a book with reader and catalogue metadata in one shelf
+When I move its complete YAML entry to another shelf and run check then draw
+Then it appears in the chosen shelf and exact chosen position
+And all of its fields are preserved without network, key or cost
+```
+
+```text
+Given ordered shelf sections in shelf.yaml
+When I reorder, add or remove an empty section and redraw
+Then the page follows the authored section order
+And a custom last section without text is not mistaken for the generated closing shelf
+```
+
+```text
+Given a future UI calling the reusable core
+When it moves a book, reorders a shelf, adds a shelf or removes an empty shelf
+Then it receives a new ShelfFile without mutating the original
+And removing a non-empty shelf is rejected rather than deleting books implicitly
+```
+
+## Scope
+
+- Caracterizar a ordem literal de prateleiras e livros já existente no renderer.
+- Corrigir a detecção da prateleira final para depender também do título canônico.
+- Operações puras para mover livro, adicionar, reordenar e remover prateleira vazia.
+- Exemplos de edição do bloco YAML completo e redraw gratuito.
+- Validação numa cópia descartável, sem comparar histórico real.
+
+## Out Of Scope
+
+- Interface drag-and-drop ou novo comando de terminal.
+- Excluir livros junto com uma prateleira.
+- Escolher frente/lombada, foto em destaque, títulos ou textos; são stories seguintes.
+- Agrupar automaticamente por autor ou reescrever a organização da pessoa.
+- Alterar o formato `shelf.yaml` v1.
+
+## Validation
+
+Gratuita: numa cópia descartável, mover um livro completo para uma nova
+prateleira, reordenar as seções, desenhar e abrir; depois esvaziar e remover a
+prateleira criada. A página deve seguir o arquivo e o histórico deve registrar
+cada fonte desenhada, sem chave, catálogo ou modelo.
