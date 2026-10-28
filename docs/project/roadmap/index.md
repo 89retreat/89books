@@ -79,7 +79,7 @@ Mirror. As CVs mudam raramente.
 | Code | Capability Value | Status |
 |------|-----------------|--------|
 | [CV1](cv1-primeira-estante-viva/index.md) | A Primeira Estante Viva | Done |
-| [CV2](cv2-minha-estante-do-meu-jeito/index.md) | Minha estante, do meu jeito | Planned |
+| [CV2](cv2-minha-estante-do-meu-jeito/index.md) | Minha estante, do meu jeito | Active |
 | [CV3](cv3-a-estante-visitavel/index.md) | A Estante Visitável | Planned |
 | [CV4](cv4-a-estante-no-telegram/index.md) | A Estante no Telegram | Planned |
 

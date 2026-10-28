@@ -1,8 +1,8 @@
 ---
 code: CV2
 level: Value
-status: Planned
-status_reason: reescrita pelo Navigator em 2026-10-28; pronta para puxar a DS1
+status: Active
+status_reason: DS1 em andamento desde 2026-10-28
 updated: 2026-10-28
 related:
   - ../cv1-primeira-estante-viva/index.md
@@ -15,7 +15,7 @@ related:
 
 # CV2 — Minha estante, do meu jeito
 
-**Status:** Planned
+**Status:** Active
 
 ---
 

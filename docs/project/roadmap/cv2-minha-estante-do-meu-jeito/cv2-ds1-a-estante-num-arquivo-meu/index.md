@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1
 level: Delivery Story
-status: Planned
-status_reason: criada na reescrita da CV2 em 2026-10-28; é a primeira a puxar
+status: Active
+status_reason: TS1 puxada em 2026-10-28
 updated: 2026-10-28
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS1 — A estante num arquivo meu
 
-**Status:** Planned
+**Status:** Active
 
 ---
 
@@ -34,7 +34,7 @@ DS2 e a DS3.
 
 | Code | Story | Type | Outcome | Status |
 |------|-------|------|---------|--------|
-| CV2.DS1.TS1 | A shelf core a server could run | Technical Story | As operações da estante (gerar, desenhar, guardar versão, restaurar) ficam num núcleo que recebe dados e devolve resultado, sem perguntar nem imprimir; o comando só pergunta, confirma e mostra. A revisão passa a ter uma só forma de resposta. | Planned |
+| [CV2.DS1.TS1](cv2-ds1-ts1-a-shelf-core/index.md) | A shelf core a server could run | Technical Story | As operações da estante (gerar, desenhar, guardar versão, restaurar) ficam num núcleo que recebe dados e devolve resultado, sem perguntar nem imprimir; o comando só pergunta, confirma e mostra. A revisão passa a ter uma só forma de resposta. | Active |
 | CV2.DS1.TS2 | shelf.yaml, version 1 | Technical Story | O formato do arquivo, com `version: 1`, na ordem em que a página aparece, e uma única validação que aponta cada erro com o número da linha e nunca grava nada; testes servem de contrato do formato. | Planned |
 | CV2.DS1.US1 | Create once, draw for free | User Story | `create` gera a estante das fotos e grava o `shelf.yaml` (recusa se ele existir); `draw` redesenha o `shelf.html` em segundos, sem chamadas pagas; `open` abre a página. Uma estante da CV1 vira `shelf.yaml` sem novo reconhecimento. | Planned |
 | CV2.DS1.US2 | Know where my shelf stands | User Story | `uv run shelf` sozinho nunca gasta: mostra fotos, livros, quando o arquivo foi editado e desenhado e quantas versões há, e sugere o próximo comando; `check` aponta erros do arquivo com o número da linha. | Planned |
