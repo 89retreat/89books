@@ -43,7 +43,9 @@ hash survived. Restoring the source and drawing again was free. Running from a
 shelf directory selected the current directory; running from the repository
 root selected `my-bookshelf/`.
 
-### Navigator — pending
+### Navigator — passed
 
-Confirm that the panel is understandable, `check` is useful and the folder
-selection rule is unsurprising.
+The Navigator ran the ready panel, `check` and the current-folder route. The
+panel clearly reported 1 photo, 11 books, timestamps, zero versions and
+`open`; `check` confirmed 11 visible books on 5 shelves; the current folder
+was selected without `--folder`. The Navigator accepted all three behaviors.

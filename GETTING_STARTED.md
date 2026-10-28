@@ -82,26 +82,42 @@ seconds and does not call the model.
 
 ## Commands
 
-```bash
-uv run shelf                 # show status and the next safe command; never spends
-uv run shelf create          # create shelf.yaml once; paid and confirmed
-uv run shelf check           # list every shelf.yaml problem with its line; free
-uv run shelf draw            # redraw shelf.html; free
-uv run shelf open            # open shelf.html; free
-uv run shelf setup           # change your name or keys; free
-```
+| Command | What it does | Cost or network | Files changed |
+| --- | --- | --- | --- |
+| `uv run shelf` | Shows the selected folder, photos, books, edit/draw times, versions and next safe command. | None. | None. |
+| `uv run shelf create` | Reads the photos and creates `shelf.yaml` once. A CV1 shelf reuses its saved catalogue and pays only for a new portrait. | Paid and confirmed before the model call. | Creates `shelf.yaml` and local caches; never replaces an existing source. |
+| `uv run shelf check` | Validates `shelf.yaml` and lists every problem with its line and path. | None; no key or network. | None. |
+| `uv run shelf draw` | Draws `shelf.html` from the current `shelf.yaml`. | None; no key or network. | Creates or atomically replaces `shelf.html`. |
+| `uv run shelf open` | Opens the generated page in the default browser. | None. | None. |
+| `uv run shelf setup` | Saves your name and keys and checks whether the keys work. | Free key-check requests; no model call. | May change the local `config.toml`. |
+| `uv run shelf --help` | Shows the available commands and options. | None. | None. |
 
-Without `--folder`, the command uses the current directory when it already
-contains shelf photos or files; otherwise it uses `my-bookshelf/`. Use an
-explicit folder whenever you want to remove any ambiguity:
+### Folder and confirmation options
+
+| Option | Meaning |
+| --- | --- |
+| `--folder PATH` | Uses that shelf folder explicitly. It always wins over automatic selection. |
+| no `--folder` | Uses the current directory when it already looks like a shelf; otherwise uses `my-bookshelf/`. |
+| `create --yes` | Skips a cost confirmation you have already decided, but creation remains paid. |
+
+For example:
 
 ```bash
 uv run shelf draw --folder path/to/my-shelf
 ```
 
-`create --yes` skips the cost question when you have already decided to spend.
-The status panel and `check` never read a key, access the network or change a
-file.
+### What `--project` means
+
+`--project` is an option of `uv`, not of 89 Books. You normally do not need it.
+It is useful only when running the development copy from outside the repository:
+
+```bash
+uv run --project /path/to/89books shelf
+```
+
+This means “run `shelf` using the Python environment from `/path/to/89books`.”
+A packaged installation should let people run `shelf` without knowing about
+`uv` or `--project`.
 
 ## Troubleshooting
 

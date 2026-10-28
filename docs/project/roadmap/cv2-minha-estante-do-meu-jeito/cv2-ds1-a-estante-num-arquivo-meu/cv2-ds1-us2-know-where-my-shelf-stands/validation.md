@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -15,20 +15,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Free driver E2E on /tmp/estante-alisson-validacao-us1: ready panel showed 1 photo, 11 books, timestamps and open; touching shelf.yaml showed stale and draw; two YAML errors produced a 2-error summary and line-specific check output with exit 2 while the previous page hash survived; restore and free draw succeeded; current-folder recognition and repository my-bookshelf fallback selected the expected paths; no keys were present.
+Evidence: Navigator ran the free ready panel, check, and current-folder route on /tmp/estante-alisson-validacao-us1. The panel showed 1 photo, 11 books, edit/draw times, zero versions and open; check reported a valid file with 11 visible books on 5 shelves; running from the shelf folder selected that folder. Driver evidence also covered stale and invalid states with previous-page preservation.
 
 ## Navigator Validation
 
-Route: Run uv run shelf --folder /tmp/estante-alisson-validacao-us1, then uv run shelf check --folder /tmp/estante-alisson-validacao-us1; confirm the panel is understandable and check is useful. Then optionally cd into that folder and run uv run --project /Users/alissonvale/.mirror-journeys/vida-tecnica/89-livros shelf to confirm current-folder selection.
+Route: Completed step by step by the Navigator: status panel, check, then current-folder selection.
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: The free panel identifies the shelf path, 1 photo, 11 books, edit/draw times, zero versions, ready state and open as the next command; check says shelf.yaml is valid. Current-folder execution chooses that folder.
+Expected observation: The panel identifies the state and next gesture, check confirms the source, and current-folder execution selects that shelf.
 
-Pass condition: The Navigator understands the state and next gesture, accepts the folder rule, and observes no setup, key, confirmation, cost or file change.
+Pass condition: The Navigator understands and accepts the panel, check and folder rule with no cost or mutation.
 
-Fail condition: The panel is confusing, chooses a surprising folder, recommends the wrong verb, check omits errors or line numbers, or any command spends or changes shelf data.
+Fail condition: The panel is confusing, chooses a surprising folder, recommends the wrong verb, or check is not useful.
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

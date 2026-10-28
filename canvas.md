@@ -11,7 +11,7 @@
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
 | 　　↳ US1 · Create once, draw for free | ✅ concluída · validada com uma estante nova | `██████████` |
-| 　　↳ US2 · Know where my shelf stands | 🟠 implementada · aguarda validação | `███████░░░` |
+| 　　↳ US2 · Know where my shelf stands | 🟣 validada · aguarda confirmação do review | `█████████░` |
 | 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
 | 　　↳ US1 · Hide books from my shelf | 🟡 planejada | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.US2 · Know where my shelf stands** | 🧪 aguarda validação | Validar painel gratuito, `check` e regra de pasta atual versus `my-bookshelf/` |
+| **CV2.DS1.US2 · Know where my shelf stands** | 🔍 review aguarda confirmação | Confirmar que não há dívida nova; depois executar coherence e Done |
 
 ### ✅ Fundações assentadas
 
