@@ -6,35 +6,42 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · A Estante Cuidada e Visitável** | 🟡 planejada · depois do uso da CV1 | `░░░░░░░░░░` 0/4 |
-| ↳ **CV2.DS1 · Corrigir a estante** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
-| 　　↳ US1 · Corrigir a estante e pedir outro retrato | 🟡 planejada · antes CV1.DS2.US4 | `░░░░░░░░░░` |
-| 　　↳ TS1 · Ler as fotos em faixas melhora o reconhecimento? | ⚪ planejada · espera erros demais nas estantes dos fundadores | `░░░░░░░░░░` |
-| ↳ **CV2.DS2 · Estante visitável** | 🟡 planejada · antes CV1.DS3 | `░░░░░░░░░░` 0/2 |
-| 　　↳ US1 · Publicar minha estante no GitHub Pages | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
-| 　　↳ US2 · Ver as estantes do grupo num só lugar | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` |
-| **CV3 · A Estante no Telegram** | 🟡 planejada · antes CV2 | `░░░░░░░░░░` 0/6 |
-| ↳ **CV3.DS1 · O bot como porta** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
-| 　　↳ TS1 · Servidor mínimo para o bot e as estantes | 🟡 planejada | `░░░░░░░░░░` |
-| 　　↳ US1 · Mandar fotos ao bot e receber a estante | 🟡 planejada | `░░░░░░░░░░` |
-| 　　↳ US2 · Apresentar minha estante ao grupo | 🟡 planejada · grupo dedicado | `░░░░░░░░░░` |
-| ↳ **CV3.DS2 · Movimentos que circulam** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Marcar que comecei a ler um livro | 🟡 planejada | `░░░░░░░░░░` |
-| 　　↳ US2 · Registrar um insight durante a leitura | 🟡 planejada · compartilhar é escolha | `░░░░░░░░░░` |
-| 　　↳ TS1 · Movimentos chegam ao grupo do Telegram | 🟡 planejada | `░░░░░░░░░░` |
+| **CV2 · Minha estante, do meu jeito** | 🟡 planejada · fecha quando um fundador ajustar a própria estante | `░░░░░░░░░░` 0/13 |
+| ↳ **CV2.DS1 · A estante num arquivo meu** | 🟡 planejada · a primeira a puxar | `░░░░░░░░░░` 0/5 |
+| 　　↳ TS1 · A shelf core a server could run | 🟡 planejada · núcleo sem terminal | `░░░░░░░░░░` |
+| 　　↳ TS2 · shelf.yaml, version 1 | 🟡 planejada · formato e validação com linha | `░░░░░░░░░░` |
+| 　　↳ US1 · Create once, draw for free | 🟡 planejada · `create`, `draw`, `open` | `░░░░░░░░░░` |
+| 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
+| 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
+| ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
+| 　　↳ US1 · Hide books from my shelf | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚪ planejada · só com erros demais | `░░░░░░░░░░` |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
+| 　　↳ US1 · Put each book on the shelf I choose | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US2 · Face out or spine, my choice | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US3 · Choose the photo that represents my shelf | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US4 · Write my own shelf titles and texts | 🟡 planejada | `░░░░░░░░░░` |
+| 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
+| **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
+| ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
+| **CV4 · A Estante no Telegram** | 🟡 planejada · antes CV3 · porta em aberto | `░░░░░░░░░░` 0/6 |
+| ↳ **CV4.DS1 · O bot como porta** | 🟡 planejada · pode virar aplicação web | `░░░░░░░░░░` 0/3 |
+| ↳ **CV4.DS2 · Movimentos que circulam** | 🟡 planejada | `░░░░░░░░░░` 0/3 |
 
 ## Decisões em aberto
 
 | Decisão | Estado | Destrava |
 | --- | --- | --- |
-| **Publicação no GitHub Pages** · repositório da org ou pessoal | 🟡 aberta · repo agora público | CV2.DS2 |
+| **A porta para quem não usa o terminal** · bot do Telegram ou aplicação web | 🟡 aberta · com quem paga e onde ficam as fotos | CV4 · gatilho: o primeiro amigo não técnico |
+| **Publicação no GitHub Pages** · repositório da org ou pessoal | 🟡 aberta · repo agora público | CV3.DS1 |
 | **Navigator dos colaboradores** | 🟡 aberta · padrão provisório do Ariad | entrada de colaboradores |
 
 ## Próximas opções de trabalho
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🧭 proposta em avaliação | Confirmar a reorganização: `shelf.yaml` como fonte, gerar e desenhar separados, backup versionado antes de refazer |
+| **CV2.DS1.TS1 · A shelf core a server could run** | 🧭 primeira a puxar | Puxar e planejar: separar o núcleo do terminal antes de criar o `shelf.yaml` |
 
 ### ✅ Fundações assentadas
 
@@ -55,11 +62,12 @@
 | --- | --- | --- |
 | Afinidade entre estantes | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Perguntas na estante e nos livros | ⚪ sinal guardado | `░░░░░░░░░░` |
-| Várias estantes e lugares da casa · organização autoral | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Várias estantes e lugares da casa | ⚪ sinal guardado · organização autoral entrou na CV2 | `░░░░░░░░░░` |
 | História da estante física · estantes que se juntam | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Integrações · Readwise, Kindle highlights, Goodreads | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Fichamento e resenhas | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Print do Kindle e seleção manual como portas de entrada | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Sinalizar o que a IA não teve certeza | ⚪ sinal guardado | `░░░░░░░░░░` |
 | Movimentos no WhatsApp do grupo · Mini Apps do Telegram | ⚪ sinal guardado | `░░░░░░░░░░` |
+| Juntar fotos novas a uma estante editada | ⚪ depois da CV2 · até lá, `recreate` | `░░░░░░░░░░` |
 | Estantes públicas · leitores além do grupo | ⚪ depois do dogfood | `░░░░░░░░░░` |

@@ -39,6 +39,6 @@ estante do Lula.
 
 A correção pelo `books.yaml`, o novo retrato e a medição da leitura em faixas
 (antes US4 e TS1) foram para a
-[CV2.DS1](../../cv2-a-estante-visitavel/cv2-ds1-corrigir-a-estante/index.md)
+[CV2](../../cv2-minha-estante-do-meu-jeito/index.md)
 na reorganização de 2026-10-27, que fechou a CV1 em torno da capacidade de ir
 do clone à estante.

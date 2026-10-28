@@ -1,0 +1,48 @@
+---
+code: CV2.DS1
+level: Delivery Story
+status: Planned
+status_reason: criada na reescrita da CV2 em 2026-10-28; é a primeira a puxar
+updated: 2026-10-28
+related:
+  - ../index.md
+  - ../../../decisions/records/2026-10-28T1400Z-o-arquivo-da-estante-como-fonte.md
+  - ../../../decisions/records/2026-10-28T1400Z-terminal-como-cliente-fino.md
+---
+
+[< CV2](../index.md)
+
+# CV2.DS1 — A estante num arquivo meu
+
+**Status:** Planned
+
+---
+
+## Outcome
+
+O `my-bookshelf/shelf.yaml` é a fonte da estante. Gerar a partir das fotos
+acontece uma vez e grava tudo nele: livros, retrato, prateleiras e a foto em
+destaque. Desenhar a página a partir dele é grátis e leva segundos. A pessoa
+sabe sempre em que pé está, vê os erros do arquivo com o número da linha e
+nunca perde uma edição: todo comando que reescreve o arquivo guarda uma
+versão antes.
+
+Nenhuma edição nova da estante entra nesta DS. Ela prepara o terreno para a
+DS2 e a DS3.
+
+## Candidate Stories
+
+| Code | Story | Type | Outcome | Status |
+|------|-------|------|---------|--------|
+| CV2.DS1.TS1 | A shelf core a server could run | Technical Story | As operações da estante (gerar, desenhar, guardar versão, restaurar) ficam num núcleo que recebe dados e devolve resultado, sem perguntar nem imprimir; o comando só pergunta, confirma e mostra. A revisão passa a ter uma só forma de resposta. | Planned |
+| CV2.DS1.TS2 | shelf.yaml, version 1 | Technical Story | O formato do arquivo, com `version: 1`, na ordem em que a página aparece, e uma única validação que aponta cada erro com o número da linha e nunca grava nada; testes servem de contrato do formato. | Planned |
+| CV2.DS1.US1 | Create once, draw for free | User Story | `create` gera a estante das fotos e grava o `shelf.yaml` (recusa se ele existir); `draw` redesenha o `shelf.html` em segundos, sem chamadas pagas; `open` abre a página. Uma estante da CV1 vira `shelf.yaml` sem novo reconhecimento. | Planned |
+| CV2.DS1.US2 | Know where my shelf stands | User Story | `uv run shelf` sozinho nunca gasta: mostra fotos, livros, quando o arquivo foi editado e desenhado e quantas versões há, e sugere o próximo comando; `check` aponta erros do arquivo com o número da linha. | Planned |
+| CV2.DS1.US3 | Never lose an edit | User Story | `draw` guarda uma versão em `history/` quando o arquivo mudou; `recreate` guarda uma versão, confirma o custo e refaz das fotos; `history` lista as versões e `restore` devolve uma, guardando antes a atual. Mantém as 20 mais recentes. | Planned |
+
+## Done Condition
+
+O Navigator gera a estante uma vez com `create`, edita o `shelf.yaml` à mão
+(por exemplo, apaga um livro ou muda um título), roda `draw` e vê a mudança
+em segundos, sem custo. Estraga o arquivo de propósito, vê o erro com a linha,
+e volta a uma versão guardada com `restore`.

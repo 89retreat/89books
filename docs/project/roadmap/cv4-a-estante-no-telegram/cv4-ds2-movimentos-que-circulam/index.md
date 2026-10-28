@@ -1,14 +1,14 @@
 ---
-code: CV3.DS2
+code: CV4.DS2
 level: Delivery Story
 status: Planned
 status_reason: movida da CV1 (era CV1.DS4) pela ES-002
-updated: 2026-10-26
+updated: 2026-10-28
 ---
 
-[< CV3](../index.md)
+[< CV4](../index.md)
 
-# CV3.DS2 — Movimentos que circulam
+# CV4.DS2 — Movimentos que circulam
 
 **Status:** Planned
 
@@ -28,9 +28,9 @@ concreta para conversar.
 
 | Code | Story | Type | Outcome | Status |
 |------|-------|------|---------|--------|
-| CV3.DS2.US1 | Marcar que comecei a ler um livro | User Story | Marco um livro da minha estante (ou um novo) como em leitura; ele aparece em destaque na estante. | Planned |
-| CV3.DS2.US2 | Registrar um insight durante a leitura | User Story | Mando um insight curto ao bot (texto, e talvez foto de um trecho), ligado a um livro em leitura, e escolho se vai ao grupo; o insight fica junto ao livro na minha estante. | Planned |
-| CV3.DS2.TS1 | Movimentos chegam ao grupo do Telegram | Technical Story | Cada "comecei a ler" e cada insight que a pessoa escolhe compartilhar gera uma mensagem no grupo dedicado com quem, qual livro, o conteúdo e o link da estante. | Planned |
+| CV4.DS2.US1 | Marcar que comecei a ler um livro | User Story | Marco um livro da minha estante (ou um novo) como em leitura; ele aparece em destaque na estante. | Planned |
+| CV4.DS2.US2 | Registrar um insight durante a leitura | User Story | Mando um insight curto ao bot (texto, e talvez foto de um trecho), ligado a um livro em leitura, e escolho se vai ao grupo; o insight fica junto ao livro na minha estante. | Planned |
+| CV4.DS2.TS1 | Movimentos chegam ao grupo do Telegram | Technical Story | Cada "comecei a ler" e cada insight que a pessoa escolhe compartilhar gera uma mensagem no grupo dedicado com quem, qual livro, o conteúdo e o link da estante. | Planned |
 
 ## Done Condition
 

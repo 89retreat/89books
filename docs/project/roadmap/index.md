@@ -79,13 +79,37 @@ Mirror. As CVs mudam raramente.
 | Code | Capability Value | Status |
 |------|-----------------|--------|
 | [CV1](cv1-primeira-estante-viva/index.md) | A Primeira Estante Viva | Done |
-| [CV2](cv2-a-estante-visitavel/index.md) | A Estante Cuidada e Visitável | Planned |
-| [CV3](cv3-a-estante-no-telegram/index.md) | A Estante no Telegram | Planned |
+| [CV2](cv2-minha-estante-do-meu-jeito/index.md) | Minha estante, do meu jeito | Planned |
+| [CV3](cv3-a-estante-visitavel/index.md) | A Estante Visitável | Planned |
+| [CV4](cv4-a-estante-no-telegram/index.md) | A Estante no Telegram | Planned |
 
 Renumeração de 2026-10-27: a CV1 passou a ser a capacidade de ir do clone à
 estante. A antiga CV1.DS3 virou CV2.DS2; a antiga CV1.DS2.US4 e a CV1.DS2.TS1
 viraram CV2.DS1.US1 e CV2.DS1.TS1; a antiga CV2 (Telegram) virou CV3.
 Registros de stories concluídas antes dessa data mantêm os códigos antigos.
+
+Renumeração de 2026-10-28: a CV2 passou a ser "Minha estante, do meu jeito",
+ajustar a estante editando o `shelf.yaml`. A antiga CV2.DS1 (corrigir) virou
+CV2.DS2, e a sua TS1 virou CV2.DS2.TS1; o "pedir outro retrato" da antiga
+CV2.DS1.US1 virou CV2.DS3.US5. A antiga CV2.DS2 (estante visitável) virou
+CV3.DS1, numa CV3 própria. O Telegram, antes CV3, virou CV4.
+
+## Product Path
+
+O roadmap segue o valor para a comunidade, em círculos que se abrem:
+
+1. **Fundadores, todos técnicos** (CV1, CV2): pelo terminal, cada um gera e
+   ajusta a própria estante.
+2. **Amigos técnicos**: o mesmo caminho, sem mudança de produto.
+3. **Estantes visitáveis por link** (CV3): quem recebe não precisa ser
+   técnico.
+4. **Pessoas não técnicas** (CV4): uma porta sem terminal, pelo bot do
+   Telegram ou por uma aplicação web, em decisão aberta.
+
+O terminal é um cliente fino sobre um núcleo que um servidor também roda: o
+que se constrói nos círculos 1 e 2 é a base do círculo 4. Ver a
+[direção de produto](../../product/direction.md) e
+[o terminal como cliente fino](../decisions/records/2026-10-28T1400Z-terminal-como-cliente-fino.md).
 
 ## How to Find Work
 

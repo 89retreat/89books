@@ -56,14 +56,50 @@ uv run pytest
 # run lint or formatting checks
 uv run ruff check . && uv run ruff format --check .
 
-# generate a shelf from a folder of photos
-uv run shelf <photos-folder>
+# generate a shelf from the photos in my-bookshelf/ (CV1 behaviour)
+uv run shelf
 ```
+
+A CV2 troca esse comando único por um comando por situação (`create`,
+`draw`, `check`, `recreate`, `history`, `restore`, `open`, `setup`), sobre o
+`my-bookshelf/shelf.yaml`. A tabela está na
+[CV2](../project/roadmap/cv2-minha-estante-do-meu-jeito/index.md#commands).
+Atualize este bloco quando cada comando chegar.
 
 O spike da TS1 continua em `spikes/reconhecimento/`, com comandos próprios
 no seu `README.md`. A chave do OpenRouter nunca entra no
 repositório nem no HTML gerado: vem do ambiente ou de um arquivo de
 configuração local ignorado pelo git.
+
+## Núcleo e terminal
+
+Desde 2026-10-28, o terminal é um cliente fino sobre um núcleo que um
+servidor também vai rodar
+([decisão](../project/decisions/records/2026-10-28T1400Z-terminal-como-cliente-fino.md)).
+Regras para quem mexer no código da estante:
+
+- **Lógica de produto mora no núcleo.** Funções do núcleo recebem dados e
+  devolvem resultado; não chamam `print`, `input` ou `getpass`, não leem o
+  ambiente e não decidem a pasta. Progresso e mensagens saem por um parâmetro
+  (`log`, `progress`) que o chamador fornece.
+- **O comando só pergunta, confirma e mostra.** O módulo do terminal
+  (`cli`, `setup`) traduz argumentos em chamadas ao núcleo e respostas em
+  mensagens. Se uma regra aparecer ali, mova para o núcleo.
+- **Edições são operações com nome** no núcleo (esconder, pôr de frente,
+  mover, trocar capa, reescrever texto), testadas como funções.
+- **Investir no terminal só no que ele precisa:** mensagens claras, o painel,
+  ajuda. Nada que só sirva ao terminal (validação sofisticada de YAML,
+  atalhos de edição, plugins de editor). Na dúvida, pergunte: isso passa para
+  um servidor?
+- **O `shelf.yaml` é um contrato.** Tem `version`, uma única função de
+  validação e testes que descrevem o formato. Mudou o formato, suba a versão
+  e converta os arquivos antigos sem perder edições.
+- **Quem gasta pergunta antes; quem reescreve guarda antes.** Comando que faz
+  chamada paga mostra custo e tempo e pede confirmação (exceto com `--yes`
+  ou fora de um terminal interativo). Comando que reescreve o `shelf.yaml`
+  guarda uma versão em `history/` e diz onde. O comando sem verbo nunca gasta.
+
+A review de cada story da CV2 em diante confere essas regras.
 
 ## Verification
 
@@ -75,7 +111,11 @@ Trabalho verificado neste projeto significa:
   que a visita acontece no celular;
 - para mensagens no Telegram, validação num grupo de teste antes do grupo real;
 - nunca usar fotos ou dados reais do grupo em fixtures públicas ou commits sem
-  consentimento da pessoa.
+  consentimento da pessoa;
+- para comandos pagos, testar com subconjuntos pequenos (uma foto, ou os
+  livros já salvos de uma estante) e informar o gasto; nunca refazer uma
+  estante inteira só para conferir uma mudança que não toca o reconhecimento;
+- comparar versões do `history/` de um fundador só com o consentimento dele.
 
 ## Documentation Rules
 
@@ -85,6 +125,8 @@ Superfícies de documentação:
   muda.
 - `docs/project/briefing.md`: premissas estáveis.
 - `docs/product/principles.md`: princípios de produto que orientam trade-offs.
+- `docs/product/direction.md`: direção de produto (para quem, por que caminho)
+  e inclinações de design. Revise quando a evidência mudar.
 - `docs/project/decisions/records/`: uma decisão por arquivo.
 - `docs/project/roadmap/`: CVs, Delivery Stories e stories, com status no
   próprio item.
@@ -154,6 +196,8 @@ Regras locais:
 - A aprovação do plano é registrada no próprio `plan.md` (quem, quando).
 - Stories que tocam a experiência de leitura (estante, movimentos, mensagens)
   devem citar no plano qual princípio de produto estão preservando.
+- Stories que mudam o código da estante dizem no plano o que fica no núcleo e
+  o que fica no terminal.
 
 ## Technical Debt Tracking
 

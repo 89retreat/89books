@@ -51,19 +51,15 @@ capacidade verificável: o que não serve a ela foi para outras CVs.
 
 ## Scope
 
-Fora desta CV:
+Fora desta CV (códigos da renumeração de 2026-10-28):
 
-- corrigir a estante, pedir outro retrato e medir a leitura em faixas:
-  [CV2.DS1](../cv2-a-estante-visitavel/cv2-ds1-corrigir-a-estante/index.md);
-- publicar no GitHub Pages e reunir as estantes do grupo:
-  [CV2.DS2](../cv2-a-estante-visitavel/cv2-ds2-estante-visitavel/index.md);
+- corrigir e arrumar a estante editando um arquivo, pedir outro retrato e
+  medir a leitura em faixas:
+  [CV2](../cv2-minha-estante-do-meu-jeito/index.md);
+- publicar por link e reunir as estantes do grupo:
+  [CV3](../cv3-a-estante-visitavel/index.md);
 - bot do Telegram, grupo dedicado e movimentos:
-  [CV3](../cv3-a-estante-no-telegram/index.md);
-- print do Kindle, servidor, contas, login, feed, várias estantes por pessoa,
-  afinidade entre leitores, importações.
-
-A primeira estante pode sair com alguns erros de leitura: "pronta para
-compartilhar" quer dizer gerada e bonita, não perfeita.
+  [CV4](../cv4-a-estante-no-telegram/index.md).
 
 ## Acceptance / Done Condition
 

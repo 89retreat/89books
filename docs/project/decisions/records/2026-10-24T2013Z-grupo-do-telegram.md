@@ -7,8 +7,8 @@ deciders:
   - grupo do dogfood
 supersedes:
 related:
-  - CV3.DS1
-  - CV3.DS2
+  - CV4.DS1
+  - CV4.DS2
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -24,7 +24,7 @@ para isso? Quem administra o bot?
 **Um grupo dedicado**, criado para o 89 Livros, com o bot como membro. O bot
 publica ali só o que a pessoa escolhe compartilhar; as respostas são conversa
 entre as pessoas e o bot não participa. Quem administra o bot e o grupo se
-define ao planejar a CV3.
+define ao planejar a CV4.
 
 ## Rationale
 
@@ -45,8 +45,8 @@ amizade e deixa observar se os movimentos geram conversa.
 
 - O bot vive em dois lugares: a conversa privada com cada pessoa e o grupo
   dedicado.
-- Apresentar a estante ao grupo é um gesto da pessoa (CV3.DS1.US2).
+- Apresentar a estante ao grupo é um gesto da pessoa (CV4.DS1.US2).
 
 ## Review Trigger
 
-Retrospectiva da CV3, ou o grupo pedindo os movimentos no WhatsApp.
+Retrospectiva da CV4, ou o grupo pedindo os movimentos no WhatsApp.

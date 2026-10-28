@@ -8,7 +8,7 @@ supersedes:
 related:
   - CV1.DS1.TS2
   - CV1.DS2
-  - CV3.DS1.TS1
+  - CV4.DS1.TS1
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -17,7 +17,7 @@ related:
 ## Question
 
 Com que tecnologia o MVP da CV1 é construído, quanto custa por estante e de
-onde vêm os metadados dos livros? E o que fica registrado para a CV3, que
+onde vêm os metadados dos livros? E o que fica registrado para a CV4, que
 precisa de servidor?
 
 ## Decision
@@ -42,7 +42,7 @@ precisa de servidor?
 - O código do spike (`spikes/reconhecimento/`) é a base, reescrito como
   projeto com testes; o spike continua descartável.
 
-**CV3 (direção, a rever ao planejar):** Django + HTMX servindo o webhook do
+**CV4 (direção, a rever ao planejar):** Django + HTMX servindo o webhook do
 bot e as estantes, SQLite e fotos num volume, fila de reconhecimento no
 próprio banco, uma máquina no Fly.io em São Paulo e deploy pelo GitHub
 Actions. Foi a primeira proposta desta decisão, antes da ES-002.
@@ -64,7 +64,7 @@ Actions. Foi a primeira proposta desta decisão, antes da ES-002.
   soma uma segunda stack e uma etapa de build ao fluxo de quem roda.
 - **Notebook**: ruim de compartilhar e de testar.
 - **Django + HTMX no Fly.io**: necessário quando houver bot; guardado para a
-  CV3.
+  CV4.
 - **TypeScript full-stack**: combina com parte dos colaboradores, mas reescreve
   o spike.
 
@@ -81,10 +81,20 @@ Actions. Foi a primeira proposta desta decisão, antes da ES-002.
   `spikes/reconhecimento/segunda_fonte.py` mede a cobertura com uma chave
   gratuita (`GOOGLE_BOOKS_API_KEY`). Medir antes da CV1.DS2.US2, que cuida dos
   livros sem capa.
-- A CV1.DS1.TS3 (esqueleto implantado) foi descartada; a CV3.DS1.TS1 retoma o
+- A CV1.DS1.TS3 (esqueleto implantado) foi descartada; a CV4.DS1.TS1 retoma o
   servidor quando chegar a hora.
+
+## Revisão de 2026-10-28
+
+O "arquivo de livros editável" e o cache que deixaria corrigir em segundos
+não chegaram a existir na CV1: cada rodada refazia tudo. A
+[CV2](../../roadmap/cv2-minha-estante-do-meu-jeito/index.md) os entrega como o
+`shelf.yaml`, fonte da estante, conforme
+[o arquivo da estante como fonte](2026-10-28T1400Z-o-arquivo-da-estante-como-fonte.md).
+O custo medido ao fim da CV1 foi de cerca de US$ 0,17 a 0,18 por estante de
+sete fotos, com a revisão e o Google Books incluídos.
 
 ## Review Trigger
 
-Início da CV3, ou o HTML autocontido ficando pesado demais para mandar por
+Início da CV4, ou o HTML autocontido ficando pesado demais para mandar por
 mensagem.

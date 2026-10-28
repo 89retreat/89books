@@ -29,6 +29,7 @@ Before meaningful work, read:
 
 - `docs/project/briefing.md`
 - `docs/product/principles.md`
+- `docs/product/direction.md`, for the product path and design inclinations
 - `docs/process/development-guide.md`
 - `docs/project/roadmap/index.md`, then the relevant CV and Delivery Story
 - `docs/project/decisions/index.md`, then open or relevant records in `records/`

@@ -6,8 +6,8 @@ deciders:
   - Navigator (Alisson)
 supersedes:
 related:
-  - CV3.DS2.US2
-  - CV3.DS2.TS1
+  - CV4.DS2.US2
+  - CV4.DS2.TS1
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -22,7 +22,7 @@ cada registro?
 
 **Compartilhar é sempre uma escolha, a cada registro.** O bot pergunta se o
 insight vai ao grupo dedicado ou fica só na estante da pessoa. O padrão da
-pergunta (compartilhar ou só para mim) se decide ao planejar a CV3.DS2.US2.
+pergunta (compartilhar ou só para mim) se decide ao planejar a CV4.DS2.US2.
 
 ## Rationale
 
@@ -37,8 +37,8 @@ conversa em particular com o bot, e só o que ela escolhe chega ao grupo.
 
 ## Consequences
 
-- A CV3.DS2.US2 inclui a pergunta de compartilhamento.
+- A CV4.DS2.US2 inclui a pergunta de compartilhamento.
 
 ## Review Trigger
 
-Planejamento da CV3.DS2.US2.
+Planejamento da CV4.DS2.US2.

@@ -6,8 +6,8 @@ deciders:
   - Navigator (Alisson), por delegação ao Driver em cadência accelerated; aceite na validação da CV1.DS1.TS2
 supersedes:
 related:
-  - CV2.DS2
   - CV3.DS1
+  - CV4.DS1
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -25,9 +25,9 @@ da pessoa. Ela decide se manda o arquivo a alguém, se publica um link no
 GitHub Pages, as duas coisas ou nenhuma. O link usa um endereço difícil de
 adivinhar; quem o tiver vê a estante.
 
-**Na CV3**, a identidade vem do Telegram: quem conversa com o bot é
+**Na CV4**, a identidade vem do Telegram: quem conversa com o bot é
 identificado pelo ID do Telegram, e o acesso pode se apoiar numa lista de
-membros ou no grupo dedicado. Decidir ao planejar a CV3.
+membros ou no grupo dedicado. Decidir ao planejar a CV4.
 
 ## Rationale
 
@@ -42,13 +42,13 @@ membros ou no grupo dedicado. Decidir ao planejar a CV3.
 
 - **Arquivo ou link, à escolha da pessoa, sem login** (escolhida para a CV1).
 - **Link de uso único enviado pelo bot, com lista de membros**: proposta
-  inicial da TS2; volta a fazer sentido na CV3.
+  inicial da TS2; volta a fazer sentido na CV4.
 - **Link mágico por e-mail** e **widget de login do Telegram**: descartados.
 - **Página protegida por senha**: dá falsa segurança num HTML estático.
 
 ## Consequences
 
-- A CV2.DS2.US1 publica no GitHub Pages só sob comando explícito.
+- A CV3.DS1.US1 publica no GitHub Pages só sob comando explícito.
 - Onde publicar (repositório da org 89retreat ou repositório pessoal) está em
   [publicação no GitHub Pages](2026-10-26T1830Z-publicacao-no-github-pages.md).
 - O HTML não deve incluir nada além do que a pessoa vê: sem a chave, sem
@@ -60,7 +60,7 @@ O Navigator definiu que o arquivo HTML é um artefato temporário, para a
 validação entre os fundadores. Quando o produto sair do grupo de fundadores,
 a estante será compartilhada sempre por URL. Consequências:
 
-- O GitHub Pages da CV2.DS2 é o primeiro passo rumo ao compartilhamento por
+- O GitHub Pages da CV3.DS1 é o primeiro passo rumo ao compartilhamento por
   URL, não uma alternativa equivalente ao arquivo.
 - A página pode depender de JavaScript; a pré-visualização do Mac e a do
   WhatsApp não são critério de aceite.
@@ -69,4 +69,4 @@ a estante será compartilhada sempre por URL. Consequências:
 
 ## Review Trigger
 
-Início da CV3, ou estantes que as pessoas queiram mostrar só a alguns.
+Início da CV4, ou estantes que as pessoas queiram mostrar só a alguns.

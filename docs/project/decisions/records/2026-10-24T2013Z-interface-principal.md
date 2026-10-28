@@ -8,7 +8,7 @@ supersedes:
 related:
   - CV1.DS1.TS2
   - CV1.DS2
-  - CV3.DS1
+  - CV4.DS1
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
 ---
 
@@ -29,10 +29,10 @@ precisa instalar ou aprender.
 do OpenRouter e roda um script Python, que gera um HTML autocontido da sua
 estante. Não há web app, bot nem servidor.
 
-**CV3: o Telegram como porta.** A entrada e os movimentos passam para o bot
+**CV4: o Telegram como porta.** A entrada e os movimentos passam para o bot
 do Telegram; a estante continua sendo uma página, que abre também no
 navegador comum. A forma está descrita na
-[CV3](../../roadmap/cv3-a-estante-no-telegram/index.md).
+[CV4](../../roadmap/cv4-a-estante-no-telegram/index.md).
 
 ## Rationale
 
@@ -51,7 +51,7 @@ navegador comum. A forma está descrita na
 ## Options Considered
 
 - **Script local que gera HTML** (escolhida para a CV1).
-- **Bot como porta, estante como página** (escolhida para a CV3): menor
+- **Bot como porta, estante como página** (escolhida para a CV4): menor
   atrito para quem não programa; exige servidor.
 - **Web app com bot só para enviar**: proposta inicial da TS2; a revisão no
   web app perdeu o motivo quando a revisão obrigatória saiu.
@@ -60,10 +60,19 @@ navegador comum. A forma está descrita na
 
 ## Consequences
 
-- A CV1 se organiza em torno do script (CV1.DS2) e do compartilhamento
-  (CV2.DS2). A CV1.DS1.TS3 (esqueleto implantado) foi descartada.
-- O bot, o grupo dedicado e os movimentos vão para a CV3.
-- O código do script deve ficar reaproveitável pelo servidor da CV3.
+- A CV1 se organiza em torno do script (CV1.DS2); o compartilhamento por
+  link ficou na CV3.DS1. A CV1.DS1.TS3 (esqueleto implantado) foi descartada.
+- O bot, o grupo dedicado e os movimentos vão para a CV4.
+- O código do script deve ficar reaproveitável pelo servidor da CV4.
+
+## Revisão de 2026-10-28
+
+Os códigos seguem a renumeração de 2026-10-28 (o Telegram é a CV4). Duas
+decisões novas desdobram esta: o código do script reaproveitável pelo
+servidor virou regra em
+[o terminal como cliente fino](2026-10-28T1400Z-terminal-como-cliente-fino.md),
+e o Telegram como porta voltou a ser uma pergunta em
+[a porta para quem não usa o terminal](2026-10-28T1400Z-a-porta-para-quem-nao-usa-o-terminal.md).
 
 ## Review Trigger
 
