@@ -14,7 +14,7 @@
 | 　　↳ US2 · Know where my shelf stands | ✅ concluída | `██████████` |
 | 　　↳ US3 · Never lose an edit | ✅ concluída | `██████████` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
-| 　　↳ US1 · Hide books from my shelf | 🟢 ativa · aguarda plano | `░░░░░░░░░░` |
+| 　　↳ US1 · Hide books from my shelf | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US2 · Fix titles, authors and covers | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚪ planejada · só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS2.US1 · Hide books from my shelf** | 🧭 aberta · aguarda plano | Planejar `hidden: true` sem apagar o livro do arquivo, página futura ou histórico |
+| **CV2.DS2.US1 · Hide books from my shelf** | 🧭 plano aguarda aprovação | Aprovar filtro visual, contagens, histórico e operações puras hide/show |
 
 ### ✅ Fundações assentadas
 

@@ -2,7 +2,7 @@
 code: CV2.DS2
 level: Delivery Story
 status: Active
-status_reason: US1 puxada em 2026-10-28 após as cinco stories da DS1; correção usa shelf.yaml e histórico já existentes
+status_reason: US1 puxada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
