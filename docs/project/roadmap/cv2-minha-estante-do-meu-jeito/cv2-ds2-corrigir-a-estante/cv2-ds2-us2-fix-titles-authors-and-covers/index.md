@@ -2,7 +2,7 @@
 code: CV2.DS2.US2
 level: User Story
 status: Active
-status_reason: puxada em 2026-10-28; aguarda preparação e plano aprovado pelo Navigator
+status_reason: puxada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
@@ -29,11 +29,52 @@ So that a página mostre a minha estante, sem uma nova leitura paga das fotos.
 ## Outcome
 
 A pessoa corrige `title`, `authors` e `known_as`, ou escolhe `cover` como imagem
-na pasta, URL ou `none`; `draw` mostra a correção gratuitamente. Imagens locais
-muito grandes são recusadas com um aviso claro. A fonte e o histórico preservam
-a edição.
+na pasta, URL HTTPS ou `none`; `check` valida e `draw` mostra a correção sem
+catálogo, chave ou custo. Uma imagem local segura é redimensionada, perde EXIF
+e vira parte do HTML sem expor caminho local. Arquivos maiores que 5 MiB ou 25
+megapixels são recusados com um aviso claro. A fonte e o histórico preservam a
+edição.
 
-## Boundary
+## Acceptance Behavior
 
-A story foi aberta, não planejada. Não iniciar implementação até o Navigator
-aprovar um plano.
+```text
+Given a misread title or author in shelf.yaml
+When I correct title, authors and known_as and run check then draw
+Then the page uses exactly my corrected reader-facing data
+And no catalogue, model, key or network request is used
+```
+
+```text
+Given a face-out book
+When cover is an HTTPS URL, `none`, or a safe image inside the shelf folder
+Then draw respectively uses the URL, shows a spine, or embeds a sanitized image
+And the HTML contains no local path or EXIF
+```
+
+```text
+Given a missing, outside-folder, unsupported or oversized local cover
+When I run check or draw
+Then I get a book-specific clear error
+And the previous page and draw marker remain unchanged
+```
+
+## Scope
+
+- Correção gratuita de título, autores e nome da lombada.
+- `cover` com HTTPS, `none` ou caminho local confinado à pasta da estante.
+- Imagem local até 5 MiB e 25 MP, convertida para JPEG com lado máximo 1000.
+- Operações puras de correção para uma futura interface.
+- Validação compartilhada por `check` e `draw`, preservação atômica e docs.
+
+## Out Of Scope
+
+- Buscar uma nova capa em catálogos ou na web.
+- Baixar e incorporar a URL durante `draw`; o navegador a carrega ao abrir.
+- Corrigir reconhecimento automaticamente ou reler fotos.
+- Mover, esconder ou virar livros de frente.
+- Migrar o formato v1 ou comparar históricos reais sem consentimento.
+
+## Validation
+
+Gratuita: corrigir um livro conhecido, testar `cover: none` e uma imagem local
+pequena numa cópia descartável. Casos grandes/inseguros usam fixtures sintéticas.

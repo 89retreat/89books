@@ -15,7 +15,7 @@
 | 　　↳ US3 · Never lose an edit | ✅ concluída | `██████████` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟢 ativa | `███░░░░░░░` 1/3 |
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
-| 　　↳ US2 · Fix titles, authors and covers | 🟢 ativa · aguarda plano | `░░░░░░░░░░` |
+| 　　↳ US2 · Fix titles, authors and covers | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
 | ↳ **CV2.DS3 · Arrumar a estante** | 🟡 planejada | `░░░░░░░░░░` 0/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | 🟡 planejada | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS2.US2 · Fix titles, authors and covers** | 🧭 aberta · aguarda plano | Corrigir dados e capas no YAML sem nova leitura paga das fotos |
+| **CV2.DS2.US2 · Fix titles, authors and covers** | 🧭 plano aguarda aprovação | Aprovar identidade literal, capas HTTPS/none/local e limites seguros sem rede |
 
 ### ✅ Fundações assentadas
 

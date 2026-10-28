@@ -2,7 +2,7 @@
 code: CV2.DS2
 level: Delivery Story
 status: Active
-status_reason: US1 concluída; US2 puxada em 2026-10-28; TS1 estacionada até erros de leitura justificarem a medição
+status_reason: US1 concluída; US2 puxada e planejada em 2026-10-28; TS1 estacionada até erros justificarem a medição
 updated: 2026-10-28
 related:
   - ../index.md
