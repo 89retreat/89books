@@ -1,8 +1,11 @@
+import os
+from datetime import datetime
 from pathlib import Path
 
 import pytest
 
 from shelf import cli
+from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection, dump_shelf
 from tests.test_setup import FakeTerminal, google, openrouter
 
 
@@ -77,7 +80,116 @@ def test_without_a_verb_nothing_is_asked_or_spent(tmp_path, monkeypatch):
     code, calls = run([], terminal)
 
     assert code == 0 and calls == [] and terminal.questions == []
+    assert f"Shelf: {tmp_path / 'my-bookshelf'}" in terminal.text
+    assert "Photos: 0" in terminal.text and "Next:" in terminal.text
     assert "create" in terminal.text.lower()
+
+
+def test_folder_resolution_prefers_explicit_then_current_shelf_then_fallback(tmp_path):
+    current = tmp_path / "current"
+    current.mkdir()
+    explicit = tmp_path / "explicit"
+    assert cli.resolve_folder(explicit, current) == explicit
+
+    (current / "shelf.yaml").write_text("source")
+    assert cli.resolve_folder(None, current) == current
+    (current / "shelf.yaml").unlink()
+    (current / "photo.jpeg").write_bytes(b"photo")
+    assert cli.resolve_folder(None, current) == current
+    (current / "photo.jpeg").unlink()
+
+    assert cli.resolve_folder(None, current) == current / "my-bookshelf"
+    named = tmp_path / "my-bookshelf"
+    named.mkdir()
+    assert cli.resolve_folder(None, named) == named
+
+
+def test_status_panel_shows_ready_counts_dates_versions_and_next_open(tmp_path, monkeypatch):
+    folder = tmp_path / "shelf"
+    folder.mkdir()
+    (folder / "photo.jpg").write_bytes(b"photo")
+    source = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[ShelfBook(title="Visível"), ShelfBook(title="Oculto", hidden=True)],
+            )
+        ],
+    )
+    (folder / "shelf.yaml").write_text(dump_shelf(source))
+    (folder / "shelf.html").write_text("page")
+    os.utime(folder / "shelf.yaml", (1000, 1000))
+    os.utime(folder / "shelf.html", (2000, 2000))
+    history = folder / "history"
+    history.mkdir()
+    (history / "shelf-1.yaml").write_text("one")
+    (history / "notes.txt").write_text("not a version")
+    monkeypatch.chdir(folder)
+    terminal = FakeTerminal([])
+
+    code, calls = run([], terminal)
+
+    assert code == 0 and calls == []
+    assert f"Shelf: {folder}" in terminal.text
+    assert "Photos: 1" in terminal.text
+    assert "2 books (1 visible, 1 hidden)" in terminal.text
+    assert datetime.fromtimestamp(1000).strftime("%Y-%m-%d %H:%M") in terminal.text
+    assert datetime.fromtimestamp(2000).strftime("%Y-%m-%d %H:%M") in terminal.text
+    assert "up to date" in terminal.text and "Versions: 1" in terminal.text
+    assert "open" in terminal.text.lower()
+
+
+def test_status_panel_reports_invalid_summary_and_check_prints_all_errors(tmp_path, monkeypatch, capsys):
+    folder = tmp_path / "shelf"
+    folder.mkdir()
+    source = folder / "shelf.yaml"
+    page = folder / "shelf.html"
+    source.write_text("version: two\ncover_photo: 9\nlens: ok\nshelves: []\n")
+    page.write_text("valid page")
+    source_before, page_before = source.read_bytes(), page.read_bytes()
+    source_mtime, page_mtime = source.stat().st_mtime_ns, page.stat().st_mtime_ns
+    monkeypatch.chdir(folder)
+
+    terminal = FakeTerminal([])
+    code, calls = run([], terminal)
+    assert code == 0 and calls == []
+    assert "invalid (2 errors)" in terminal.text and "check" in terminal.text.lower()
+
+    terminal = FakeTerminal([])
+    code, calls = run(["check"], terminal)
+    error = capsys.readouterr().err
+    assert code == 2 and calls == []
+    assert "line 1: version" in error and "line 2: cover_photo" in error
+    assert source.read_bytes() == source_before and page.read_bytes() == page_before
+    assert source.stat().st_mtime_ns == source_mtime and page.stat().st_mtime_ns == page_mtime
+
+
+def test_check_valid_source_is_a_read_only_summary(tmp_path, monkeypatch):
+    folder = tmp_path / "shelf"
+    folder.mkdir()
+    (folder / "shelf.yaml").write_text(
+        dump_shelf(
+            ShelfFile(
+                cover_photo="photo.jpg",
+                lens="Eu leio.",
+                shelves=[
+                    ShelfSection(title="Quando penso", books=[ShelfBook(title="Livro")]),
+                    ShelfSection(title="Quando sinto", books=[ShelfBook(title="Outro")]),
+                ],
+            )
+        )
+    )
+    before = (folder / "shelf.yaml").read_bytes()
+    monkeypatch.chdir(folder)
+    terminal = FakeTerminal([])
+
+    code, calls = run(["check"], terminal)
+
+    assert code == 0 and calls == []
+    assert "valid" in terminal.text.lower() and "2 books" in terminal.text and "2 shelves" in terminal.text
+    assert (folder / "shelf.yaml").read_bytes() == before
 
 
 def test_default_folder_create_runs_setup_confirms_cost_and_creates_once(tmp_path, monkeypatch, shelf_folder):

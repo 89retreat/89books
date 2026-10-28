@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US2
 level: User Story
-status: Active
-status_reason: puxada em 2026-10-28; plano aguarda aprovação do Navigator
+status: Implemented
+status_reason: painel, check e resolução de pasta passaram em 137 testes e E2E gratuito; aguarda validação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
@@ -15,7 +15,7 @@ related:
 
 # CV2.DS1.US2 — Know where my shelf stands
 
-**Status:** Active
+**Status:** Implemented
 **Type:** User Story
 
 ---

@@ -59,6 +59,10 @@ uv run ruff check . && uv run ruff format --check .
 # create the editable source once (paid and confirmed)
 uv run shelf create
 
+# inspect and validate the source (free)
+uv run shelf
+uv run shelf check
+
 # draw and open the page from shelf.yaml (free)
 uv run shelf draw
 uv run shelf open
@@ -67,10 +71,11 @@ uv run shelf open
 uv run shelf setup
 ```
 
-A CV2 usa um comando por situação sobre `my-bookshelf/shelf.yaml`. Já existem
-`create`, `draw`, `open` e `setup`; o comando sem verbo apenas indica o próximo
-gesto e nunca gasta. `check`, `recreate`, `history` e `restore` chegam nas
-stories seguintes. A tabela completa está na
+A CV2 usa um comando por situação sobre `shelf.yaml`. Já existem `create`,
+`check`, `draw`, `open` e `setup`; o comando sem verbo mostra o estado e o
+próximo gesto, sem gastar. Sem `--folder`, a pasta atual vence quando já parece
+uma estante; caso contrário, o fallback é `my-bookshelf/`. `recreate`,
+`history` e `restore` chegam na story seguinte. A tabela completa está na
 [CV2](../project/roadmap/cv2-minha-estante-do-meu-jeito/index.md#commands).
 
 O spike da TS1 continua em `spikes/reconhecimento/`, com comandos próprios

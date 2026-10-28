@@ -83,20 +83,25 @@ seconds and does not call the model.
 ## Commands
 
 ```bash
-uv run shelf                 # show the next safe command; never spends
+uv run shelf                 # show status and the next safe command; never spends
 uv run shelf create          # create shelf.yaml once; paid and confirmed
+uv run shelf check           # list every shelf.yaml problem with its line; free
 uv run shelf draw            # redraw shelf.html; free
 uv run shelf open            # open shelf.html; free
 uv run shelf setup           # change your name or keys; free
 ```
 
-Use another folder with `--folder`, for example:
+Without `--folder`, the command uses the current directory when it already
+contains shelf photos or files; otherwise it uses `my-bookshelf/`. Use an
+explicit folder whenever you want to remove any ambiguity:
 
 ```bash
 uv run shelf draw --folder path/to/my-shelf
 ```
 
 `create --yes` skips the cost question when you have already decided to spend.
+The status panel and `check` never read a key, access the network or change a
+file.
 
 ## Troubleshooting
 

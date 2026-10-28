@@ -6,17 +6,19 @@ The core receives data and returns data; this module chooses folders, asks quest
 
 import argparse
 import os
+import shlex
 import sys
 import tempfile
 import webbrowser
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
-from shelf import core, setup
+from shelf import core, setup, status
 from shelf import photos as photo_tools
 from shelf.books import read_books_yaml
-from shelf.config import Config, ConfigError, load_config, load_photos
+from shelf.config import CONFIG_FILE, PHOTO_EXTENSIONS, Config, ConfigError, load_config, load_photos
 from shelf.covers import CoverCheck
 from shelf.googlebooks import GoogleBooks
 from shelf.openlibrary import OpenLibrary
@@ -49,6 +51,13 @@ class CreateResult:
 class DrawResult:
     html: Path
     books: int
+
+
+@dataclass
+class CheckResult:
+    books: int
+    visible_books: int
+    shelves: int
 
 
 def create_shelf(
@@ -115,6 +124,17 @@ def draw_shelf(folder: Path) -> DrawResult:
     return DrawResult(page, books)
 
 
+def check_shelf(folder: Path) -> CheckResult:
+    """Validates the one source contract without changing or drawing anything."""
+    path = Path(folder) / SHELF_YAML
+    if not path.exists():
+        raise CommandError(f"No {SHELF_YAML} in {folder}. Run `uv run shelf create --folder {folder}` first.")
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    books = sum(len(section.books) for section in shelf.shelves)
+    hidden = sum(book.hidden is True for section in shelf.shelves for book in section.books)
+    return CheckResult(books, books - hidden, len(shelf.shelves))
+
+
 def open_shelf(folder: Path, opener: Callable[[str], object] = webbrowser.open) -> Path:
     """Opens an existing page without using a shell command."""
     page = Path(folder) / PAGE
@@ -165,7 +185,10 @@ def _parser() -> argparse.ArgumentParser:
         description="Create an editable bookshelf once, then draw and open it for free.",
     )
     parser.add_argument(
-        "--folder", type=Path, default=DEFAULT_FOLDER, help="shelf folder (default: my-bookshelf)"
+        "--folder",
+        type=Path,
+        default=None,
+        help="shelf folder (default: current shelf folder, then my-bookshelf)",
     )
     commands = parser.add_subparsers(dest="command")
 
@@ -177,6 +200,7 @@ def _parser() -> argparse.ArgumentParser:
     create = command("create", "create shelf.yaml once (paid)")
     create.add_argument("--yes", action="store_true", help="do not ask before spending")
     command("draw", "draw shelf.html from shelf.yaml (free)")
+    command("check", "check shelf.yaml and show every error (free)")
     command("open", "open the generated page (free)")
     command("setup", "change your name or API keys (free)")
     return parser
@@ -189,16 +213,17 @@ def main(
     create_action: Callable = create_shelf,
     draw_action: Callable = draw_shelf,
     open_action: Callable = open_shelf,
+    check_action: Callable = check_shelf,
     check_openrouter: Callable = setup.check_openrouter,
     check_google: Callable = setup.check_google,
 ) -> int:
     args = _parser().parse_args(argv)
     terminal = terminal or setup.Terminal()
     interactive = setup.is_interactive() if interactive is None else interactive
-    folder = args.folder
+    folder = resolve_folder(args.folder, Path.cwd())
 
     if args.command is None:
-        _show_next(folder, terminal)
+        _show_status(folder, terminal)
         return 0
 
     if args.command == "setup":
@@ -213,6 +238,17 @@ def main(
             check_openrouter=check_openrouter,
             check_google=check_google,
             again=True,
+        )
+        return 0
+
+    if args.command == "check":
+        try:
+            result = check_action(folder)
+        except (CommandError, ShelfYamlError, OSError, ValueError) as exc:
+            return _error(exc)
+        terminal.say(
+            f"{SHELF_YAML} is valid: {_count(result.books, 'book')} "
+            f"({result.visible_books} visible) on {_count(result.shelves, 'shelf')}."
         )
         return 0
 
@@ -278,19 +314,88 @@ def main(
     return 0
 
 
-def _show_next(folder: Path, terminal: setup.Terminal) -> None:
-    if (folder / SHELF_YAML).exists():
-        if (folder / PAGE).exists():
-            terminal.say(
-                f"Shelf ready in {folder}. Run `uv run shelf draw --folder {folder}` after editing it."
-            )
-            terminal.say(f"Open it with `uv run shelf open --folder {folder}`.")
-        else:
-            terminal.say(f"Found {SHELF_YAML}. Run `uv run shelf draw --folder {folder}` (free).")
-    elif (folder / LEGACY_BOOKS).exists():
-        terminal.say(f"Found a CV1 shelf. Run `uv run shelf create --folder {folder}` to migrate it.")
+def resolve_folder(explicit: Path | None, current: Path) -> Path:
+    """An explicit path wins; otherwise use a current shelf or the clone's my-bookshelf fallback."""
+    if explicit is not None:
+        return Path(explicit)
+    current = Path(current)
+    if current.name == DEFAULT_FOLDER.name or _looks_like_shelf(current):
+        return current
+    return current / DEFAULT_FOLDER
+
+
+def _looks_like_shelf(folder: Path) -> bool:
+    if not folder.is_dir():
+        return False
+    names = {SHELF_YAML, LEGACY_BOOKS, CONFIG_FILE}
+    return any(
+        path.is_file() and (path.name in names or path.suffix.lower() in PHOTO_EXTENSIONS)
+        for path in folder.iterdir()
+    )
+
+
+def _show_status(folder: Path, terminal: setup.Terminal) -> None:
+    facts = _facts(folder)
+    result = status.inspect(facts)
+    terminal.say(f"Shelf: {folder.resolve()}")
+    terminal.say(f"Photos: {result.photo_count}")
+    if result.state == "not_created":
+        terminal.say(f"Source: no {SHELF_YAML}")
+    elif result.state == "invalid":
+        terminal.say(
+            f"Source: {SHELF_YAML} — invalid ({_count(len(result.errors), 'error')})"
+            f" — edited {_time(result.source_modified)}"
+        )
     else:
-        terminal.say(f"No shelf yet. Put photos in {folder} and run `uv run shelf create --folder {folder}`.")
+        terminal.say(
+            f"Source: {SHELF_YAML} — {_count(result.books or 0, 'book')} "
+            f"({result.visible_books} visible, {result.hidden_books} hidden)"
+            f" — edited {_time(result.source_modified)}"
+        )
+    if result.page_modified is None:
+        terminal.say(f"Page: no {PAGE}")
+    else:
+        page_state = {
+            "invalid": "source invalid; previous page kept",
+            "stale": "out of date",
+            "ready": "up to date",
+        }.get(result.state, "drawn")
+        terminal.say(f"Page: {PAGE} — drawn {_time(result.page_modified)} — {page_state}")
+    terminal.say(f"Versions: {result.versions}")
+    terminal.say(f"Next: {_command(result.next_command, folder)}")
+
+
+def _facts(folder: Path) -> status.ShelfFacts:
+    folder = Path(folder)
+    photos = 0
+    if folder.is_dir():
+        photos = sum(path.is_file() and path.suffix.lower() in PHOTO_EXTENSIONS for path in folder.iterdir())
+    source = folder / SHELF_YAML
+    page = folder / PAGE
+    history = folder / "history"
+    versions = sum(path.is_file() for path in history.glob("*.yaml")) if history.is_dir() else 0
+    return status.ShelfFacts(
+        photo_count=photos,
+        versions=versions,
+        source_text=source.read_text(encoding="utf-8") if source.exists() else None,
+        source_modified=source.stat().st_mtime if source.exists() else None,
+        page_modified=page.stat().st_mtime if page.exists() else None,
+    )
+
+
+def _time(timestamp: float | None) -> str:
+    return (
+        datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M") if timestamp is not None else "unknown"
+    )
+
+
+def _command(verb: str, folder: Path) -> str:
+    return f"uv run shelf {verb} --folder {shlex.quote(str(folder))}"
+
+
+def _count(number: int, noun: str) -> str:
+    plural = {"shelf": "shelves"}.get(noun, noun + "s")
+    return f"{number} {noun if number == 1 else plural}"
 
 
 def _error(error: Exception) -> int:

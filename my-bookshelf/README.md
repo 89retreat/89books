@@ -4,7 +4,9 @@ Put the photos of your bookshelf here, then run these commands from the root
 of the repository:
 
 ```bash
+uv run shelf          # status and next safe command; free
 uv run shelf create   # once; paid and confirmed
+uv run shelf check    # validate shelf.yaml; free
 uv run shelf draw     # whenever you edit shelf.yaml; free
 uv run shelf open
 ```

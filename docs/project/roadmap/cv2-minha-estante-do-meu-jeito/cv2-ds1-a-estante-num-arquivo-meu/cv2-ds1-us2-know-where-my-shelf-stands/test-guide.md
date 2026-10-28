@@ -27,4 +27,23 @@ qualquer byte modificado.
 
 ## Validation Evidence
 
-A registrar depois da implementação e da validação do Navigator.
+### Automated — passed
+
+- `uv run pytest`: 137 passed.
+- `uv run ruff check . && uv run ruff format --check .`: passed.
+- The pure status core has no filesystem, environment, terminal or clock access.
+
+### Driver E2E — passed
+
+With API keys removed, `/tmp/estante-alisson-validacao-us1` showed 1 photo,
+11 books, edit/draw times, zero versions and `open`. Touching `shelf.yaml`
+changed the recommendation to `draw`. Two YAML errors produced a two-error
+summary and line-specific `check` output with exit 2 while the previous page
+hash survived. Restoring the source and drawing again was free. Running from a
+shelf directory selected the current directory; running from the repository
+root selected `my-bookshelf/`.
+
+### Navigator — pending
+
+Confirm that the panel is understandable, `check` is useful and the folder
+selection rule is unsurprising.
