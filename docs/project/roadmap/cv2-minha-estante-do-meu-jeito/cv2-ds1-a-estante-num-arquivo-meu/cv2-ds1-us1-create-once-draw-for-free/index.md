@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US1
 level: User Story
-status: Active
-status_reason: implementada; checks e E2E do Driver passaram; aguarda validação do Navigator
+status: Validated
+status_reason: Navigator validou em 2026-10-28 create, draw, open, edição, proteção contra erro e página no celular
 updated: 2026-10-28
 related:
   - ../index.md
@@ -16,7 +16,7 @@ related:
 
 # CV2.DS1.US1 — Create once, draw for free
 
-**Status:** Active
+**Status:** Validated
 **Type:** User Story
 
 ---

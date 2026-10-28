@@ -54,8 +54,20 @@ sem linha.
 - A estimativa de migração foi ajustada de US$ 0,02 para US$ 0,03 a partir da
   medição real.
 
-### Navigator
+### Navigator — 2026-10-28
 
-Pendente: executar a rota acima numa cópia descartável, abrir no computador e
-no celular, editar a lente e confirmar a preservação da página diante de um
-erro no YAML.
+Aceita. Numa cópia descartável com uma foto da estante do Alisson:
+
+- `create` reconheceu 11 livros, criou `shelf.yaml` e custou US$ 0,03 (a
+  estimativa foi US$ 0,09); nenhum arquivo antigo estava presente nesse
+  caminho novo;
+- `draw` e `open` funcionaram sem novo custo;
+- uma frase escrita à mão no `lens` apareceu após `draw`;
+- `version: one` devolveu `line 1: version: must be an integer`, e `open`
+  continuou mostrando a página válida anterior;
+- depois de restaurar o YAML, `draw` funcionou de novo;
+- a página abriu corretamente no computador e no celular.
+
+Apenas um dos 11 livros foi identificado incorretamente. Isso confirma a
+necessidade da DS2 (`Corrigir a estante`); não bloqueia a separação entre
+criar e desenhar validada aqui.

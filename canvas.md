@@ -10,7 +10,7 @@
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `████░░░░░░` 2/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
-| 　　↳ US1 · Create once, draw for free | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
+| 　　↳ US1 · Create once, draw for free | 🟣 validada · aguarda review | `░░░░░░░░░░` |
 | 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
 | 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
 | ↳ **CV2.DS2 · Corrigir a estante** | 🟡 planejada · antes CV2.DS1 | `░░░░░░░░░░` 0/3 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.US1 · Create once, draw for free** | 🧪 aguarda Navigator | Validar `create`, `draw` e `open` numa cópia CV1; editar a lente e testar YAML inválido sem perder a página |
+| **CV2.DS1.US1 · Create once, draw for free** | 🔎 aguarda review | Rever: 1 livro errado vai para DS2; decidir depois se o padrão deve ser `my-bookshelf/` ou a pasta atual |
 
 ### ✅ Fundações assentadas
 

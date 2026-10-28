@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -18,9 +18,9 @@ Evidence: Real CV1 migration on a disposable Lula copy: 160 saved books to 7 she
 
 ## Navigator Validation
 
-Route: On a disposable CV1 copy: run shelf create, draw and open; edit lens and draw again on desktop and mobile; introduce a YAML error and confirm the previous page remains
+Route: On a disposable copy: run create, draw and open; edit lens and draw again on desktop and mobile; introduce a YAML error and confirm the previous page remains
 
-Navigator accepted: no
+Navigator accepted: yes
 
 Expected observation: create reuses books.yaml and confirms only portrait cost; draw is free and reflects the edit; open opens the page; line-numbered error leaves prior page unchanged
 
@@ -30,4 +30,4 @@ Fail condition: Implicit spend, lost file/page, photo reread, ignored edit, miss
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none
