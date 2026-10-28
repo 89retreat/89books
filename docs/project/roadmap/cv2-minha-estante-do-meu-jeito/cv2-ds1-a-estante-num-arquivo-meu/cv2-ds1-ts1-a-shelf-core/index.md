@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.TS1
 level: Technical Story
-status: Active
-status_reason: implementada; aguarda a revisão do Navigator da fronteira entre núcleo e terminal
+status: Done
+status_reason: validada pelo Navigator em 2026-10-28; núcleo separado do terminal com 106 testes e rodada real de uma foto
 updated: 2026-10-28
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV2.DS1.TS1 — A shelf core a server could run
 
-**Status:** Active
+**Status:** Done
 **Type:** Technical Story
 
 ---

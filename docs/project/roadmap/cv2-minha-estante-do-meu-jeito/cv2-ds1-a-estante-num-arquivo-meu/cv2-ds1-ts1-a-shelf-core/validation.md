@@ -2,11 +2,11 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
-- uv run pytest (106 passed); ruff clean; architecture test fails on purpose-added import sys and print in core.py; real uv run shelf with one photo (US$0.03): same messages and files as before
+- uv run pytest (106 passed); ruff clean; architecture test; real one-photo run
 
 Checks status: passed
 
@@ -14,20 +14,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Tests with fake services and one real run with one photo
+Evidence: Navigator reviewed the core/cli boundary and accepted it
 
 ## Navigator Validation
 
 Route: Review the boundary between src/shelf/core.py and src/shelf/cli.py in the diff
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: core.generate returns the shelf as data, core.draw returns the HTML; cli only builds services, writes files and talks to the person
+Expected observation: core returns data; cli only builds services, writes files and talks to the person
 
 Pass condition: The command works as before and the core does not talk to the terminal
 
-Fail condition: A visible change for the person, or product logic left in cli
+Fail condition: A visible change, or product logic left in cli
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

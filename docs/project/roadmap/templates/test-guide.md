@@ -10,7 +10,7 @@
 
 ## Navigator Validation
 
-<Manual validation route, expected observation, pass condition, and fail condition.>
+<User Story: manual route, expected observation, pass condition, and fail condition. Technical Story: "Not required; Plan-defined automated evidence is acceptance.">
 
 ## Validation Evidence
 

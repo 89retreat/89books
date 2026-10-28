@@ -106,6 +106,10 @@ A review de cada story da CV2 em diante confere essas regras.
 Trabalho verificado neste projeto significa:
 
 - checks automatizados passando, quando houver código;
+- para Technical Stories, as evidências automatizadas ou internas definidas no
+  plano bastam: o Driver as registra e segue até Done sem pedir validação ao
+  Navigator; se houver comportamento observável para a pessoa, o item é uma
+  User Story ou o plano declara excepcionalmente uma rota manual;
 - para User Stories, uma rota de validação executada pelo Navigator: rodar o
   script com as próprias fotos e abrir o HTML no computador e no celular, já
   que a visita acontece no celular;
@@ -212,9 +216,11 @@ Pare para confirmação do Navigator:
 
 - depois de mostrar o plano; criar o `plan.md` não substitui o checkpoint
   visível;
-- depois dos checks automatizados, com uma rota de validação concreta para o
-  Navigator (observações esperadas, condição de sucesso, condição de falha);
-- depois da review e da avaliação de refatoração;
+- nas User Stories, depois dos checks automatizados, com uma rota de validação
+  concreta (observações esperadas, condição de sucesso, condição de falha), e
+  depois da review e da avaliação de refatoração;
+- nas Technical Stories, não pare depois da implementação: checks
+  automatizados e revisão do Driver bastam, e o trabalho segue até Done;
 - antes de qualquer push (ver Commit and Release Rules).
 
 O commit não é checkpoint: acontece ao fim de cada turno, sem pedir
@@ -226,8 +232,10 @@ confirmação.
   arquivos, o Driver faz commit do que mudou, sem pedir confirmação.
   Mensagens em inglês, explicando o porquê.
 - **Push policy:** push só sob comando explícito do Navigator.
-- **Checkpoint compression:** checkpoints completos para trabalho não trivial;
-  comprimidos só para mudanças triviais de baixo risco.
+- **Checkpoint compression:** plano sempre aprovado antes da implementação;
+  User Stories mantêm os checkpoints completos; Technical Stories seguem de
+  checks automatizados até Done sem validação manual (preferência registrada
+  pelo Navigator em 2026-10-28).
 - **Documentation detail:** a menor atualização que mantenha o projeto
   coerente.
 - **Worklog policy:** um arquivo por marco relevante, não por edição.

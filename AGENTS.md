@@ -158,13 +158,19 @@ Present:
 
 - **Files changed**
 - **Test results**
-- **Navigator validation route**
+- **Navigator validation route**, when required
 - **Anything surprising**
 
-**→ Checkpoint 2: stop and present automated evidence AND the Navigator
-validation route. The validation route is a deliverable, not optional. Wait for
-the Navigator to validate. Record the evidence in `test-guide.md` and set the
-story to `status: Validated`.**
+For a **Technical Story**, the Plan-defined automated or internal evidence is
+the validation. Record it in `test-guide.md`; if every required check passes,
+continue through review, coherence and Done without asking the Navigator to
+validate. A Technical Story that changes observable product behavior must be
+reclassified as a User Story or declare a manual route in its approved Plan.
+
+**→ Checkpoint 2 (User Stories): stop and present automated evidence AND the
+Navigator validation route. The validation route is a deliverable, not
+optional. Wait for the Navigator to validate. Record the evidence in
+`test-guide.md` and set the story to `status: Validated`.**
 
 ### 5. Review and Refactoring Assessment
 
@@ -172,8 +178,12 @@ Review what was built: refactoring done, refactoring considered, debt paid, new
 debt introduced, debt carried forward, whether `docs/project/debt/items/` needs a
 new or updated item, and which docs need updating.
 
-**→ Checkpoint 3: stop and present the review. Wait for Navigator confirmation
-before updating docs and preparing the commit.**
+For a Technical Story whose automated validation passed, record the review and
+continue without a Navigator checkpoint. For a User Story, stop and present the
+review before closure.
+
+**→ Checkpoint 3 (User Stories): stop and present the review. Wait for Navigator
+confirmation before updating docs and preparing the commit.**
 
 ### 6. Document and Coherence Check
 

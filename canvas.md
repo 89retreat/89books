@@ -6,10 +6,10 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `░░░░░░░░░░` 0/13 |
-| ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `░░░░░░░░░░` 0/5 |
-| 　　↳ TS1 · A shelf core a server could run | 🟢 ativa · implementada · aguarda validação | `░░░░░░░░░░` |
-| 　　↳ TS2 · shelf.yaml, version 1 | 🟡 planejada · formato e validação com linha | `░░░░░░░░░░` |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `█░░░░░░░░░` 1/13 |
+| ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 ativa | `██░░░░░░░░` 1/5 |
+| 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
+| 　　↳ TS2 · shelf.yaml, version 1 | 🟢 ativa · plano aguarda aprovação | `░░░░░░░░░░` |
 | 　　↳ US1 · Create once, draw for free | 🟡 planejada · `create`, `draw`, `open` | `░░░░░░░░░░` |
 | 　　↳ US2 · Know where my shelf stands | 🟡 planejada · painel e `check` | `░░░░░░░░░░` |
 | 　　↳ US3 · Never lose an edit | 🟡 planejada · `history/`, `recreate`, `restore` | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS1.TS1 · A shelf core a server could run** | 🧭 implementada | Revisar a fronteira entre `core.py` e `cli.py`; depois puxar a TS2 (`shelf.yaml`) |
+| **CV2.DS1.TS2 · shelf.yaml, version 1** | 🧭 plano aguarda aprovação | Aprovar o contrato v1 e sua validação automática com linhas; depois a TS segue sozinha até Done |
 
 ### ✅ Fundações assentadas
 
