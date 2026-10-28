@@ -1,9 +1,9 @@
 ---
 code: CV1
 level: Value
-status: Active
-status_reason: DS1, DS2 e DS3 concluídas; falta cada fundador sair de um clone limpo com a própria estante
-updated: 2026-10-27
+status: Done
+status_reason: DS1, DS2 e DS3 concluídas; o Navigator e os outros fundadores geraram as próprias estantes a partir de um clone
+updated: 2026-10-28
 related:
   - ../../exploration/es-001-a-estante-como-retrato/index.md
   - ../../exploration/es-002-a-estante-num-arquivo/index.md
@@ -13,7 +13,7 @@ related:
 
 # CV1 — A Primeira Estante Viva
 
-**Status:** Active
+**Status:** Done
 
 ---
 

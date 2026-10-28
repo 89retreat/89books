@@ -1,12 +1,11 @@
 # Canvas — 89 Livros
 
-> Uma pessoa do grupo, sozinha, sai de um clone do repositório com a própria estante pronta para compartilhar?
+> A estante gerada pode virar a minha, do meu jeito, editando um arquivo?
 
 ## Caminho de construção
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV1 · A Primeira Estante Viva** | 🟢 ativa · falta a estante de cada fundador | `██████████` 8/8 |
 | **CV2 · A Estante Cuidada e Visitável** | 🟡 planejada · depois do uso da CV1 | `░░░░░░░░░░` 0/4 |
 | ↳ **CV2.DS1 · Corrigir a estante** | 🟡 planejada | `░░░░░░░░░░` 0/2 |
 | 　　↳ US1 · Corrigir a estante e pedir outro retrato | 🟡 planejada · antes CV1.DS2.US4 | `░░░░░░░░░░` |
@@ -35,12 +34,13 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **Abrir o projeto aos colaboradores** | 🧭 repo público · Rafael, Lula, Raphael | Cada fundador sai de um clone limpo com a própria estante; retrospectiva no worklog |
+| **CV2 · Minha estante, do meu jeito** | 🧭 proposta em avaliação | Confirmar a reorganização: `shelf.yaml` como fonte, gerar e desenhar separados, backup versionado antes de refazer |
 
 ### ✅ Fundações assentadas
 
 | Fundação | Estado | Progresso |
 | --- | --- | --- |
+| CV1 · A Primeira Estante Viva | ✅ concluída · cada fundador gerou a própria estante a partir de um clone | `██████████` 8/8 |
 | ES-001 · A Estante como Retrato e Campo de Ressonância | ✅ promovida para a CV1 | `██████████` |
 | ES-002 · A Estante num Arquivo | ✅ promovida · CV1 reorganizada, Telegram numa CV própria (hoje CV3) | `██████████` |
 | CV1.DS1 · Fundação: reconhecimento e decisões técnicas | ✅ concluída · spike validado, decisões do MVP local aceitas | `██████████` 2/2 |
