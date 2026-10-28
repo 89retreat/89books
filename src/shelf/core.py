@@ -10,9 +10,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from shelf import photos as photo_tools
-from shelf.books import dedupe
-from shelf.page import render
+from shelf.books import dedupe, read_books_yaml
+from shelf.page import render_file
 from shelf.review import apply_review, confirm, name_books, settle
+from shelf.shelf_file import LeftOutBook, ShelfBook, ShelfFile, ShelfSection
+from shelf.shelves import build_shelves
 from shelf.text import normalize_title
 
 
@@ -26,6 +28,16 @@ class Shelf:
     left_out: list[dict]
     portrait: dict
     cost: float = 0.0
+
+
+@dataclass
+class Creation:
+    """The source file produced by a paid creation, before a client decides where to save it."""
+
+    shelf: ShelfFile
+    books: int
+    cost: float
+    migrated: bool
 
 
 @dataclass
@@ -84,9 +96,83 @@ def generate(
     return Shelf(name, [p.name for p in photos], books, left_out, portrait, round(run.cost, 4))
 
 
-def draw(shelf: Shelf, images: list[str]) -> str:
-    """The page, from the shelf and its photos as data URIs, in the shelf's photo order. Costs nothing."""
-    return render(shelf.name, images, shelf.books, shelf.portrait)
+def create(
+    photos: list[Path],
+    api_key: str,
+    name: str | None,
+    services: Services,
+    legacy_books: str | None = None,
+    log: Callable[[str], None] = lambda line: None,
+    progress=None,
+) -> Creation:
+    """Creates the editable source once, either from photos or from the saved CV1 book list."""
+    if legacy_books is None:
+        generated = generate(photos, api_key, name, services, log, progress)
+        migrated = False
+    else:
+        books, left_out = read_books_yaml(legacy_books)
+        log(f"Reusing {len(books)} books from books.yaml; photos will not be read again.")
+        log("Writing your portrait...")
+        portrait, cost = services.portrait(books, api_key)
+        generated = Shelf(
+            name=name,
+            photos=[photo.name for photo in photos],
+            books=books,
+            left_out=left_out,
+            portrait=portrait,
+            cost=round(cost, 4),
+        )
+        migrated = True
+    source = _shelf_file(generated)
+    return Creation(source, len(generated.books), generated.cost, migrated)
+
+
+def draw(shelf: ShelfFile, images: list[str]) -> str:
+    """Draws the page from the editable source and prepared photos. Costs nothing."""
+    return render_file(shelf, images)
+
+
+def _shelf_file(generated: Shelf) -> ShelfFile:
+    if not generated.photos:
+        raise ValueError("A shelf needs at least one photo.")
+    sections = []
+    for arranged in build_shelves(generated.books, generated.portrait):
+        sections.append(
+            ShelfSection(
+                title=arranged["title"],
+                text=arranged["text"],
+                books=[_shelf_book(book) for book in arranged["books"]],
+            )
+        )
+    left_out = [
+        LeftOutBook(str(book["title"]), str(book["reason"]))
+        for book in generated.left_out
+        if isinstance(book, dict) and book.get("title") and book.get("reason")
+    ]
+    return ShelfFile(
+        name=generated.name,
+        cover_photo=generated.photos[0],
+        lens=generated.portrait["lens"],
+        shelves=sections,
+        left_out=left_out,
+    )
+
+
+def _shelf_book(book: dict) -> ShelfBook:
+    cover = book.get("cover_url")
+    if not cover and book.get("cover_id"):
+        cover = f"https://covers.openlibrary.org/b/id/{book['cover_id']}-M.jpg?default=false"
+    return ShelfBook(
+        title=book["title"],
+        authors=list(book.get("authors") or []),
+        known_as=book.get("known_as"),
+        face=book.get("face"),
+        cover=cover,
+        read_as=book.get("read_as"),
+        source=book.get("source"),
+        photo=book.get("photo"),
+        work=book.get("work"),
+    )
 
 
 def _recognize(photos: list[Path], api_key: str, services: Services, run: _Run) -> list[dict]:

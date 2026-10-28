@@ -65,5 +65,5 @@ def test_heic_photos_are_listed(tmp_path):
 
 
 def test_no_photos_message_names_heic_and_the_command(tmp_path):
-    with pytest.raises(ConfigError, match=r"\.heic.*uv run shelf"):
+    with pytest.raises(ConfigError, match=r"\.heic.*uv run shelf create"):
         load_config(tmp_path, env={"OPENROUTER_API_KEY": "sk"})

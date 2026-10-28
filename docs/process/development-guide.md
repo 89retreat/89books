@@ -56,15 +56,22 @@ uv run pytest
 # run lint or formatting checks
 uv run ruff check . && uv run ruff format --check .
 
-# generate a shelf from the photos in my-bookshelf/ (CV1 behaviour)
-uv run shelf
+# create the editable source once (paid and confirmed)
+uv run shelf create
+
+# draw and open the page from shelf.yaml (free)
+uv run shelf draw
+uv run shelf open
+
+# change name or keys (free)
+uv run shelf setup
 ```
 
-A CV2 troca esse comando único por um comando por situação (`create`,
-`draw`, `check`, `recreate`, `history`, `restore`, `open`, `setup`), sobre o
-`my-bookshelf/shelf.yaml`. A tabela está na
+A CV2 usa um comando por situação sobre `my-bookshelf/shelf.yaml`. Já existem
+`create`, `draw`, `open` e `setup`; o comando sem verbo apenas indica o próximo
+gesto e nunca gasta. `check`, `recreate`, `history` e `restore` chegam nas
+stories seguintes. A tabela completa está na
 [CV2](../project/roadmap/cv2-minha-estante-do-meu-jeito/index.md#commands).
-Atualize este bloco quando cada comando chegar.
 
 O spike da TS1 continua em `spikes/reconhecimento/`, com comandos próprios
 no seu `README.md`. A chave do OpenRouter nunca entra no

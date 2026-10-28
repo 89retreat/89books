@@ -1,6 +1,7 @@
+import pytest
 import yaml
 
-from shelf.books import dedupe, write_books_yaml
+from shelf.books import dedupe, read_books_yaml, write_books_yaml
 
 
 def test_dedupe_merges_same_title_across_photos():
@@ -37,6 +38,42 @@ def test_books_yaml_lists_books_without_local_paths(tmp_path):
         "work": "/works/OL1W",
         "cover_id": 42,
     }
+
+
+def test_read_books_yaml_recovers_the_cv1_data_without_file_io():
+    books, left_out = read_books_yaml(
+        """\
+books:
+  - title: Torto Arado
+    authors: [Itamar Vieira Junior]
+    cover_id: 42
+    source: open_library
+left_out:
+  - title: Caneca
+    reason: not a book
+"""
+    )
+    assert books == [
+        {
+            "title": "Torto Arado",
+            "authors": ["Itamar Vieira Junior"],
+            "cover_id": 42,
+            "source": "open_library",
+        }
+    ]
+    assert left_out == [{"title": "Caneca", "reason": "not a book"}]
+
+
+def test_read_books_yaml_rejects_a_broken_cv1_file():
+    for text in (
+        "books: nope",
+        "books:\n  - authors: [Nobody]\n",
+        "books:\n  - title: Book\n    authors: Nobody\n",
+        "books: []\nleft_out:\n  - title: Object\n",
+        "[]",
+    ):
+        with pytest.raises(ValueError, match="books.yaml"):
+            read_books_yaml(text)
 
 
 def test_books_yaml_records_corrections_and_books_left_out(tmp_path):

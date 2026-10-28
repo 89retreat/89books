@@ -26,6 +26,35 @@ def dedupe(books: list[dict]) -> list[dict]:
     return unique
 
 
+def read_books_yaml(text: str) -> tuple[list[dict], list[dict]]:
+    """Reads the CV1 output so `create` can migrate it without recognizing the photos again."""
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        raise ValueError(f"Could not read books.yaml: {exc}") from exc
+    if not isinstance(data, dict) or not isinstance(data.get("books"), list):
+        raise ValueError("Could not read books.yaml: `books` must be a list.")
+    books = []
+    for number, book in enumerate(data["books"], start=1):
+        if not isinstance(book, dict) or not isinstance(book.get("title"), str) or not book["title"].strip():
+            raise ValueError(f"Could not read books.yaml: book {number} has no title.")
+        authors = book.get("authors") or []
+        if not isinstance(authors, list) or any(not isinstance(author, str) for author in authors):
+            raise ValueError(f"Could not read books.yaml: book {number} has invalid authors.")
+        books.append(dict(book))
+    left_out = data.get("left_out") or []
+    if not isinstance(left_out, list):
+        raise ValueError("Could not read books.yaml: `left_out` must be a list.")
+    for number, book in enumerate(left_out, start=1):
+        if (
+            not isinstance(book, dict)
+            or not isinstance(book.get("title"), str)
+            or not isinstance(book.get("reason"), str)
+        ):
+            raise ValueError(f"Could not read books.yaml: left_out item {number} is invalid.")
+    return books, [dict(book) for book in left_out]
+
+
 def write_books_yaml(path: Path, books: list[dict], left_out: list[dict] | None = None) -> None:
     """`read_as` keeps what the photo said when the title changed; `source` says where the title came from."""
     data = {"books": [{k: b[k] for k in FIELDS if b.get(k) not in (None, [], "")} for b in books]}

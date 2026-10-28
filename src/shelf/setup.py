@@ -18,6 +18,7 @@ SKIP = "skip"
 ATTEMPTS = 3
 COST_PER_PHOTO = 0.015  # recognition of one photo
 COST_PER_SHELF = 0.07  # review of the whole list and the portrait
+COST_PER_PORTRAIT = 0.03  # measured on the 160-book CV1 migration
 SECONDS_PER_PHOTO = 40  # recognition plus catalogue lookups for the books in it
 SECONDS_PER_SHELF = 60
 
@@ -32,7 +33,7 @@ A Google Books key is optional. It lets the command check titles and authors in 
 which knows more Brazilian editions. It is free:
   1. At https://console.cloud.google.com create a project and enable the "Books API".
   2. Under "APIs & Services > Credentials", create an API key and restrict it to the Books API.
-Press Enter to skip; run `uv run shelf --setup` later to add it."""
+Press Enter to skip; run `uv run shelf setup` later to add it."""
 
 
 class Terminal:
@@ -99,19 +100,19 @@ def write_config(folder: Path, settings: dict) -> None:
     (Path(folder) / CONFIG_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _missing(settings: dict, env: Mapping[str, str]) -> list[str]:
+def _missing(settings: dict, env: Mapping[str, str], include_google: bool = True) -> list[str]:
     missing = []
     if not settings.get("name"):
         missing.append("name")
     if not (env.get("OPENROUTER_API_KEY") or settings.get("openrouter_api_key")):
         missing.append("openrouter")
-    if not (env.get("GOOGLE_BOOKS_API_KEY") or settings.get("google_books_api_key")):
+    if include_google and not (env.get("GOOGLE_BOOKS_API_KEY") or settings.get("google_books_api_key")):
         missing.append("google")
     return missing
 
 
-def needs_setup(folder: Path, env: Mapping[str, str]) -> bool:
-    return bool(_missing(read_config(folder), env))
+def needs_setup(folder: Path, env: Mapping[str, str], include_google: bool = True) -> bool:
+    return bool(_missing(read_config(folder), env, include_google))
 
 
 def run_setup(
@@ -121,13 +122,14 @@ def run_setup(
     check_openrouter: Callable[[str], tuple[bool, float | None]] = check_openrouter,
     check_google: Callable[[str], bool] = check_google,
     again: bool = False,
+    include_google: bool = True,
 ) -> None:
     """Asks only for what is missing, or for everything the folder holds when `again` is set."""
     settings = read_config(folder)
     if again:
         for key in ("name", "openrouter_api_key", "google_books_api_key"):
             settings.pop(key, None)
-    missing = _missing(settings, env)
+    missing = _missing(settings, env, include_google)
     terminal.say("Let's set up your shelf. This happens once; answers are saved in my-bookshelf/config.toml.")
     terminal.say()
 
@@ -148,7 +150,9 @@ def run_setup(
                 break
             terminal.say("  That key did not work. Check that it was copied whole.")
         else:
-            terminal.say("No working OpenRouter key, so nothing was saved. Run `uv run shelf` to try again.")
+            terminal.say(
+                "No working OpenRouter key, so nothing was saved. Run `uv run shelf setup` to try again."
+            )
             raise SystemExit(2)
         terminal.say()
 
@@ -183,6 +187,15 @@ def confirm_cost(photos: int, terminal: Terminal) -> bool:
     cost, minutes = estimate(photos)
     terminal.say(
         f"Found {photos} photos. Making your shelf costs about US$ {cost:.2f} and takes about {minutes} minutes."
+    )
+    answer = terminal.ask("Continue? [Y/n] ").lower()
+    return answer in ("", "y", "yes")
+
+
+def confirm_portrait_cost(books: int, terminal: Terminal) -> bool:
+    terminal.say(
+        f"Found books.yaml with {books} books. Reusing it avoids reading the photos again. "
+        f"Writing a new portrait costs about US$ {COST_PER_PORTRAIT:.2f} and takes about 1 minute."
     )
     answer = terminal.ask("Continue? [Y/n] ").lower()
     return answer in ("", "y", "yes")

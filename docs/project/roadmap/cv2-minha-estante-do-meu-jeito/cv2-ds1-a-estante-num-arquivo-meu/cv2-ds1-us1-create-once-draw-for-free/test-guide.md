@@ -35,4 +35,27 @@ sem linha.
 
 ## Validation Evidence
 
-A registrar depois da implementação e da validação do Navigator.
+### Driver — 2026-10-28
+
+- `uv run pytest`: 128 testes passando.
+- `uv run ruff check . && uv run ruff format --check .`: limpo.
+- Testes com serviços que falham se chamados provam que a migração usa somente
+  o retrato; criação sobre arquivo existente não chega a setup, confirmação ou
+  serviço; desenho sem chaves não chama rede; erro de YAML, foto ou render
+  preserva os bytes da página anterior.
+- E2E gratuito com foto sintética e sem chaves: `draw` escreveu a página; YAML
+  inválido devolveu linha 3 e o SHA-256 da página ficou idêntico.
+- E2E real numa cópia de `/tmp/estante-lula`: 160 livros do `books.yaml`
+  viraram 7 prateleiras no `shelf.yaml`; somente `Writing your portrait...`
+  apareceu, o custo foi US$ 0,03, os caches e o `books.yaml` mantiveram os
+  mesmos hashes, e nenhuma foto ou catálogo foi relido. `draw` funcionou sem
+  chaves, uma mudança na lente apareceu na rodada seguinte e o HTML não
+  continha caminho local. A cópia foi apagada.
+- A estimativa de migração foi ajustada de US$ 0,02 para US$ 0,03 a partir da
+  medição real.
+
+### Navigator
+
+Pendente: executar a rota acima numa cópia descartável, abrir no computador e
+no celular, editar a lente e confirmar a preservação da página diante de um
+erro no YAML.

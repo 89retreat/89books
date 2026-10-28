@@ -2,7 +2,7 @@
 code: CV2.DS1
 level: Delivery Story
 status: Active
-status_reason: TS1 e TS2 concluídas; US1 puxada em 2026-10-28
+status_reason: TS1 e TS2 concluídas; US1 implementada e em validação
 updated: 2026-10-28
 related:
   - ../index.md

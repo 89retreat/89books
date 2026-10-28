@@ -4,6 +4,7 @@ import hashlib
 import re
 import unicodedata
 
+from shelf.shelf_file import ShelfBook, ShelfSection
 from shelf.text import THRESHOLD, similarity
 
 REST_TITLE = "E mais livros que já me acompanharam"
@@ -206,6 +207,57 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
         small = n > 1 and len(shelf["books"]) <= SIDE_MAX  # the page always opens with the first shelf
         shelf["place"] = "full" if shelf["rest"] else ("side" if small else "wide")
     return shelves
+
+
+def shelves_from_file(sections: list[ShelfSection]) -> tuple[list[dict], list[dict]]:
+    """Turns the ordered, editable file into the derived data the page template needs.
+
+    The file owns shelves, order and explicit choices. This function only derives visual details such as
+    spines, angles, numerals and columns. Hidden books do not reach either the shelves or frequent authors.
+    """
+    shelves, visible = [], []
+    last = len(sections) - 1
+    for index, section in enumerate(sections):
+        rest = index == last and not section.text
+        cited = _cited(section.text)
+        items = []
+        for book in section.books:
+            if book.hidden is True:
+                continue
+            data = _file_book_data(book)
+            visible.append(data)
+            automatic_face = (
+                len(items) % REST_FACE_EVERY == REST_FACE_EVERY // 2
+                if rest
+                else any(similarity(title, book.title) >= THRESHOLD for title in cited)
+            )
+            items.append(_book(data, automatic_face if book.face is None else book.face))
+        shelves.append(
+            {
+                "title": section.title,
+                "text": section.text,
+                "books": items,
+                "rest": rest,
+            }
+        )
+
+    for number, shelf in enumerate(shelves, start=1):
+        shelf["numeral"] = "" if shelf["rest"] else roman(number)
+        shelf["order"] = number
+        small = number > 1 and len(shelf["books"]) <= SIDE_MAX
+        shelf["place"] = "full" if shelf["rest"] else ("side" if small else "wide")
+    return visible, shelves
+
+
+def _file_book_data(book: ShelfBook) -> dict:
+    data = {
+        "title": book.title,
+        "authors": book.authors,
+        "known_as": book.known_as,
+    }
+    if book.cover and book.cover != "none":
+        data["cover_url"] = book.cover
+    return data
 
 
 def _row(count: int) -> list[int]:

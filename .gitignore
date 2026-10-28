@@ -23,4 +23,5 @@ my-bookshelf/*
 .shelf/
 shelf.html
 !src/shelf/templates/shelf.html
+shelf.yaml
 books.yaml

@@ -1,8 +1,8 @@
 # Getting started: from clone to your shelf
 
-Turn photos of your bookshelf into a page with your books, their authors
-and a portrait of you as a reader. It takes about 15 minutes the first time,
-most of it waiting.
+Turn photos of your bookshelf into an editable shelf and a page with your
+books, their authors and a portrait of you as a reader. The paid creation
+happens once; drawing the page again is free.
 
 ## 1. What you need
 
@@ -34,13 +34,14 @@ cd 89books
 - Books lying flat count too, if the title is readable.
 - iPhone photos (`.heic`) work as they are; so do `.jpg`, `.png` and `.webp`.
 
-Copy the photos into the `my-bookshelf/` folder of the repository. Git
-ignores everything you put there: your photos never leave your machine.
+Copy the photos into `my-bookshelf/`. Git ignores everything you put there.
+During `create`, resized copies with metadata removed are sent to the model;
+the original files remain local.
 
-## 4. Make your shelf
+## 4. Create the editable shelf once
 
 ```bash
-uv run shelf
+uv run shelf create
 ```
 
 The first time, it asks for:
@@ -51,34 +52,60 @@ The first time, it asks for:
 3. a Google Books key, optional, which helps get titles and authors right.
    Press Enter to skip.
 
-Your answers are saved in `my-bookshelf/config.toml`. Then it tells you the
-estimated cost and time and asks you to confirm. While it works, you will see
-each photo being read and the books being checked.
+Your answers are saved in `my-bookshelf/config.toml`. The command then shows
+the estimated cost and time and waits for confirmation. It creates
+`my-bookshelf/shelf.yaml`, the source of your shelf. It does not draw the page
+yet, and it will never replace an existing `shelf.yaml`.
 
-## 5. Open and share it
+Already generated a shelf with the older command? If `books.yaml` exists,
+`create` reuses its books and covers. It does not recognize the photos or call
+the catalogues again; it asks for the much smaller cost of writing a new
+portrait. The old `books.yaml` and `shelf.html` are left untouched.
 
-When it finishes, your shelf is at `my-bookshelf/shelf.html`:
+## 5. Draw and open it for free
 
 ```bash
-open my-bookshelf/shelf.html
+uv run shelf draw
+uv run shelf open
 ```
 
-(On Linux, `xdg-open`; on Windows, `start`.) Open it in Chrome or Safari.
+`draw` reads `shelf.yaml` and writes `my-bookshelf/shelf.html` without a key,
+network call or cost. If the YAML has an error, the command shows its line and
+keeps the previous page.
 
-To share it, send the file itself through WhatsApp, AirDrop or email. Whoever
-receives it should open it in a browser: previews inside apps may show it
-incomplete.
+`open` opens the page in your browser. To share it, send `shelf.html` through
+WhatsApp, AirDrop or email. Whoever receives it should open it in a browser:
+previews inside apps may show it incomplete.
+
+After editing `shelf.yaml`, run `uv run shelf draw` again. Drawing takes
+seconds and does not call the model.
+
+## Commands
+
+```bash
+uv run shelf                 # show the next safe command; never spends
+uv run shelf create          # create shelf.yaml once; paid and confirmed
+uv run shelf draw            # redraw shelf.html; free
+uv run shelf open            # open shelf.html; free
+uv run shelf setup           # change your name or keys; free
+```
+
+Use another folder with `--folder`, for example:
+
+```bash
+uv run shelf draw --folder path/to/my-shelf
+```
+
+`create --yes` skips the cost question when you have already decided to spend.
 
 ## Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
 | `That key did not work` | Copy the key again from [openrouter.ai/keys](https://openrouter.ai/keys), whole, and paste it. |
-| `Credit left` is low, or the run stops with a payment error | Add credit at [openrouter.ai/settings/credits](https://openrouter.ai/settings/credits). |
-| `No photos in my-bookshelf` | Copy the photos into `my-bookshelf/` at the root of the repository, not into a subfolder. |
+| `Credit left` is low, or creation stops with a payment error | Add credit at [openrouter.ai/settings/credits](https://openrouter.ai/settings/credits). |
+| `No photos in my-bookshelf` | Copy the photos into `my-bookshelf/` at the root of the repository. |
+| `shelf.yaml already exists` | This is protection, not an error in your shelf. Run `draw`; `create` never replaces your edits. |
+| An error names a line in `shelf.yaml` | Correct that line and run `draw` again. The previous page was preserved. |
 | `command not found: uv` | Open a new terminal window after installing uv. |
-| Some titles or authors are wrong | Expected now and then: the spines are read by a model. Correcting them is the next step of the project. |
-| You want another name or key | `uv run shelf --setup`. |
-
-Running `uv run shelf` again reads all the photos again and costs the same
-again.
+| You want another name or key | Run `uv run shelf setup`. |

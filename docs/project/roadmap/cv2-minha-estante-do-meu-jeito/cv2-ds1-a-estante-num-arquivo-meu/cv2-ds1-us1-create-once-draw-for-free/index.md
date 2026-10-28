@@ -2,7 +2,7 @@
 code: CV2.DS1.US1
 level: User Story
 status: Active
-status_reason: puxada em 2026-10-28; plano aguarda aprovação do Navigator
+status_reason: implementada; checks e E2E do Driver passaram; aguarda validação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md

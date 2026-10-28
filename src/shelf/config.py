@@ -23,31 +23,41 @@ class Config:
     google_books_api_key: str | None = None
 
 
-def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
+def load_photos(folder: Path) -> list[Path]:
+    """Lists shelf photos without reading configuration or requiring a key."""
     folder = Path(folder)
     if not folder.is_dir():
         raise ConfigError(
-            f"Folder not found: {folder}. Put photos of your shelf in my-bookshelf/ and run `uv run shelf` again."
+            f"Folder not found: {folder}. Put photos of your shelf in my-bookshelf/ and run `uv run shelf create`."
         )
     photos = sorted(p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in PHOTO_EXTENSIONS)
     if not photos:
         raise ConfigError(
             f"No photos in {folder}. Put photos of your shelf in it (.jpg, .heic, .png or .webp) "
-            "and run `uv run shelf` again."
+            "and run `uv run shelf create`."
         )
+    return photos
 
-    settings: dict = {}
-    config_file = folder / CONFIG_FILE
-    if config_file.exists():
-        try:
-            settings = tomllib.loads(config_file.read_text(encoding="utf-8"))
-        except tomllib.TOMLDecodeError as exc:
-            raise ConfigError(f"Could not read {CONFIG_FILE}: {exc}") from exc
+
+def _settings(folder: Path) -> dict:
+    config_file = Path(folder) / CONFIG_FILE
+    if not config_file.exists():
+        return {}
+    try:
+        return tomllib.loads(config_file.read_text(encoding="utf-8"))
+    except tomllib.TOMLDecodeError as exc:
+        raise ConfigError(f"Could not read {CONFIG_FILE}: {exc}") from exc
+
+
+def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
+    folder = Path(folder)
+    photos = load_photos(folder)
+    settings = _settings(folder)
 
     api_key = (env.get("OPENROUTER_API_KEY") or settings.get("openrouter_api_key") or "").strip()
     if not api_key:
         raise ConfigError(
-            "No OpenRouter API key. Run `uv run shelf` in a terminal to set it up, or set OPENROUTER_API_KEY."
+            "No OpenRouter API key. Run `uv run shelf setup` in a terminal, or set OPENROUTER_API_KEY."
         )
     cover = settings.get("cover_photo")
     if cover:
