@@ -29,14 +29,19 @@ gigante real.
 ## Automated Evidence — 2026-10-28
 
 - `uv run ruff check .` — passed.
-- `uv run ruff format --check .` — passed, 212 files formatted.
-- `uv run pytest` — 184 passed.
+- `uv run ruff format --check .` — passed, 213 files formatted.
+- `uv run pytest` — 185 passed.
 - E2E gratuito em `/tmp/89books-us2-validation`: `check` aceitou uma correção
   de identidade; `draw` incorporou capa local; HTML conteve título, autora e
   `known_as` literais, sem caminho local nem EXIF.
 
-## Navigator Evidence
+## Navigator Evidence — 2026-10-28
 
-Pendente: abrir a estante descartável, observar a capa local e confirmar a
-correção. Depois, opcionalmente trocar a capa por `none`, redesenhar e observar
-a lombada antes de voltar à capa local.
+- A primeira captura confirmou a capa local azul incorporada e o redraw livre.
+- A segunda captura confirmou que `cover: none` vira lombada, preservando o
+  título corrigido e todo o `known_as` explícito.
+- A segunda captura revelou que o rodapé ainda atribuía exclusivamente as
+  capas à Open Library. O CR001 corrigiu-o para “Capas de catálogos ou arquivos
+  locais”; regressão automatizada e E2E descartável passaram.
+
+Pendente apenas a aceitação explícita do Navigator antes do Review.

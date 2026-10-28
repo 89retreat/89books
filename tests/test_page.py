@@ -145,6 +145,24 @@ def test_all_hidden_books_leave_authored_shelf_title_and_text_untouched():
     assert "Livro oculto" not in html
 
 
+def test_footer_does_not_claim_that_every_cover_comes_from_open_library():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[ShelfBook(title="Livro local", face=True, cover="covers/capa.jpg")],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [], {(0, 0): "data:image/jpeg;base64,Y2FwYQ=="})
+
+    assert "Capas de catálogos ou arquivos locais" in html
+    assert "Capas da Open Library" not in html
+
+
 def test_page_embeds_the_title_font():
     html = render(name=None, photos=[], books=[], portrait={"lens": "x", "themes": []})
     assert "font-family: 'Newsreader'" in html or 'font-family:"Newsreader"' in html
