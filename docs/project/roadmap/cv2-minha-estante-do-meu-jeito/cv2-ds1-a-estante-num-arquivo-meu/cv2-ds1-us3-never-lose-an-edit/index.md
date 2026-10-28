@@ -1,8 +1,8 @@
 ---
 code: CV2.DS1.US3
 level: User Story
-status: Validated
-status_reason: Navigator recuperou e abriu a estante após histórico, restore e um recreate de uma foto; debt review sem nova dívida aguarda confirmação
+status: Done
+status_reason: Navigator recuperou e abriu a estante após histórico, restore e um recreate de uma foto; review, coherence e Done concluídos
 updated: 2026-10-28
 related:
   - ../index.md
@@ -15,7 +15,7 @@ related:
 
 # CV2.DS1.US3 — Never lose an edit
 
-**Status:** Validated
+**Status:** Done
 **Type:** User Story
 
 ---
