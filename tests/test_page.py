@@ -37,6 +37,43 @@ def test_page_shows_themes_as_shelves_with_cited_cover_face_out():
     assert html.count('class="tile') == 2
 
 
+def test_file_render_uses_resolved_local_cover_without_leaking_its_source_path():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[ShelfBook(title="Livro corrigido", face=True, cover="private/capa.jpg")],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [], {(0, 0): "data:image/jpeg;base64,Y2FwYQ=="})
+
+    assert "data:image/jpeg;base64,Y2FwYQ==" in html
+    assert "private/capa.jpg" not in html
+
+
+def test_file_render_never_treats_an_unresolved_local_path_as_a_browser_url():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[ShelfBook(title="Livro corrigido", face=True, cover="private/capa.jpg")],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert "private/capa.jpg" not in html
+    assert 'class="face"' not in html
+    assert 'class="spine' in html
+
+
 def test_hidden_book_has_no_face_or_spine_and_does_not_sustain_frequent_author():
     shelf = ShelfFile(
         cover_photo="photo.jpg",

@@ -119,7 +119,7 @@ def test_short_name_keeps_first_name_particle_last_surname_and_suffix():
     assert short_name("Plato") == "Plato"
 
 
-def test_the_name_readers_know_wins_when_it_fits():
+def test_the_name_readers_explicitly_chose_always_wins():
     assert spine("Cem Anos", ["Gabriel José de la Concordia García Márquez"], "García Márquez")["author"] == (
         "García Márquez"
     )
@@ -128,7 +128,7 @@ def test_the_name_readers_know_wins_when_it_fits():
     )
     assert (
         spine("X", ["Fulano de Tal"], "Um nome longo demais para caber numa lombada")["author"]
-        == "Fulano de Tal"
+        == "Um nome longo demais para caber numa lombada"
     )
     assert spine("X", ["Fulano de Tal"], "")["author"] == "Fulano de Tal"
 

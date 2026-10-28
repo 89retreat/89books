@@ -4,7 +4,17 @@ from pathlib import Path
 import pytest
 
 from shelf import core
-from shelf.core import Services, Shelf, create, draw, generate, hide_book, show_book
+from shelf.core import (
+    Services,
+    Shelf,
+    correct_book_identity,
+    create,
+    draw,
+    generate,
+    hide_book,
+    set_book_cover,
+    show_book,
+)
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
 from shelf.shelves import REST_TITLE
 from tests.test_cli import FakeCovers, FakeLibrary, fake_portrait, fake_recognize, no_review
@@ -188,13 +198,99 @@ def test_hide_and_show_book_are_pure_named_operations_that_preserve_everything_e
     assert [book.title for book in shown.shelves[0].books] == ["Torto Arado", "Outro"]
 
 
-def test_hide_and_show_reject_negative_or_missing_positions():
+def test_book_corrections_are_pure_and_preserve_the_rest_of_the_reader_source():
+    original = ShelfFile(
+        name="Lula",
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Quando penso",
+                books=[
+                    ShelfBook(
+                        title="Torto Errado",
+                        authors=["Itamar Junior"],
+                        known_as="Itamar",
+                        hidden=True,
+                        face=True,
+                        cover="https://example.test/old.jpg",
+                        read_as="Torto Erado",
+                        source="open_library",
+                        photo="photo.jpg",
+                        work="/works/1",
+                    )
+                ],
+            )
+        ],
+    )
+
+    corrected = correct_book_identity(
+        original,
+        0,
+        0,
+        title="Torto Arado",
+        authors=["Itamar Vieira Junior"],
+        known_as="Itamar Vieira Junior",
+    )
+    without_name = correct_book_identity(
+        corrected,
+        0,
+        0,
+        title="Torto Arado",
+        authors=[],
+        known_as=None,
+    )
+    covered = set_book_cover(corrected, 0, 0, "capa.jpg")
+
+    assert original.shelves[0].books[0].title == "Torto Errado"
+    assert corrected is not original and corrected.shelves[0] is not original.shelves[0]
+    assert corrected.shelves[0].books[0] == ShelfBook(
+        title="Torto Arado",
+        authors=["Itamar Vieira Junior"],
+        known_as="Itamar Vieira Junior",
+        hidden=True,
+        face=True,
+        cover="https://example.test/old.jpg",
+        read_as="Torto Erado",
+        source="open_library",
+        photo="photo.jpg",
+        work="/works/1",
+    )
+    assert without_name.shelves[0].books[0].authors == []
+    assert without_name.shelves[0].books[0].known_as is None
+    assert covered.shelves[0].books[0].cover == "capa.jpg"
+    assert corrected.shelves[0].books[0].cover == "https://example.test/old.jpg"
+
+
+@pytest.mark.parametrize(
+    ("title", "authors", "known_as"),
+    [("", ["Author"], None), ("Book", [""], None), ("Book", ["Author"], "  ")],
+)
+def test_correct_book_identity_rejects_empty_reader_data(title, authors, known_as):
     shelf = ShelfFile(
         cover_photo="photo.jpg",
         lens="x",
         shelves=[ShelfSection(title="One", books=[ShelfBook(title="Book")])],
     )
-    for operation in (hide_book, show_book):
+    with pytest.raises(ValueError):
+        correct_book_identity(shelf, 0, 0, title=title, authors=authors, known_as=known_as)
+
+
+def test_hide_show_and_corrections_reject_negative_or_missing_positions():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="x",
+        shelves=[ShelfSection(title="One", books=[ShelfBook(title="Book")])],
+    )
+    operations = (
+        lambda value, shelf_index, book_index: hide_book(value, shelf_index, book_index),
+        lambda value, shelf_index, book_index: show_book(value, shelf_index, book_index),
+        lambda value, shelf_index, book_index: correct_book_identity(
+            value, shelf_index, book_index, title="Book", authors=[], known_as=None
+        ),
+        lambda value, shelf_index, book_index: set_book_cover(value, shelf_index, book_index, "none"),
+    )
+    for operation in operations:
         for shelf_index, book_index in ((-1, 0), (0, -1), (1, 0), (0, 1)):
             with pytest.raises(IndexError):
                 operation(shelf, shelf_index, book_index)

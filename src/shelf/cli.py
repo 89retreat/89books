@@ -23,12 +23,13 @@ from shelf.books import read_books_yaml
 from shelf.config import CONFIG_FILE, PHOTO_EXTENSIONS, Config, ConfigError, load_config, load_photos
 from shelf.covers import CoverCheck
 from shelf.googlebooks import GoogleBooks
+from shelf.local_covers import CoverAssetError, resolve_cover_assets
 from shelf.openlibrary import OpenLibrary
 from shelf.portrait import write_portrait
 from shelf.progress import Progress
 from shelf.recognition import recognize
 from shelf.review import review_books
-from shelf.shelf_file import ShelfYamlError, dump_shelf, parse_shelf
+from shelf.shelf_file import ShelfFile, ShelfYamlError, dump_shelf, parse_shelf
 
 CACHE_DIR = ".shelf"
 SHELF_YAML = "shelf.yaml"
@@ -160,13 +161,14 @@ def draw_shelf(folder: Path, now: datetime | None = None) -> DrawResult:
         raise CommandError(f"No {SHELF_YAML} in {folder}. Run `uv run shelf create --folder {folder}` first.")
     source_bytes = source.read_bytes()
     shelf = parse_shelf(source_bytes.decode("utf-8"))
+    cover_assets = _resolve_cover_assets(folder, shelf)
     photos = load_photos(folder)
     cover = next((photo for photo in photos if photo.name == shelf.cover_photo), None)
     if cover is None:
         raise CommandError(f'cover_photo "{shelf.cover_photo}" is not one of the photos in {folder}.')
     ordered = [cover] + [photo for photo in photos if photo != cover]
     images = [photo_tools.data_uri(photo_tools.prepare(photo, photo_tools.PAGE_SIDE)) for photo in ordered]
-    html = core.draw(shelf, images)
+    html = core.draw(shelf, images, cover_assets)
     digest = hashlib.sha256(source_bytes).hexdigest()
     marker = folder / CACHE_DIR / DRAWN_HASH
     previous = marker.read_text(encoding="utf-8").strip() if marker.exists() else None
@@ -263,9 +265,17 @@ def check_shelf(folder: Path) -> CheckResult:
     if not path.exists():
         raise CommandError(f"No {SHELF_YAML} in {folder}. Run `uv run shelf create --folder {folder}` first.")
     shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    _resolve_cover_assets(Path(folder), shelf)
     books = sum(len(section.books) for section in shelf.shelves)
     hidden = sum(book.hidden is True for section in shelf.shelves for book in section.books)
     return CheckResult(books, books - hidden, len(shelf.shelves))
+
+
+def _resolve_cover_assets(folder: Path, shelf: ShelfFile) -> dict[tuple[int, int], str]:
+    try:
+        return resolve_cover_assets(folder, shelf)
+    except CoverAssetError as exc:
+        raise CommandError(str(exc)) from exc
 
 
 def open_shelf(folder: Path, opener: Callable[[str], object] = webbrowser.open) -> Path:

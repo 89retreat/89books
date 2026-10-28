@@ -35,8 +35,9 @@ pelas fotos.
 3. **Três escolhas de capa:**
    - `cover: https://…` — referência remota, não baixada por check/draw;
    - `cover: none` — lombada, mesmo quando `face: true`;
-   - `cover: caminho/relativo.jpg` — arquivo dentro da pasta da estante,
-     sanitizado e embutido como data URI.
+   - `cover: covers/caminho/relativo.jpg` — arquivo dentro da subpasta
+     `covers/` da estante, sanitizado e embutido como data URI. A subpasta
+     separa capas de livros das fotos de estante descobertas automaticamente.
 4. **Segurança local:** caminho absoluto, traversal, symlink para fora,
    esquema não HTTPS, extensão não suportada, arquivo ausente, mais de 5 MiB
    ou mais de 25 megapixels são erros claros.
@@ -65,9 +66,9 @@ capas sem rede:
 
 - `none` e ausência não geram asset;
 - HTTPS é aceito como referência sem fetch;
-- texto sem esquema é caminho relativo à pasta da estante;
-- o caminho resolvido deve permanecer dentro da pasta e não pode escapar por
-  symlink;
+- texto sem esquema é caminho relativo sob `covers/` na pasta da estante;
+- o caminho resolvido deve permanecer dentro de `covers/` e não pode escapar
+  por symlink;
 - extensões aceitas: `.jpg`, `.jpeg`, `.png`, `.webp`, `.heic`, `.heif`;
 - limite bruto: 5 MiB; limite decodificado: 25.000.000 pixels;
 - a imagem é orientada por EXIF, convertida para RGB, reduzida para no máximo
@@ -106,7 +107,7 @@ Documentar exemplos em `GETTING_STARTED.md` e `my-bookshelf/README.md`:
 - title: Título corrigido
   authors: [Nome completo]
   known_as: Nome da lombada
-  cover: minha-capa.jpg   # or https://… or none
+  cover: covers/minha-capa.jpg   # or https://… or none
 ```
 
 Explicar limites, ausência de busca automática, URL carregada ao abrir e
@@ -194,7 +195,8 @@ leitura de foto, catálogo ou modelo.
   é ignorada silenciosamente.
 - Limites de 5 MiB/25 MP são proteção inicial. Uso real pode justificar revisão
   sem mudar o formato do YAML.
-- Subpastas são aceitas se permanecerem dentro da pasta; symlinks externos não.
+- Subpastas são aceitas dentro de `covers/`; symlinks externos não. A pasta
+  dedicada evita que uma capa local apareça por engano no mosaico de fotos.
 
 ## Stop Conditions
 
@@ -208,5 +210,5 @@ leitura de foto, catálogo ou modelo.
 
 Implementation must not start until the Navigator approves this plan.
 
-- Approved by: pending
-- Approved on: pending
+- Approved by: Navigator (Alisson)
+- Approved on: 2026-10-28

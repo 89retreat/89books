@@ -22,6 +22,8 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 - `draw` snapshots changed source bytes; `restore` and `recreate` save the current source before replacement.
 - At most 20 managed files stay in `history/`, which git ignores.
 - Add `hidden: true` to a book and draw to omit it without deleting it; remove the line to show it again.
+- Correct `title`, the `authors` list or optional `known_as` directly in `shelf.yaml`; redraw never consults a catalogue.
+- Set `cover` to an HTTPS URL, `none`, or `covers/capa.jpg`. Put local book covers in a `covers/` subfolder; they are sanitized and embedded in the page.
 
 Everything in this folder is ignored by git except this README: photos,
 `config.toml`, `shelf.yaml`, `shelf.html`, a legacy `books.yaml` and the

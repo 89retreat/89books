@@ -148,6 +148,47 @@ again to bring it back in the same position. `hidden: false` is also visible.
 The lens and shelf text are your writing and are not rewritten automatically
 if they mention the hidden title.
 
+## Correct a title, author or cover
+
+Edit the book directly in `shelf.yaml`; your correction wins over the original
+photo reading and catalogue data:
+
+```yaml
+- title: Título corrigido
+  authors: [Nome completo da autora]
+  known_as: Nome que aparece na lombada
+  face: true
+  cover: covers/minha-capa.jpg
+```
+
+`authors` is always a list. `known_as` is optional and controls the name on the
+spine and in “Quem mais mora aqui”. It is shown as written, including a long
+name; remove the line to use the automatic shortened name.
+
+There are three cover choices:
+
+- `cover: https://example.com/cover.jpg` uses a remote HTTPS image. `check` and
+  `draw` do not download it, but the browser needs network access when opening
+  the page.
+- `cover: none` forces a drawn spine, including for a book marked `face: true`.
+- `cover: covers/minha-capa.jpg` uses your own image. Keep local book covers in
+  the shelf folder's `covers/` subfolder so they are not mistaken for shelf
+  photos.
+
+A local cover may be JPEG, PNG, WebP or HEIC/HEIF, at most 5 MiB and 25
+megapixels. `draw` rotates and reduces it to at most 1000 pixels, removes EXIF
+metadata and embeds it in `shelf.html`; neither its path nor metadata is
+published. Paths outside `covers/`, missing files and non-HTTPS links are
+rejected while the previous page is preserved.
+
+Validate and redraw without a key, catalogue lookup or cost:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
 ### What `--project` means
 
 `--project` is an option of `uv`, not of 89 Books. You normally do not need it.
@@ -170,5 +211,6 @@ A packaged installation should let people run `shelf` without knowing about
 | `No photos in my-bookshelf` | Copy the photos into `my-bookshelf/` at the root of the repository. |
 | `shelf.yaml already exists` | This is protection, not an error in your shelf. Run `draw`; `create` never replaces your edits. |
 | An error names a line in `shelf.yaml` | Correct that line and run `draw` again. The previous page was preserved. |
+| A cover must be inside `covers/` | Create that subfolder inside your shelf folder, copy the image there and use a relative value such as `covers/capa.jpg`. |
 | `command not found: uv` | Open a new terminal window after installing uv. |
 | You want another name or key | Run `uv run shelf setup`. |

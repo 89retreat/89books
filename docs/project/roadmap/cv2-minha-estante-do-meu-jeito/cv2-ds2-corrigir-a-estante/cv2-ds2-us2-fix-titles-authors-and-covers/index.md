@@ -2,7 +2,7 @@
 code: CV2.DS2.US2
 level: User Story
 status: Active
-status_reason: puxada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
+status_reason: implementação concluída em 2026-10-28 com 184 testes; aguarda validação do Navigator
 updated: 2026-10-28
 related:
   - ../index.md
@@ -29,7 +29,7 @@ So that a página mostre a minha estante, sem uma nova leitura paga das fotos.
 ## Outcome
 
 A pessoa corrige `title`, `authors` e `known_as`, ou escolhe `cover` como imagem
-na pasta, URL HTTPS ou `none`; `check` valida e `draw` mostra a correção sem
+em `covers/`, URL HTTPS ou `none`; `check` valida e `draw` mostra a correção sem
 catálogo, chave ou custo. Uma imagem local segura é redimensionada, perde EXIF
 e vira parte do HTML sem expor caminho local. Arquivos maiores que 5 MiB ou 25
 megapixels são recusados com um aviso claro. A fonte e o histórico preservam a
@@ -61,7 +61,7 @@ And the previous page and draw marker remain unchanged
 ## Scope
 
 - Correção gratuita de título, autores e nome da lombada.
-- `cover` com HTTPS, `none` ou caminho local confinado à pasta da estante.
+- `cover` com HTTPS, `none` ou caminho local confinado à subpasta `covers/` da estante.
 - Imagem local até 5 MiB e 25 MP, convertida para JPEG com lado máximo 1000.
 - Operações puras de correção para uma futura interface.
 - Validação compartilhada por `check` e `draw`, preservação atômica e docs.

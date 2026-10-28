@@ -5,7 +5,7 @@ Nothing here prints, reads input, looks at the environment or chooses a folder: 
 go through the `log` and `progress` given by the caller, and the result comes back as data.
 """
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -127,9 +127,51 @@ def create(
     return Creation(source, len(generated.books), generated.cost, migrated)
 
 
-def draw(shelf: ShelfFile, images: list[str]) -> str:
-    """Draws the page from the editable source and prepared photos. Costs nothing."""
-    return render_file(shelf, images)
+def draw(
+    shelf: ShelfFile,
+    images: list[str],
+    cover_assets: Mapping[tuple[int, int], str] | None = None,
+) -> str:
+    """Draws the page from the editable source and prepared assets. Costs nothing."""
+    return render_file(shelf, images, cover_assets)
+
+
+def correct_book_identity(
+    shelf: ShelfFile,
+    shelf_index: int,
+    book_index: int,
+    *,
+    title: str,
+    authors: list[str],
+    known_as: str | None,
+) -> ShelfFile:
+    """Returns a shelf copy with the reader's title, authors and spine name for one book."""
+    if not isinstance(title, str) or not title.strip():
+        raise ValueError("title must not be empty")
+    if not isinstance(authors, list) or any(
+        not isinstance(author, str) or not author.strip() for author in authors
+    ):
+        raise ValueError("authors must be a list of non-empty names")
+    if known_as is not None and (not isinstance(known_as, str) or not known_as.strip()):
+        raise ValueError("known_as must be non-empty text or None")
+    return _replace_book(
+        shelf,
+        shelf_index,
+        book_index,
+        lambda book: replace(book, title=title, authors=list(authors), known_as=known_as),
+    )
+
+
+def set_book_cover(
+    shelf: ShelfFile,
+    shelf_index: int,
+    book_index: int,
+    cover: str | None,
+) -> ShelfFile:
+    """Returns a shelf copy with the reader's local, HTTPS, absent or `none` cover choice."""
+    if cover is not None and (not isinstance(cover, str) or not cover.strip()):
+        raise ValueError("cover must be non-empty text or None")
+    return _replace_book(shelf, shelf_index, book_index, lambda book: replace(book, cover=cover))
 
 
 def hide_book(shelf: ShelfFile, shelf_index: int, book_index: int) -> ShelfFile:
@@ -143,11 +185,25 @@ def show_book(shelf: ShelfFile, shelf_index: int, book_index: int) -> ShelfFile:
 
 
 def _set_book_hidden(shelf: ShelfFile, shelf_index: int, book_index: int, hidden: bool | None) -> ShelfFile:
+    return _replace_book(
+        shelf,
+        shelf_index,
+        book_index,
+        lambda book: replace(book, hidden=hidden),
+    )
+
+
+def _replace_book(
+    shelf: ShelfFile,
+    shelf_index: int,
+    book_index: int,
+    change: Callable[[ShelfBook], ShelfBook],
+) -> ShelfFile:
     if shelf_index < 0 or book_index < 0:
         raise IndexError("shelf and book positions must not be negative")
     section = shelf.shelves[shelf_index]
     books = list(section.books)
-    books[book_index] = replace(books[book_index], hidden=hidden)
+    books[book_index] = change(books[book_index])
     sections = list(shelf.shelves)
     sections[shelf_index] = replace(section, books=books)
     return replace(shelf, shelves=sections)

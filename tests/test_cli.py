@@ -6,6 +6,7 @@ import pytest
 from shelf import cli
 from shelf.cli import (
     CommandError,
+    check_shelf,
     create_shelf,
     draw_shelf,
     list_history,
@@ -256,6 +257,55 @@ def test_draw_is_free_self_contained_and_uses_only_shelf_yaml(shelf_folder, monk
     assert str(shelf_folder) not in html and "SecretCam" not in html
     assert "sk-secret" not in html
     assert (shelf_folder / "shelf.yaml").read_bytes() == source
+
+
+def test_check_and_draw_use_corrected_identity_and_embed_a_safe_local_cover(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    covers = shelf_folder / "covers"
+    covers.mkdir()
+    (covers / "capa.jpg").write_bytes((shelf_folder / "photo-01.jpg").read_bytes())
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    book = next(book for section in shelf.shelves for book in section.books if book.title == "Cynefin")
+    book.title = "Cynefin corrigido"
+    book.authors = ["Autora corrigida"]
+    book.known_as = "Um nome conhecido que eu escolhi por inteiro"
+    book.face = True
+    book.cover = "covers/capa.jpg"
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    checked = check_shelf(shelf_folder)
+    result = draw_shelf(shelf_folder)
+    html = result.html.read_text(encoding="utf-8")
+
+    assert checked.books == 2 and result.books == 2
+    assert "Cynefin corrigido" in html and "Autora corrigida" in html
+    assert "Um nome conhecido que eu escolhi por inteiro" in html
+    assert html.count("data:image/jpeg;base64,") == 3
+    assert "covers/capa.jpg" not in html and "SecretCam" not in html
+
+
+def test_invalid_local_cover_never_changes_page_marker_or_history(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 30))
+    page = (shelf_folder / "shelf.html").read_bytes()
+    marker = (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes()
+    versions = [entry.name for entry in list_history(shelf_folder)]
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    shelf.shelves[0].books[0].cover = "covers/missing.jpg"
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    with pytest.raises(CommandError, match='Book ".+": cover "covers/missing.jpg"'):
+        check_shelf(shelf_folder)
+    with pytest.raises(CommandError, match='Book ".+": cover "covers/missing.jpg"'):
+        draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 19, 31))
+
+    assert (shelf_folder / "shelf.html").read_bytes() == page
+    assert (shelf_folder / ".shelf" / "last-drawn.sha256").read_bytes() == marker
+    assert [entry.name for entry in list_history(shelf_folder)] == versions
 
 
 def test_draw_reflects_file_edits_and_shelf_order(shelf_folder):

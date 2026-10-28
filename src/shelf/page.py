@@ -2,6 +2,7 @@
 
 import base64
 import re
+from collections.abc import Mapping
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -28,9 +29,13 @@ def render(name: str | None, photos: list[str], books: list[dict], portrait: dic
     return _render(name, photos, portrait["lens"], books, build_shelves(books, portrait))
 
 
-def render_file(shelf: ShelfFile, photos: list[str]) -> str:
-    """Renders only what the editable, versioned shelf says."""
-    books, shelves = shelves_from_file(shelf.shelves)
+def render_file(
+    shelf: ShelfFile,
+    photos: list[str],
+    cover_assets: Mapping[tuple[int, int], str] | None = None,
+) -> str:
+    """Renders only what the editable, versioned shelf and prepared assets say."""
+    books, shelves = shelves_from_file(shelf.shelves, cover_assets)
     return _render(shelf.name, photos, shelf.lens, books, shelves)
 
 

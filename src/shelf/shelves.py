@@ -3,6 +3,8 @@
 import hashlib
 import re
 import unicodedata
+from collections.abc import Mapping
+from urllib.parse import urlsplit
 
 from shelf.shelf_file import ShelfBook, ShelfSection
 from shelf.text import THRESHOLD, similarity
@@ -95,9 +97,9 @@ def author_key(author: str) -> str:
 
 
 def display_name(author: str, known_as: str | None = None) -> str:
-    """The name readers know, from the review, when it fits; otherwise the author's short name."""
+    """The reader's explicit known name, or an automatic short name when none was chosen."""
     known_as = " ".join((known_as or "").split())
-    return known_as if known_as and len(known_as) <= NAME_MAX else short_name(author)
+    return known_as if known_as else short_name(author)
 
 
 def spine(title: str, authors: list[str] | None = None, known_as: str | None = None) -> dict:
@@ -209,22 +211,26 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
     return shelves
 
 
-def shelves_from_file(sections: list[ShelfSection]) -> tuple[list[dict], list[dict]]:
+def shelves_from_file(
+    sections: list[ShelfSection],
+    cover_assets: Mapping[tuple[int, int], str] | None = None,
+) -> tuple[list[dict], list[dict]]:
     """Turns the ordered, editable file into the derived data the page template needs.
 
     The file owns shelves, order and explicit choices. This function only derives visual details such as
     spines, angles, numerals and columns. Hidden books do not reach either the shelves or frequent authors.
     """
     shelves, visible = [], []
+    cover_assets = cover_assets or {}
     last = len(sections) - 1
     for index, section in enumerate(sections):
         rest = index == last and not section.text
         cited = _cited(section.text)
         items = []
-        for book in section.books:
+        for book_index, book in enumerate(section.books):
             if book.hidden is True:
                 continue
-            data = _file_book_data(book)
+            data = _file_book_data(book, cover_assets.get((index, book_index)))
             visible.append(data)
             automatic_face = (
                 len(items) % REST_FACE_EVERY == REST_FACE_EVERY // 2
@@ -249,14 +255,18 @@ def shelves_from_file(sections: list[ShelfSection]) -> tuple[list[dict], list[di
     return visible, shelves
 
 
-def _file_book_data(book: ShelfBook) -> dict:
+def _file_book_data(book: ShelfBook, cover_asset: str | None = None) -> dict:
     data = {
         "title": book.title,
         "authors": book.authors,
         "known_as": book.known_as,
     }
-    if book.cover and book.cover != "none":
-        data["cover_url"] = book.cover
+    if cover_asset:
+        data["cover_url"] = cover_asset
+    elif book.cover:
+        parsed = urlsplit(book.cover)
+        if parsed.scheme == "https" and parsed.netloc:
+            data["cover_url"] = book.cover
     return data
 
 
