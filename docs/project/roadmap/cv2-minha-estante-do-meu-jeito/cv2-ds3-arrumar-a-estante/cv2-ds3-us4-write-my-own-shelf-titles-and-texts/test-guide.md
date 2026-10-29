@@ -51,6 +51,8 @@ mudam de ordem, escolha explícita é ignorada ou algum serviço pago é chamado
 
 ## Navigator Evidence
 
-Pendente: abrir a fixture, confirmar visualmente as palavras autorais, a capa
-azul de Cynefin e as tags mostradas como texto; repetir a alternância de
-`face: false` e, se desejado, o restore entre as duas versões já criadas.
+A captura fornecida pelo Navigator em 2026-10-29 confirmou `voz` e `Cynefin`
+em itálico, asteriscos literais no título, `<segura>`, `<autoral>` e `<script>`
+visíveis como texto inerte, Torto Arado primeiro e a capa azul de Cynefin de
+frente. O Navigator declarou a história validada e autorizou o fechamento; as
+transições de `face: false` e restore ficaram cobertas pelo E2E offline.

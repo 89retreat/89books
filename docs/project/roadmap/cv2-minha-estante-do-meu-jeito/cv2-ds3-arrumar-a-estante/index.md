@@ -2,7 +2,7 @@
 code: CV2.DS3
 level: Delivery Story
 status: Active
-status_reason: US1, US2 e US3 concluídas; US4 implementada em 2026-10-29 e aguardando validação do Navigator
+status_reason: US1 a US4 concluídas e validadas; US5 permanece condicional e a DS aguarda avaliação agregada
 updated: 2026-10-29
 related:
   - ../index.md
@@ -35,7 +35,7 @@ autoral, que estava fora da CV1, entra aqui.
 | [CV2.DS3.US1](cv2-ds3-us1-put-each-book-on-the-shelf-i-choose/index.md) | Put each book on the shelf I choose | User Story | Mover as linhas de um livro no arquivo muda a prateleira e a ordem dele na página; posso criar, apagar e reordenar prateleiras. | Done |
 | [CV2.DS3.US2](cv2-ds3-us2-face-out-or-spine-my-choice/index.md) | Face out or spine, my choice | User Story | Com `face: true`, o livro fica de frente; com `face: false`, mostra a lombada; sem o campo, segue a regra automática. Uma prateleira com livros demais de frente quebra em mais fileiras. | Done |
 | [CV2.DS3.US3](cv2-ds3-us3-choose-the-photo-that-represents-my-shelf/index.md) | Choose the photo that represents my shelf | User Story | `cover_photo` no `shelf.yaml` escolhe a foto em destaque no mosaico, a que representa a estante; sai do `config.toml`. | Done |
-| [CV2.DS3.US4](cv2-ds3-us4-write-my-own-shelf-titles-and-texts/index.md) | Write my own shelf titles and texts | User Story | Reescrevo a abertura (`lens`) e o título e o texto de cada prateleira; a página mostra o que escrevi, com itálico em `*título*` como hoje. | Active |
+| [CV2.DS3.US4](cv2-ds3-us4-write-my-own-shelf-titles-and-texts/index.md) | Write my own shelf titles and texts | User Story | Reescrevo a abertura (`lens`) e o título e o texto de cada prateleira; a página mostra o que escrevi, com itálico em `*título*` como hoje. | Done |
 | CV2.DS3.US5 | Ask for another portrait | User Story | `portrait` guarda uma versão, confirma o custo (centavos) e reescreve a abertura e as prateleiras a partir dos livros que ficaram, sem ler as fotos. Puxada só se os fundadores sentirem falta depois de editar à mão. Era parte da antiga CV2.DS1.US1. | Planned |
 
 ## Done Condition

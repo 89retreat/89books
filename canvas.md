@@ -6,7 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████████░░` 10/13 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████████░░` 11/13 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 resultado agregado pendente | `██████████` 5/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
@@ -17,11 +17,11 @@
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
-| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa | `██████░░░░` 3/5 |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · aguarda avaliação agregada | `████████░░` 4/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US4 · Write my own shelf titles and texts | 👀 aguarda validação | `▓▓▓▓▓▓▓▓░░` |
+| 　　↳ US4 · Write my own shelf titles and texts | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
 | **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
 | ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US4 · Write my own shelf titles and texts** | 👀 aguarda validação | Confirmar palavras autorais, HTML visível como texto, itálico, face automática e restore |
+| **CV2.DS3 · Arrumar a estante** | 🧭 avaliação agregada | Decidir se as quatro escolhas validadas fecham a DS sem puxar a US5 condicional |
 
 ### ✅ Fundações assentadas
 

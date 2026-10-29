@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US4
 level: User Story
-status: Active
-status_reason: implementação concluída em 2026-10-29 com 206 testes; aguarda validação do Navigator
+status: Done
+status_reason: validada por captura do Navigator, revisada sem dívida relevante e fechada em 2026-10-29
 updated: 2026-10-29
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS3.US4 — Write my own shelf titles and texts
 
-**Status:** Active
+**Status:** Done
 
 ## User Story
 
