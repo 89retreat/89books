@@ -4,7 +4,7 @@
 
 ## Pull
 
-Puxada pelo Navigator logo após o fechamento de CV2.DS3.US1. A ordem já
+Puxada pelo Navigator em 2026-10-29, logo após o fechamento de CV2.DS3.US1. A ordem já
 pertence à pessoa; agora ela decide quais livros chamam atenção pela capa e
 quais permanecem como lombada.
 
@@ -209,5 +209,5 @@ Criar `/tmp/89books-ds3-us2-validation` com uma foto e capas locais pequenas:
 
 Implementation must not start until the Navigator approves this plan.
 
-- Approved by: pending
-- Approved on: pending
+- Approved by: Navigator (Alisson)
+- Approved on: 2026-10-29

@@ -174,6 +174,18 @@ def set_book_cover(
     return _replace_book(shelf, shelf_index, book_index, lambda book: replace(book, cover=cover))
 
 
+def set_book_face(
+    shelf: ShelfFile,
+    shelf_index: int,
+    book_index: int,
+    face: bool | None,
+) -> ShelfFile:
+    """Returns a shelf copy with an explicit face/spine choice, or automatic when None."""
+    if face is not None and not isinstance(face, bool):
+        raise ValueError("face must be true, false or None")
+    return _replace_book(shelf, shelf_index, book_index, lambda book: replace(book, face=face))
+
+
 def move_book(
     shelf: ShelfFile,
     from_shelf_index: int,
@@ -320,7 +332,6 @@ def _shelf_book(book: dict) -> ShelfBook:
         title=book["title"],
         authors=list(book.get("authors") or []),
         known_as=book.get("known_as"),
-        face=book.get("face"),
         cover=cover,
         read_as=book.get("read_as"),
         source=book.get("source"),

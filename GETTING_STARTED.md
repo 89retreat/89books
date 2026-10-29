@@ -226,6 +226,32 @@ uv run shelf open
 
 These commands do not call a catalogue or model and do not cost anything.
 
+## Choose cover face or spine
+
+Add one optional `face` field to a book:
+
+```yaml
+face: true   # show the cover face out, when a usable cover exists
+face: false  # always show the drawn spine
+```
+
+Remove the `face` line to return that book to the automatic composition: a
+book cited in the shelf text may face out, and the generated closing shelf
+occasionally shows a cover. Newly created shelves leave automatic decisions
+without a `face` field so they remain automatic until you choose.
+
+`cover: none`, an absent cover or an image that fails in the browser always
+falls back to the spine, even beside `face: true`; no book disappears. Several
+face-out books keep their YAML order and wrap into additional rows as needed.
+
+Validate and redraw with the same free commands:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
 ### What `--project` means
 
 `--project` is an option of `uv`, not of 89 Books. You normally do not need it.

@@ -40,6 +40,36 @@ def test_file_shelves_keep_literal_section_and_book_order_without_author_groupin
     assert [shelf["order"] for shelf in shelves] == [1, 2]
 
 
+def test_explicit_face_spine_and_absent_face_follow_reader_precedence():
+    cover = "https://example.test/cover.jpg"
+    sections = [
+        ShelfSection(
+            title="Choices",
+            text="*Automatic face* and *Forced spine*.",
+            books=[
+                ShelfBook(title="Automatic face", cover=cover),
+                ShelfBook(title="Forced face", face=True, cover=cover),
+                ShelfBook(title="Forced spine", face=False, cover=cover),
+                ShelfBook(title="Automatic spine", cover=cover),
+                ShelfBook(title="No cover", face=True),
+                ShelfBook(title="Cover none", face=True, cover="none"),
+            ],
+        )
+    ]
+
+    _, shelves = shelves_from_file(sections)
+    faces = {book["title"]: book["face"] for book in shelves[0]["books"]}
+
+    assert faces == {
+        "Automatic face": True,
+        "Forced face": True,
+        "Forced spine": False,
+        "Automatic spine": False,
+        "No cover": False,
+        "Cover none": False,
+    }
+
+
 def test_only_the_canonical_last_section_is_the_generated_closing_shelf():
     custom = [
         ShelfSection(title="Primeira", text="Texto.", books=[]),

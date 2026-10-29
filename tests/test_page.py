@@ -74,6 +74,36 @@ def test_file_render_never_treats_an_unresolved_local_path_as_a_browser_url():
     assert 'class="spine' in html
 
 
+def test_multiple_explicit_faces_reach_the_page_in_authored_order_with_wrapping_layout():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Capas escolhidas",
+                text="Meu texto.",
+                books=[
+                    ShelfBook(
+                        title=f"Capa {index}",
+                        authors=[f"Autora {index}"],
+                        face=True,
+                        cover=f"https://example.test/{index}.jpg",
+                    )
+                    for index in range(6)
+                ],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert html.count('class="face"') == 6
+    assert [html.index(f"Capa {index}") for index in range(6)] == sorted(
+        html.index(f"Capa {index}") for index in range(6)
+    )
+    assert "const widthOf" in html and "rows.push" in html
+
+
 def test_hidden_book_has_no_face_or_spine_and_does_not_sustain_frequent_author():
     shelf = ShelfFile(
         cover_photo="photo.jpg",

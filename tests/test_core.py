@@ -17,6 +17,7 @@ from shelf.core import (
     move_shelf_section,
     remove_shelf_section,
     set_book_cover,
+    set_book_face,
     show_book,
 )
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
@@ -82,6 +83,7 @@ def test_create_turns_paid_generation_into_the_versioned_file(shelf_folder):
         "Torto Arado",
         "Cynefin",
     ]
+    assert all(book.face is None for section in created.shelf.shelves for book in section.books)
 
 
 def test_create_migrates_cv1_books_by_calling_only_the_portrait(shelf_folder):
@@ -133,6 +135,7 @@ left_out:
     book = created.shelf.shelves[0].books[0]
     assert book.cover == "https://covers.openlibrary.org/b/id/7-M.jpg?default=false"
     assert book.source == "open_library"
+    assert book.face is None
     assert created.shelf.left_out[0].reason == "not a book"
     assert set(shelf_folder.iterdir()) == before
 
@@ -280,6 +283,44 @@ def test_correct_book_identity_rejects_empty_reader_data(title, authors, known_a
         correct_book_identity(shelf, 0, 0, title=title, authors=authors, known_as=known_as)
 
 
+def test_face_choice_is_a_pure_tri_state_operation_that_preserves_everything_else():
+    original = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="x",
+        shelves=[
+            ShelfSection(
+                title="One",
+                books=[
+                    ShelfBook(
+                        title="Book",
+                        authors=["Author"],
+                        known_as="Known",
+                        hidden=False,
+                        cover="https://example.test/book.jpg",
+                        source="reader",
+                        work="/works/1",
+                    ),
+                    ShelfBook(title="Other"),
+                ],
+            )
+        ],
+    )
+
+    faced = set_book_face(original, 0, 0, True)
+    spined = set_book_face(faced, 0, 0, False)
+    automatic = set_book_face(spined, 0, 0, None)
+
+    assert original.shelves[0].books[0].face is None
+    assert faced.shelves[0].books[0].face is True
+    assert spined.shelves[0].books[0].face is False
+    assert automatic.shelves[0].books[0].face is None
+    assert faced.shelves[0].books[0].cover == "https://example.test/book.jpg"
+    assert faced.shelves[0].books[0].source == "reader"
+    assert faced.shelves[0].books[1] is original.shelves[0].books[1]
+    with pytest.raises(ValueError, match="true, false or None"):
+        set_book_face(original, 0, 0, 1)
+
+
 def test_move_book_is_pure_and_preserves_the_complete_book_in_cross_and_same_shelf_moves():
     complete = ShelfBook(
         title="Torto Arado",
@@ -387,6 +428,7 @@ def test_hide_show_and_corrections_reject_negative_or_missing_positions():
             value, shelf_index, book_index, title="Book", authors=[], known_as=None
         ),
         lambda value, shelf_index, book_index: set_book_cover(value, shelf_index, book_index, "none"),
+        lambda value, shelf_index, book_index: set_book_face(value, shelf_index, book_index, True),
     )
     for operation in operations:
         for shelf_index, book_index in ((-1, 0), (0, -1), (1, 0), (0, 1)):

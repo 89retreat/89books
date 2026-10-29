@@ -96,6 +96,8 @@ def test_create_writes_only_the_versioned_source(shelf_folder):
     assert result.books == 2 and result.cost == 0.05 and result.migrated is False
     assert shelf.name is None and shelf.cover_photo == "photo-01.jpg"
     assert [section.title for section in shelf.shelves] == ["Quando penso na terra", REST_TITLE]
+    assert all(book.face is None for book in all_books(shelf))
+    assert "face:" not in shelf_path.read_text(encoding="utf-8")
     assert not (shelf_folder / "shelf.html").exists()
     assert not (shelf_folder / "books.yaml").exists()
     assert any("2 books" in line for line in lines)
@@ -321,6 +323,34 @@ def test_draw_reflects_file_edits_and_shelf_order(shelf_folder):
     html = (shelf_folder / "shelf.html").read_text(encoding="utf-8")
     assert "Eu escolho como esta página me apresenta." in html
     assert html.index(REST_TITLE) < html.index("Quando penso na terra")
+
+
+def test_draw_respects_explicit_face_spine_and_return_to_automatic(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    torto = next(book for book in all_books(shelf) if book.title == "Torto Arado")
+    cynefin = next(book for book in all_books(shelf) if book.title == "Cynefin")
+    torto.cover = "https://example.test/torto.jpg"
+    torto.face = False
+    cynefin.cover = "https://example.test/cynefin.jpg"
+    cynefin.face = True
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    explicit = draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 20, 10))
+    explicit_html = explicit.html.read_text(encoding="utf-8")
+    torto.face = None
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+    automatic = draw_shelf(shelf_folder, now=datetime(2026, 10, 28, 20, 11))
+    automatic_html = automatic.html.read_text(encoding="utf-8")
+
+    assert explicit_html.count('class="face"') == 1
+    assert "https://example.test/cynefin.jpg" in explicit_html
+    assert "https://example.test/torto.jpg" not in explicit_html
+    assert automatic_html.count('class="face"') == 2
+    assert "https://example.test/torto.jpg" in automatic_html
+    assert explicit.version is not None and automatic.version is not None
 
 
 def test_draw_follows_a_complete_book_move_into_a_custom_last_shelf(shelf_folder):

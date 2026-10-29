@@ -2,8 +2,8 @@
 code: CV2.DS3
 level: Delivery Story
 status: Active
-status_reason: US1 concluída; US2 puxada e planejada em 2026-10-28, aguardando aprovação
-updated: 2026-10-28
+status_reason: US1 concluída; US2 implementada em 2026-10-29 e aguardando validação do Navigator
+updated: 2026-10-29
 related:
   - ../index.md
   - ../cv2-ds1-a-estante-num-arquivo-meu/index.md

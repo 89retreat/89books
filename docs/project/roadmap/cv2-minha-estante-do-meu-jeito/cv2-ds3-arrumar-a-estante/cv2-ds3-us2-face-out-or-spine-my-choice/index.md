@@ -2,8 +2,8 @@
 code: CV2.DS3.US2
 level: User Story
 status: Active
-status_reason: puxada, preparada e planejada em 2026-10-28; plano aguarda aprovação do Navigator
-updated: 2026-10-28
+status_reason: implementação concluída em 2026-10-29 com 195 testes; aguarda validação do Navigator
+updated: 2026-10-29
 related:
   - ../index.md
   - ../cv2-ds3-us1-put-each-book-on-the-shelf-i-choose/index.md
