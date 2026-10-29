@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US2
 level: User Story
-status: Active
-status_reason: implementação concluída em 2026-10-29 com 195 testes; aguarda validação do Navigator
+status: Done
+status_reason: validada e fechada pelo Navigator em 2026-10-29; 195 testes e E2E gratuito aprovados
 updated: 2026-10-29
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS3.US2 — Face out or spine, my choice
 
-**Status:** Active
+**Status:** Done
 **Type:** User Story
 
 ---

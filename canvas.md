@@ -6,7 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `██████░░░░` 8/13 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `███████░░░` 9/13 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 resultado agregado pendente | `██████████` 5/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
@@ -17,9 +17,9 @@
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
-| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa | `██░░░░░░░░` 1/5 |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa | `████░░░░░░` 2/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US2 · Face out or spine, my choice | 🟢 ativa · aguarda validação | `▓▓▓▓▓▓▓▓░░` |
+| 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US4 · Write my own shelf titles and texts | 🟡 planejada | `░░░░░░░░░░` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US2 · Face out or spine, my choice** | 👀 aguarda validação | Abrir a fixture e confirmar automático, capa, lombada, fallback e múltiplas fileiras |
+| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 🟡 planejada | Escolher a foto que abre o mosaico sem reler a estante |
 
 ### ✅ Fundações assentadas
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -16,20 +16,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Free local E2E passed in /tmp/89books-ds3-us2-validation: an absent face on a cited book and explicit true produced two faces; explicit false and cover none produced spines; six more explicit faces reached the second shelf in authored order; nine local images were embedded without network.
+Evidence: Navigator screenshot confirmed the two covers, forced spine, cover-none fallback and six face-out books wrapping into rows. Navigator then removed face: true from Capa forçada, redrew, and confirmed it returned to the automatic spine because it was not cited.
 
 ## Navigator Validation
 
-Route: Run uv run shelf open --folder /tmp/89books-ds3-us2-validation. In Três escolhas confirm two covers followed by Lombada forçada and Sem capa as spines. In Muitas capas confirm six covers wrap into rows without overlap. Optionally remove face: true from Capa forçada, run check/draw/open and confirm it returns to an automatic spine because it is not cited.
+Route: Navigator ran check, draw and open in /tmp/89books-ds3-us2-validation, including the return-to-automatic edit.
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: True, false and absent visibly mean cover, spine and automatic; none falls back to spine; multiple covers keep order and wrap safely.
+Expected observation: True/false/absent visibly produce face/spine/automatic; none falls back to spine; multiple faces preserve order and wrap.
 
-Pass condition: All precedence states and multi-row layout are visible after free redraw with no missing or reordered books.
+Pass condition: All precedence states and multi-row layout visibly work after free redraw with no missing or reordered books.
 
-Fail condition: False is ignored, automatic remains frozen, a no-cover book disappears, faces overlap/reorder, or a paid/network service is requested.
+Fail condition: False is ignored, automatic remains frozen, no-cover disappears, faces overlap/reorder, or redraw requests payment.
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

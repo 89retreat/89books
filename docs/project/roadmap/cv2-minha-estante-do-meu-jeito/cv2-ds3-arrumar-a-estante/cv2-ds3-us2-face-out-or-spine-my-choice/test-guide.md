@@ -37,7 +37,7 @@ Em `/tmp/89books-ds3-us2-validation`:
 
 ## Navigator Evidence
 
-Pendente: abrir a fixture, confirmar as quatro precedências na primeira seção
-e observar que as seis capas da segunda seção quebram em fileiras sem
-sobreposição. Depois, remover `face: true` de “Capa forçada” para confirmar o
-retorno ao automático.
+O Navigator confirmou as quatro precedências e as seis capas em fileiras sem
+sobreposição. Também removeu `face: true` de “Capa forçada”, redesenhou e
+confirmou seu retorno à lombada automática; validação e fechamento foram
+explicitamente aprovados em 2026-10-29.
