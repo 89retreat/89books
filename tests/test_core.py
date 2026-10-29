@@ -15,9 +15,11 @@ from shelf.core import (
     hide_book,
     move_book,
     move_shelf_section,
+    order_shelf_photos,
     remove_shelf_section,
     set_book_cover,
     set_book_face,
+    set_cover_photo,
     show_book,
 )
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
@@ -281,6 +283,29 @@ def test_correct_book_identity_rejects_empty_reader_data(title, authors, known_a
     )
     with pytest.raises(ValueError):
         correct_book_identity(shelf, 0, 0, title=title, authors=authors, known_as=known_as)
+
+
+def test_cover_photo_choice_and_ordering_are_pure_and_preserve_everything_else():
+    original = ShelfFile(
+        cover_photo="photo-01.jpg",
+        lens="My lens",
+        shelves=[ShelfSection(title="One", books=[ShelfBook(title="Book")])],
+    )
+    names = ["photo-01.jpg", "photo-02.jpg", "photo-03.jpg"]
+
+    chosen = set_cover_photo(original, "photo-03.jpg")
+    ordered = order_shelf_photos(names, chosen.cover_photo)
+
+    assert original.cover_photo == "photo-01.jpg"
+    assert chosen.cover_photo == "photo-03.jpg"
+    assert chosen.lens == original.lens and chosen.shelves is original.shelves
+    assert ordered == ["photo-03.jpg", "photo-01.jpg", "photo-02.jpg"]
+    assert names == ["photo-01.jpg", "photo-02.jpg", "photo-03.jpg"]
+    for invalid in (None, 3, "", "  "):
+        with pytest.raises(ValueError, match="cover_photo"):
+            set_cover_photo(original, invalid)
+    with pytest.raises(ValueError, match='cover_photo "missing.jpg"'):
+        order_shelf_photos(names, "missing.jpg")
 
 
 def test_face_choice_is_a_pure_tri_state_operation_that_preserves_everything_else():

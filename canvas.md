@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 🟢 ativa · plano aguarda aprovação | Tornar `cover_photo` a única autoridade do destaque e validar ativos sem custo |
+| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 👀 aguarda validação | Trocar `cover_photo` na fixture e confirmar destaque, ordem e erro seguro |
 
 ### ✅ Fundações assentadas
 

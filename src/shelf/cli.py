@@ -12,7 +12,7 @@ import sys
 import tempfile
 import webbrowser
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
 
@@ -161,13 +161,9 @@ def draw_shelf(folder: Path, now: datetime | None = None) -> DrawResult:
         raise CommandError(f"No {SHELF_YAML} in {folder}. Run `uv run shelf create --folder {folder}` first.")
     source_bytes = source.read_bytes()
     shelf = parse_shelf(source_bytes.decode("utf-8"))
+    photos = _ordered_shelf_photos(folder, shelf)
     cover_assets = _resolve_cover_assets(folder, shelf)
-    photos = load_photos(folder)
-    cover = next((photo for photo in photos if photo.name == shelf.cover_photo), None)
-    if cover is None:
-        raise CommandError(f'cover_photo "{shelf.cover_photo}" is not one of the photos in {folder}.')
-    ordered = [cover] + [photo for photo in photos if photo != cover]
-    images = [photo_tools.data_uri(photo_tools.prepare(photo, photo_tools.PAGE_SIDE)) for photo in ordered]
+    images = [photo_tools.data_uri(photo_tools.prepare(photo, photo_tools.PAGE_SIDE)) for photo in photos]
     html = core.draw(shelf, images, cover_assets)
     digest = hashlib.sha256(source_bytes).hexdigest()
     marker = folder / CACHE_DIR / DRAWN_HASH
@@ -242,6 +238,10 @@ def recreate_shelf(
     if not source.exists():
         raise CommandError(f"No {SHELF_YAML} in {config.folder}. Run `create` first.")
     current = source.read_bytes()
+    try:
+        current_shelf = parse_shelf(current.decode("utf-8"))
+    except (UnicodeDecodeError, ShelfYamlError):
+        current_shelf = None
     created = _generate_shelf(
         config,
         recognize=recognize,
@@ -253,6 +253,16 @@ def recreate_shelf(
         log=log,
         progress=progress,
     )
+    if current_shelf is not None:
+        try:
+            core.order_shelf_photos([photo.name for photo in config.photos], current_shelf.cover_photo)
+        except ValueError:
+            pass
+        else:
+            created = replace(
+                created,
+                shelf=core.set_cover_photo(created.shelf, current_shelf.cover_photo),
+            )
     replacement = dump_shelf(created.shelf).encode("utf-8")
     version = save_version(config.folder, current, now=now)
     _replace(source, replacement)
@@ -265,10 +275,26 @@ def check_shelf(folder: Path) -> CheckResult:
     if not path.exists():
         raise CommandError(f"No {SHELF_YAML} in {folder}. Run `uv run shelf create --folder {folder}` first.")
     shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    _ordered_shelf_photos(Path(folder), shelf)
     _resolve_cover_assets(Path(folder), shelf)
     books = sum(len(section.books) for section in shelf.shelves)
     hidden = sum(book.hidden is True for section in shelf.shelves for book in section.books)
     return CheckResult(books, books - hidden, len(shelf.shelves))
+
+
+def _ordered_shelf_photos(folder: Path, shelf: ShelfFile) -> list[Path]:
+    try:
+        photos = load_photos(folder)
+    except ConfigError as exc:
+        raise CommandError(str(exc)) from exc
+    by_name = {photo.name: photo for photo in photos}
+    try:
+        names = core.order_shelf_photos(list(by_name), shelf.cover_photo)
+    except ValueError as exc:
+        raise CommandError(
+            f'cover_photo "{shelf.cover_photo}" is not one of the shelf photos in {folder}.'
+        ) from exc
+    return [by_name[name] for name in names]
 
 
 def _resolve_cover_assets(folder: Path, shelf: ShelfFile) -> dict[tuple[int, int], str]:

@@ -31,6 +31,24 @@ existe. **Passa:** escolha visível, ordem estável, erro seguro e zero custo.
 **Falha:** ordem alfabética ou `config.toml` vence, a escolhida some no celular,
 a página é substituída em erro ou surge qualquer pedido de chave/pagamento.
 
-## Validation Evidence
+## Automated Evidence — 2026-10-29
 
-A registrar depois da implementação e da validação do Navigator.
+- `uv run ruff check .` — passed.
+- `uv run ruff format --check .` — passed, 236 files formatted.
+- `uv run pytest` — 201 passed.
+- E2E gratuito em `/tmp/89books-ds3-us3-validation`: com seis fotos, a quarta
+  escolha chegou primeiro como `[4, 1, 2, 3, 5, 6]`; depois a segunda chegou
+  como `[2, 1, 3, 4, 5, 6]`, embora `config.toml` ainda apontasse para a
+  primeira. A sexta permaneceu marcada como somente desktop, deixando a
+  escolhida entre as cinco fotos móveis.
+- `cover_photo: missing.jpg` fez `check` e `draw` saírem com erro 2 e preservou
+  bytes da página, marcador e nomes do histórico. A escolha válida foi então
+  restaurada e `check` voltou a passar.
+- Captura desktop verificada em
+  `/tmp/89books-ds3-us3-validation/desktop.png`.
+
+## Navigator Evidence
+
+Pendente: abrir a fixture, confirmar que a foto azul `PHOTO 2` ocupa o bloco
+grande, reduzir a janela para largura de celular e então trocar `cover_photo`
+para outro nome válido. Confirmar também o erro seguro com um nome ausente.

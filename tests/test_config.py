@@ -44,6 +44,15 @@ def test_unknown_cover_photo_is_a_clear_error(shelf_folder):
         load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"})
 
 
+def test_cover_photo_in_config_is_ignored_after_shelf_yaml_exists(shelf_folder):
+    (shelf_folder / "config.toml").write_text('cover_photo = "nope.jpg"\n')
+    (shelf_folder / "shelf.yaml").write_text("reader-owned source\n")
+
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"})
+
+    assert [photo.name for photo in config.photos] == ["photo-01.jpg", "photo-02.jpg"]
+
+
 def test_google_books_key_is_optional_and_read_from_env_or_config(shelf_folder):
     assert load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk"}).google_books_api_key is None
     env = {"OPENROUTER_API_KEY": "sk", "GOOGLE_BOOKS_API_KEY": "gb-env"}

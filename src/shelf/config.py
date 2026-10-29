@@ -8,6 +8,7 @@ from pathlib import Path
 
 PHOTO_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}  # HEIC: iPhone photos
 CONFIG_FILE = "config.toml"
+_SHELF_SOURCE = "shelf.yaml"
 
 
 class ConfigError(Exception):
@@ -60,7 +61,7 @@ def load_config(folder: Path, env: Mapping[str, str] = os.environ) -> Config:
             "No OpenRouter API key. Run `uv run shelf setup` in a terminal, or set OPENROUTER_API_KEY."
         )
     cover = settings.get("cover_photo")
-    if cover:
+    if cover and not (folder / _SHELF_SOURCE).exists():
         match = [p for p in photos if p.name == cover]
         if not match:
             raise ConfigError(

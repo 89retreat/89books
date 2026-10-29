@@ -121,6 +121,38 @@ The last `draw` is explicit: restoring or recreating never changes the page
 behind your back. At most 20 managed versions are kept. Unknown files inside
 `history/` are never removed.
 
+## Choose the photo that represents your shelf
+
+Set `cover_photo` near the top of `shelf.yaml` to the exact name of one shelf
+photo in the same folder:
+
+```yaml
+cover_photo: minha-estante-03.jpg
+```
+
+That photo opens the mosaic in its large first cell. The other photos keep
+their filename order. Because phones show only the first five mosaic cells,
+the chosen photo also stays visible there.
+
+Keep shelf photos at the root of the shelf folder; a path such as
+`covers/minha-estante-03.jpg`, an unsupported extension or a missing name is
+rejected. Run `check` before drawing:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
+All three operations are free. If the selected file is missing, `check` and
+`draw` name it and the previous page, draw marker and history remain untouched.
+Change the line back to an existing photo and draw again.
+
+Older installations may have `cover_photo` in `config.toml`. It is migrated
+only when the first `shelf.yaml` is created. Once that source exists, its
+`cover_photo` is the authority; a valid choice is also preserved when you
+explicitly run the paid `recreate` command.
+
 ## Hide a book without deleting it
 
 Add `hidden: true` to that book in `shelf.yaml`:

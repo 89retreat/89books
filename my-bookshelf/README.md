@@ -26,6 +26,7 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 - Set `cover` to an HTTPS URL, `none`, or `covers/capa.jpg`. Put local book covers in a `covers/` subfolder; they are sanitized and embedded in the page.
 - Shelf and book list order is page order. Move the complete YAML book block so authors, cover and provenance travel with it; remove a shelf only after moving its books.
 - Use `face: true` for a cover, `face: false` for a spine, or remove `face` to return to the automatic composition. A missing/`none` cover always falls back to a spine.
+- Set root-level `cover_photo` to the exact filename of the shelf photo that should open the mosaic. `check` rejects missing names; once `shelf.yaml` exists, it wins over any legacy choice in `config.toml`.
 
 Everything in this folder is ignored by git except this README: photos,
 `config.toml`, `shelf.yaml`, `shelf.html`, a legacy `books.yaml` and the

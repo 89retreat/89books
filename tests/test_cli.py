@@ -261,6 +261,40 @@ def test_draw_is_free_self_contained_and_uses_only_shelf_yaml(shelf_folder, monk
     assert (shelf_folder / "shelf.yaml").read_bytes() == source
 
 
+def test_check_and_draw_put_the_reader_chosen_photo_first_without_reordering_the_rest(
+    shelf_folder, monkeypatch
+):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    shelf.cover_photo = "photo-02.jpg"
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+    monkeypatch.setattr(cli.photo_tools, "prepare", lambda path, max_side: path.name.encode())
+    monkeypatch.setattr(cli.photo_tools, "data_uri", lambda image: image.decode())
+
+    checked = check_shelf(shelf_folder)
+    result = draw_shelf(shelf_folder)
+    html = result.html.read_text(encoding="utf-8")
+
+    assert checked.books == 2
+    assert html.index('src="photo-02.jpg"') < html.index('src="photo-01.jpg"')
+
+
+def test_check_and_draw_reject_a_cover_photo_outside_the_root_photo_set(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    shelf.cover_photo = "covers/photo-02.jpg"
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    with pytest.raises(CommandError, match='cover_photo "covers/photo-02.jpg"'):
+        check_shelf(shelf_folder)
+    with pytest.raises(CommandError, match='cover_photo "covers/photo-02.jpg"'):
+        draw_shelf(shelf_folder)
+
+
 def test_check_and_draw_use_corrected_identity_and_embed_a_safe_local_cover(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
     create_with_fakes(config)
@@ -409,20 +443,27 @@ def test_render_failure_never_replaces_the_page(shelf_folder, monkeypatch):
     assert page.read_bytes() == before
 
 
-def test_missing_cover_photo_never_replaces_the_page(shelf_folder):
+def test_missing_cover_photo_never_replaces_page_marker_or_history(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
     create_with_fakes(config)
     draw_shelf(shelf_folder)
     page = shelf_folder / "shelf.html"
+    marker = shelf_folder / ".shelf" / "last-drawn.sha256"
     before = page.read_bytes()
+    marker_before = marker.read_bytes()
+    versions_before = [entry.name for entry in list_history(shelf_folder)]
     path = shelf_folder / "shelf.yaml"
     shelf = parse_shelf(path.read_text(encoding="utf-8"))
     shelf.cover_photo = "missing.jpg"
     path.write_text(dump_shelf(shelf), encoding="utf-8")
 
-    with pytest.raises(CommandError, match="cover_photo"):
+    with pytest.raises(CommandError, match='cover_photo "missing.jpg"'):
+        check_shelf(shelf_folder)
+    with pytest.raises(CommandError, match='cover_photo "missing.jpg"'):
         draw_shelf(shelf_folder)
     assert page.read_bytes() == before
+    assert marker.read_bytes() == marker_before
+    assert [entry.name for entry in list_history(shelf_folder)] == versions_before
 
 
 def test_draw_hides_book_without_deleting_it_and_snapshots_the_choice(shelf_folder):
@@ -552,6 +593,41 @@ def test_recreate_generates_first_then_saves_current_and_replaces_only_source(sh
     assert b"Minha edi" not in source.read_bytes()
     assert (shelf_folder / "shelf.html").read_text() == "previous page"
     assert result.books == 2 and result.cost == 0.05
+
+
+def test_recreate_preserves_a_valid_reader_cover_photo_over_legacy_config(shelf_folder):
+    (shelf_folder / "config.toml").write_text('cover_photo = "photo-01.jpg"\n')
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(source.read_text(encoding="utf-8"))
+    shelf.cover_photo = "photo-02.jpg"
+    source.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    recreate_with_fakes(config, now=datetime(2026, 10, 29, 9, 30))
+
+    recreated = parse_shelf(source.read_text(encoding="utf-8"))
+    assert recreated.cover_photo == "photo-02.jpg"
+
+
+def test_recreate_repairs_a_removed_or_unreadable_cover_choice(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(source.read_text(encoding="utf-8"))
+    shelf.cover_photo = "removed.jpg"
+    source.write_text(dump_shelf(shelf), encoding="utf-8")
+
+    first = recreate_with_fakes(config, now=datetime(2026, 10, 29, 9, 31))
+    assert parse_shelf(source.read_text(encoding="utf-8")).cover_photo == "photo-01.jpg"
+    source.write_text("not: [valid\n", encoding="utf-8")
+    invalid = source.read_bytes()
+
+    second = recreate_with_fakes(config, now=datetime(2026, 10, 29, 9, 32))
+
+    assert first.version.exists()
+    assert second.version.read_bytes() == invalid
+    assert parse_shelf(source.read_text(encoding="utf-8")).cover_photo == "photo-01.jpg"
 
 
 def test_failed_recreate_never_snapshots_or_replaces_source(shelf_folder):

@@ -183,6 +183,7 @@ def test_status_panel_reports_invalid_summary_and_check_prints_all_errors(tmp_pa
 def test_check_valid_source_is_a_read_only_summary(tmp_path, monkeypatch):
     folder = tmp_path / "shelf"
     folder.mkdir()
+    (folder / "photo.jpg").write_bytes(b"photo")
     (folder / "shelf.yaml").write_text(
         dump_shelf(
             ShelfFile(

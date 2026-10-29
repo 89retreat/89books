@@ -136,6 +136,26 @@ def draw(
     return render_file(shelf, images, cover_assets)
 
 
+def set_cover_photo(shelf: ShelfFile, cover_photo: str) -> ShelfFile:
+    """Returns a shelf copy with the reader's chosen featured shelf photo."""
+    if not isinstance(cover_photo, str) or not cover_photo.strip():
+        raise ValueError("cover_photo must be non-empty text")
+    return replace(shelf, cover_photo=cover_photo)
+
+
+def order_shelf_photos(photo_names: list[str], cover_photo: str) -> list[str]:
+    """Puts the chosen photo first without mutating or reordering the remaining names."""
+    if not isinstance(cover_photo, str) or not cover_photo.strip():
+        raise ValueError("cover_photo must be non-empty text")
+    ordered = list(photo_names)
+    try:
+        index = ordered.index(cover_photo)
+    except ValueError as exc:
+        raise ValueError(f'cover_photo "{cover_photo}" is not available') from exc
+    selected = ordered.pop(index)
+    return [selected, *ordered]
+
+
 def correct_book_identity(
     shelf: ShelfFile,
     shelf_index: int,
