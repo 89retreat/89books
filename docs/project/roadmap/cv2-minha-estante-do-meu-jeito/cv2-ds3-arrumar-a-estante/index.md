@@ -2,7 +2,7 @@
 code: CV2.DS3
 level: Delivery Story
 status: Active
-status_reason: US1–US4 e US6 concluídas; recuperação do erro real validada e a DS retorna à validação de fundador
+status_reason: US1–US4, US6 e US7 concluídas; Rafael gerou a estante real e a DS segue aguardando apropriação autoral das quatro escolhas
 updated: 2026-10-29
 related:
   - ../index.md
@@ -38,7 +38,7 @@ autoral, que estava fora da CV1, entra aqui.
 | [CV2.DS3.US4](cv2-ds3-us4-write-my-own-shelf-titles-and-texts/index.md) | Write my own shelf titles and texts | User Story | Reescrevo a abertura (`lens`) e o título e o texto de cada prateleira; a página mostra o que escrevi, com itálico em `*título*` como hoje. | Done |
 | [CV2.DS3.US5](cv2-ds3-us5-ask-for-another-portrait/index.md) | Ask for another portrait | User Story | `portrait` guarda uma versão, confirma o custo (centavos) e reescreve a abertura e as prateleiras a partir dos livros que ficaram, sem ler as fotos. Puxada só se os fundadores sentirem falta depois de editar à mão. Era parte da antiga CV2.DS1.US1. | Planned · conditional |
 | [CV2.DS3.US6](cv2-ds3-us6-keep-paid-work-after-a-failed-portrait/index.md) | Keep paid work after a failed portrait | User Story | Se o retrato vier inválido no fim de `create`, livros já reconhecidos e revisados ficam num rascunho privado; posso terminar com uma estante inicial gratuita ou tentar só o retrato novamente. | Done |
-| [CV2.DS3.US7](cv2-ds3-us7-let-the-portrait-finish-before-parsing/index.md) | Let the portrait finish before parsing | User Story | O pedido ao Claude 5.5 reserva tokens suficientes para raciocínio e JSON completo; um retry do rascunho termina o retrato em vez de cortá-lo no meio. | Pending Navigator Validation |
+| [CV2.DS3.US7](cv2-ds3-us7-let-the-portrait-finish-before-parsing/index.md) | Let the portrait finish before parsing | User Story | O pedido ao Claude 5.5 reserva tokens suficientes para raciocínio e JSON completo; um retry do rascunho termina o retrato em vez de cortá-lo no meio. | Done |
 
 ## Aggregate Evaluation — 2026-10-29
 
@@ -49,6 +49,8 @@ autoral, que estava fora da CV1, entra aqui.
 - US3: foto principal — Done e validada.
 - US4: abertura, títulos e textos — Done e validada.
 - US5 não é requisito de fechamento: continua condicional a evidência de uso.
+- US6 e US7: a criação paga é recuperável e o retry real de 237 livros concluiu
+  sem repetir reconhecimento, revisão, catálogos ou capas.
 
 ### Result
 

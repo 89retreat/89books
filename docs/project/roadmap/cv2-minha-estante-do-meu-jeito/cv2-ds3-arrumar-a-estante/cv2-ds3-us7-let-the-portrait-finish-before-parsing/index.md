@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US7
 level: User Story
-status: Pending Navigator Validation
-status_reason: implementation and offline 237-book E2E pass; the real portrait-only retry remains behind explicit paid consent
+status: Done
+status_reason: o retry real de Rafael concluiu o retrato de 237 livros sem repetir reconhecimento, revisão, catálogos ou capas
 updated: 2026-10-29
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV2.DS3.US7 — Let the portrait finish before parsing
 
-**Status:** Pending Navigator Validation
+**Status:** Done
 
 ## User Story
 
@@ -45,6 +45,6 @@ A documentação de migração do Claude Sonnet 5.5 informa que:
   `stop_reason: max_tokens` sem resposta completa;
 - `temperature`, `top_p` e `top_k` não padrão foram removidos.
 
-O código atual envia `max_tokens=4000` e `temperature=0.7` para o retrato. A
-proteção da US6 funcionou e preservou os 237 livros; esta story corrige a causa
-da resposta truncada.
+O código encontrado enviava `max_tokens=4000` e `temperature=0.7` para o
+retrato. A proteção da US6 preservou os 237 livros; esta story corrigiu a causa
+da resposta truncada e o retry real foi aceito pelo Navigator.
