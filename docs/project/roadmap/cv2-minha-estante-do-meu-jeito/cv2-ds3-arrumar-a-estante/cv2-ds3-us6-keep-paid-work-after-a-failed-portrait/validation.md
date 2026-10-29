@@ -2,7 +2,7 @@
 
 ## Status
 
-Blocked
+Passed
 
 ## Automated Checks
 
@@ -16,20 +16,20 @@ Checks status: passed
 
 Decision: required
 
-Evidence: Offline E2E in /tmp/89books-ds3-us6-validation proved malformed portrait preservation, free keyless recovery, exact three-book order, free check/draw/open, and portrait-only retry without repeating recognition or review.
+Evidence: Offline E2E proved malformed portrait preservation, free keyless recovery, exact order, free check/draw/open and portrait-only retry. Navigator then ran the recovery fixture and supplied a screenshot of the recovered page.
 
 ## Navigator Validation
 
-Route: From the project checkout, inspect /tmp/89books-ds3-us6-validation/navigator with `uv run shelf --folder ...`; run `uv run shelf recover --folder ...`, then check, draw and open the same folder. No key or network is needed.
+Route: Navigator ran status, recover, check, draw and open against /tmp/89books-ds3-us6-validation/navigator.
 
-Navigator accepted: no
+Navigator accepted: yes
 
-Expected observation: Status first says paid work saved privately and recommends recover. Recover creates shelf.yaml with three books in Meus livros, empty authored lens, then check/draw/open work for free.
+Expected observation: Status recommends recover; the page has an empty opening and one Meus livros section with Primeiro, Segundo and Terceiro in preserved order.
 
-Pass condition: Recovery asks no questions, makes no paid/network call, preserves all three books in order, removes only recovery files after source creation, and produces a drawable page.
+Pass condition: No key or paid call is requested; all three books appear in order; no portrait prose is invented; the page draws successfully.
 
-Fail condition: Recover asks for a key, contacts OpenRouter, loses/reorders a book, invents portrait prose, removes the draft before writing shelf.yaml, or cannot draw the recovered source.
+Fail condition: Recovery spends, loses or reorders a book, invents prose, removes the draft too early or cannot draw.
 
 ## Missing Evidence
 
-- Navigator validation has not been accepted
+- none

@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US6
 level: User Story
-status: Active
-status_reason: implementação concluída com 221 testes e E2E offline; aguarda validação do Navigator
+status: Done
+status_reason: recuperação gratuita validada pelo Navigator e story fechada em 2026-10-29
 updated: 2026-10-29
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV2.DS3.US6 — Keep paid work after a failed portrait
 
-**Status:** Active
+**Status:** Done
 
 ## User Story
 

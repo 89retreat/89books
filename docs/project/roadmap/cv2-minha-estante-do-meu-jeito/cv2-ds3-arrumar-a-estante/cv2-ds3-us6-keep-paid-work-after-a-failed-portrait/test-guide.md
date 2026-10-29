@@ -75,4 +75,7 @@ Driver evidence on 2026-10-29:
   `/tmp/89books-ds3-us6-validation/navigator`. Its status reports `paid work
   saved privately` and recommends `recover`.
 
-Navigator acceptance is pending.
+Navigator evidence on 2026-10-29: the Navigator ran the recovery route and
+supplied a screenshot showing the empty opening, `Meus livros`, and Primeiro,
+Segundo and Terceiro in preserved order. The story was explicitly accepted and
+authorized for closure.
