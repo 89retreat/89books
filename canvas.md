@@ -17,7 +17,7 @@
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
-| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · aguarda avaliação agregada | `████████░░` 4/5 |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · capacidade pronta, falta evidência de fundador | `████████░░` 4/5 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3 · Arrumar a estante** | 🧭 avaliação agregada | Decidir se as quatro escolhas validadas fecham a DS sem puxar a US5 condicional |
+| **CV2.DS3 · Arrumar a estante** | 👤 validação de fundador pendente | Usar as quatro escolhas numa estante real e mostrá-la a alguém como “minha estante” |
 
 ### ✅ Fundações assentadas
 
