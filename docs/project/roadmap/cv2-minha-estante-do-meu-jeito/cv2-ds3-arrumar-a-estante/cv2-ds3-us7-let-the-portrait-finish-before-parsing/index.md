@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US7
 level: User Story
-status: Active
-status_reason: o retry real preservou 237 livros, mas Claude Sonnet 5.5 consumiu o limite compartilhado de 4k tokens e cortou o JSON no terceiro tema
+status: Pending Navigator Validation
+status_reason: implementation and offline 237-book E2E pass; the real portrait-only retry remains behind explicit paid consent
 updated: 2026-10-29
 related:
   - ../index.md
@@ -13,7 +13,7 @@ related:
 
 # CV2.DS3.US7 — Let the portrait finish before parsing
 
-**Status:** Active
+**Status:** Pending Navigator Validation
 
 ## User Story
 

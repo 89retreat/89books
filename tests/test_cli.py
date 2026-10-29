@@ -111,12 +111,37 @@ def test_failed_portrait_keeps_a_private_draft_and_raw_response_for_free_recover
     def broken_portrait(books, api_key):
         raise PortraitResponseError("portrait response is invalid JSON", '{"lens":"broken"', 0.012)
 
-    with pytest.raises(CommandError, match="shelf recover"):
+    with pytest.raises(CommandError) as failed:
         create_with_fakes(config, portrait=broken_portrait)
 
+    message = str(failed.value)
+    assert "could not use safely" in message
+    assert "2 reviewed books are safe" in message
+    assert "Photos and catalogues will not run again" in message
+    assert "US$ 0.01" in message and "shelf recover" in message and "shelf create" in message
+    assert "JSON" not in message and "parser" not in message
     assert not (shelf_folder / "shelf.yaml").exists()
     assert (shelf_folder / ".shelf" / "create-draft.yaml").exists()
     assert (shelf_folder / ".shelf" / "failed-portrait.txt").read_text() == '{"lens":"broken"'
+
+
+def test_unfinished_portrait_explains_the_cutoff_and_keeps_paid_work(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def unfinished_portrait(books, api_key):
+        raise PortraitResponseError("portrait response is unfinished", '{"lens":"cut', 0.014, "unfinished")
+
+    with pytest.raises(CommandError) as failed:
+        create_with_fakes(config, portrait=unfinished_portrait)
+
+    message = str(failed.value)
+    assert "OpenRouter stopped before finishing your portrait" in message
+    assert "2 reviewed books are safe" in message
+    assert "Photos and catalogues will not run again" in message
+    assert "US$ 0.01" in message and "shelf recover" in message and "shelf create" in message
+    assert "JSON" not in message and "parser" not in message
+    assert (shelf_folder / ".shelf" / "create-draft.yaml").exists()
+    assert (shelf_folder / ".shelf" / "failed-portrait.txt").read_text() == '{"lens":"cut'
 
 
 def test_recover_creates_a_free_starter_source_and_cleans_only_recovery_files(shelf_folder):

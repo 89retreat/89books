@@ -37,10 +37,11 @@ PORTRAIT_FORMAT = {
 class PortraitResponseError(ValueError):
     """The paid call completed, but its response could not become a safe portrait."""
 
-    def __init__(self, message: str, response: str, cost: float):
+    def __init__(self, message: str, response: str, cost: float, reason: str = "unusable"):
         super().__init__(message)
         self.response = response
         self.cost = cost
+        self.reason = reason
 
 
 PROMPT = """Você recebe a lista numerada dos livros de uma estante pessoal, reconhecidos automaticamente a partir de fotos. Pode haver erros de leitura e itens que não são livros; ignore o que não fizer sentido.
@@ -95,13 +96,22 @@ def parse_portrait(text: str, book_count: int) -> dict:
 
 
 def write_portrait(books: list[dict], api_key: str) -> tuple[dict, float]:
-    text, cost = openrouter.complete(
-        api_key,
-        PROMPT.format(books=book_list(books)),
-        max_tokens=4000,
-        temperature=0.7,
-        response_format=PORTRAIT_FORMAT,
-    )
+    try:
+        text, cost = openrouter.complete(
+            api_key,
+            PROMPT.format(books=book_list(books)),
+            max_tokens=64000,
+            response_format=PORTRAIT_FORMAT,
+            reasoning={"effort": "high", "exclude": True},
+            require_complete=True,
+        )
+    except openrouter.IncompleteResponseError as exc:
+        raise PortraitResponseError(
+            "portrait response is unfinished",
+            exc.response,
+            exc.cost,
+            "unfinished",
+        ) from exc
     try:
         return parse_portrait(text, len(books)), cost
     except ValueError as exc:

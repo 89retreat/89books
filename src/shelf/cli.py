@@ -132,11 +132,18 @@ def create_shelf(
         draft = replace(draft, cost=round(draft.cost + exc.cost, 4))
         _replace(draft_path, dump_draft(draft))
         _replace(failed_path, exc.response)
+        problem = (
+            "OpenRouter stopped before finishing your portrait."
+            if exc.reason == "unfinished"
+            else "OpenRouter returned a portrait that 89books could not use safely."
+        )
+        attempt_cost = f" This portrait attempt cost US$ {exc.cost:.2f}." if exc.cost > 0 else ""
         raise CommandError(
-            "Could not read the portrait returned by OpenRouter. "
-            f"Saved paid work: {draft_path}. "
+            f"{problem}{attempt_cost} "
+            f"Your {len(draft.books)} reviewed books are safe: {draft_path}. "
+            "Photos and catalogues will not run again. "
             f"Run `uv run shelf recover --folder {config.folder}` for a free editable starter shelf, "
-            "or rerun `uv run shelf create` to spend only on another portrait."
+            f"or rerun `uv run shelf create --folder {config.folder}` to spend only on another portrait."
         ) from exc
     _write_new(path, dump_shelf(created.shelf))
     _remove_creation_recovery(config.folder)

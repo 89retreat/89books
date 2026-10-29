@@ -54,13 +54,23 @@ def test_parse_portrait_rejects_missing_lens():
 def test_write_portrait_requests_schema_constrained_json(monkeypatch):
     seen = {}
 
-    def complete(api_key, content, max_tokens, temperature, response_format=None):
+    def complete(
+        api_key,
+        content,
+        max_tokens,
+        temperature=None,
+        response_format=None,
+        reasoning=None,
+        require_complete=False,
+    ):
         seen.update(
             api_key=api_key,
             content=content,
             max_tokens=max_tokens,
             temperature=temperature,
             response_format=response_format,
+            reasoning=reasoning,
+            require_complete=require_complete,
         )
         return '{"lens":"Eu leio.","themes":[]}', 0.012
 
@@ -69,6 +79,10 @@ def test_write_portrait_requests_schema_constrained_json(monkeypatch):
     result, cost = write_portrait([{"title": "Torto Arado", "authors": []}], "sk-secret")
 
     assert result == {"lens": "Eu leio.", "themes": []} and cost == 0.012
+    assert seen["max_tokens"] == 64000
+    assert seen["temperature"] is None
+    assert seen["reasoning"] == {"effort": "high", "exclude": True}
+    assert seen["require_complete"] is True
     assert seen["response_format"]["type"] == "json_schema"
     schema = seen["response_format"]["json_schema"]["schema"]
     assert schema["required"] == ["lens", "themes"]
@@ -87,4 +101,20 @@ def test_write_portrait_preserves_invalid_response_and_cost_for_private_recovery
 
     assert failed.value.response == '{"lens":"quebrou" "themes":[]}'
     assert failed.value.cost == 0.013
+    assert failed.value.reason == "unusable"
     assert "JSON" in str(failed.value) and "Torto Arado" not in str(failed.value)
+
+
+def test_write_portrait_preserves_an_unfinished_response_before_parsing(monkeypatch):
+    def incomplete(*args, **kwargs):
+        raise portrait.openrouter.IncompleteResponseError('{"lens":"cut', 0.014, "length")
+
+    monkeypatch.setattr(portrait.openrouter, "complete", incomplete)
+
+    with pytest.raises(PortraitResponseError) as failed:
+        write_portrait([{"title": "Torto Arado", "authors": []}], "sk-secret")
+
+    assert failed.value.response == '{"lens":"cut'
+    assert failed.value.cost == 0.014
+    assert failed.value.reason == "unfinished"
+    assert "unfinished" in str(failed.value) and "Torto Arado" not in str(failed.value)
