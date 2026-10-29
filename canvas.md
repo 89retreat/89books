@@ -6,7 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████████░░` 11/13 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████████░░` 11/14 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 resultado agregado pendente | `██████████` 5/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
@@ -17,12 +17,13 @@
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
-| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · capacidade pronta, falta evidência de fundador | `████████░░` 4/5 |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · primeiro uso real revelou perda no retrato final | `███████░░░` 4/6 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US4 · Write my own shelf titles and texts | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
+| 　　↳ US6 · Keep paid work after a failed portrait | 🧭 plano aguarda aprovação | `▓▓░░░░░░░░` |
 | **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
 | ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
 | **CV4 · A Estante no Telegram** | 🟡 planejada · antes CV3 · porta em aberto | `░░░░░░░░░░` 0/6 |
@@ -41,7 +42,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3 · Arrumar a estante** | 👤 validação de fundador pendente | Usar as quatro escolhas numa estante real e mostrá-la a alguém como “minha estante” |
+| **CV2.DS3.US6 · Keep paid work after a failed portrait** | 🧭 plano aguarda aprovação | Preservar o resultado pago e oferecer recuperação gratuita ou retry só do retrato |
 
 ### ✅ Fundações assentadas
 

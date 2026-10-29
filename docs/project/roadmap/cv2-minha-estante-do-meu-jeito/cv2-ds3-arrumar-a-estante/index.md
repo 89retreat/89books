@@ -2,7 +2,7 @@
 code: CV2.DS3
 level: Delivery Story
 status: Active
-status_reason: capacidade agregada entregue por US1–US4; falta um fundador usar as quatro escolhas na própria estante e mostrá-la a alguém
+status_reason: primeiro uso real perdeu o resultado pago no retrato final; US6 ativa para preservar e recuperar a criação antes de retomar a validação de fundador
 updated: 2026-10-29
 related:
   - ../index.md
@@ -37,6 +37,7 @@ autoral, que estava fora da CV1, entra aqui.
 | [CV2.DS3.US3](cv2-ds3-us3-choose-the-photo-that-represents-my-shelf/index.md) | Choose the photo that represents my shelf | User Story | `cover_photo` no `shelf.yaml` escolhe a foto em destaque no mosaico, a que representa a estante; sai do `config.toml`. | Done |
 | [CV2.DS3.US4](cv2-ds3-us4-write-my-own-shelf-titles-and-texts/index.md) | Write my own shelf titles and texts | User Story | Reescrevo a abertura (`lens`) e o título e o texto de cada prateleira; a página mostra o que escrevi, com itálico em `*título*` como hoje. | Done |
 | [CV2.DS3.US5](cv2-ds3-us5-ask-for-another-portrait/index.md) | Ask for another portrait | User Story | `portrait` guarda uma versão, confirma o custo (centavos) e reescreve a abertura e as prateleiras a partir dos livros que ficaram, sem ler as fotos. Puxada só se os fundadores sentirem falta depois de editar à mão. Era parte da antiga CV2.DS1.US1. | Planned · conditional |
+| [CV2.DS3.US6](cv2-ds3-us6-keep-paid-work-after-a-failed-portrait/index.md) | Keep paid work after a failed portrait | User Story | Se o retrato vier inválido no fim de `create`, livros já reconhecidos e revisados ficam num rascunho privado; posso terminar com uma estante inicial gratuita ou tentar só o retrato novamente. | Active |
 
 ## Aggregate Evaluation — 2026-10-29
 
