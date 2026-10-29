@@ -1,0 +1,38 @@
+---
+code: CV2.DS3.US4
+level: User Story
+status: Active
+status_reason: puxada pelo Navigator em 2026-10-29; aguarda planejamento
+updated: 2026-10-29
+related:
+  - ../index.md
+  - ../cv2-ds3-us1-put-each-book-on-the-shelf-i-choose/index.md
+  - ../cv2-ds3-us3-choose-the-photo-that-represents-my-shelf/index.md
+---
+
+[< CV2.DS3](../index.md)
+
+# CV2.DS3.US4 — Write my own shelf titles and texts
+
+**Status:** Active
+
+## User Story
+
+Como pessoa que apresenta sua estante, quero escrever a abertura, os títulos e
+os textos das minhas prateleiras para que a página fale com minhas palavras,
+não apenas com o primeiro retrato proposto pela IA.
+
+## Candidate Outcome
+
+- `lens` no `shelf.yaml` controla literalmente a abertura da página.
+- `title` e `text` de cada seção controlam literalmente o cabeçalho e o texto
+  daquela prateleira, preservando ordem e livros.
+- `*título*` continua marcando itálico sem permitir HTML arbitrário.
+- Edições autorais sobrevivem a `check`, `draw`, histórico e restore; nenhuma
+  operação gratuita chama modelo ou catálogo.
+- Operações puras preparam os mesmos controles para uma interface futura.
+
+## Next Checkpoint
+
+Criar e apresentar `plan.md` e `test-guide.md`. Implementação permanece
+bloqueada até aprovação explícita do Navigator.

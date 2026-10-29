@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US3
 level: User Story
-status: Validated
-status_reason: validação aceita pelo Navigator em 2026-10-29; aguarda debt review e fechamento
+status: Done
+status_reason: validada, revisada sem dívida relevante e fechada pelo Navigator em 2026-10-29
 updated: 2026-10-29
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS3.US3 — Choose the photo that represents my shelf
 
-**Status:** Validated
+**Status:** Done
 
 ## User Story
 
