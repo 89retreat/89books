@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 🟡 planejada | Escolher a foto que abre o mosaico sem reler a estante |
+| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 🟢 ativa · plano aguarda aprovação | Tornar `cover_photo` a única autoridade do destaque e validar ativos sem custo |
 
 ### ✅ Fundações assentadas
 
