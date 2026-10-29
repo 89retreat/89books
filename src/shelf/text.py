@@ -5,6 +5,7 @@ import unicodedata
 from difflib import SequenceMatcher
 
 THRESHOLD = 0.82
+EMPHASIS = re.compile(r"(?<![\w*])\*([^*\n]+)\*(?![\w*])")
 
 _EDITION = re.compile(r"\b\d+\s*(?:a|o|st|nd|rd|th)?\s*(?:ed|edicao|edition|editio)\w*\b")
 _EDITION_ORIGINAL = re.compile(

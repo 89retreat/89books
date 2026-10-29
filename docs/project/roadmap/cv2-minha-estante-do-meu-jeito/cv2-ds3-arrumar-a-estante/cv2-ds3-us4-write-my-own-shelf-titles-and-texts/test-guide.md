@@ -33,6 +33,24 @@ Em `/tmp/89books-ds3-us4-validation`:
 **Falha:** texto gerado vence, HTML executa, título interpreta markup, livros
 mudam de ordem, escolha explícita é ignorada ou algum serviço pago é chamado.
 
-## Validation Evidence
+## Automated Evidence — 2026-10-29
 
-A registrar depois da implementação e da validação do Navigator.
+- `uv run ruff check .` — passed.
+- `uv run ruff format --check .` — passed, 244 files formatted.
+- `uv run pytest` — 206 passed.
+- E2E gratuito em `/tmp/89books-ds3-us4-validation`: abertura e texto
+  converteram pares simples em itálico; título manteve asteriscos literais;
+  `<segura>` e `<script>não executar</script>` apareceram como texto seguro; a
+  citação mudou a face automática de Torto Arado para Cynefin sem reordenar os
+  livros.
+- `face: false` em Cynefin venceu a citação; remover a linha restaurou o
+  automático. Uma versão inicial foi restaurada, redesenhada e depois a versão
+  autoral voltou por `restore`, sempre sem chave, rede ou custo.
+- Captura visual verificada em
+  `/tmp/89books-ds3-us4-validation/authored.png`.
+
+## Navigator Evidence
+
+Pendente: abrir a fixture, confirmar visualmente as palavras autorais, a capa
+azul de Cynefin e as tags mostradas como texto; repetir a alternância de
+`face: false` e, se desejado, o restore entre as duas versões já criadas.

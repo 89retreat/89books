@@ -2,7 +2,7 @@
 code: CV2.DS3.US4
 level: User Story
 status: Active
-status_reason: puxada e planejada em 2026-10-29; aguarda aprovação do Navigator
+status_reason: implementação concluída em 2026-10-29 com 206 testes; aguarda validação do Navigator
 updated: 2026-10-29
 related:
   - ../index.md

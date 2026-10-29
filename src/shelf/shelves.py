@@ -7,7 +7,7 @@ from collections.abc import Mapping
 from urllib.parse import urlsplit
 
 from shelf.shelf_file import ShelfBook, ShelfSection
-from shelf.text import THRESHOLD, similarity
+from shelf.text import EMPHASIS, THRESHOLD, similarity
 
 REST_TITLE = "E mais livros que já me acompanharam"
 SIDE_MAX = 8  # shelves with this many books or fewer go to the side column on wide screens
@@ -151,7 +151,7 @@ def tilt(title: str) -> tuple[float, int]:
 
 
 def _cited(text: str) -> list[str]:
-    return re.findall(r"\*([^*\n]+)\*", text)
+    return EMPHASIS.findall(text)
 
 
 def _has_cover(book: dict) -> bool:

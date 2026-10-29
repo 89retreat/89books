@@ -1,7 +1,6 @@
 """Renders the shelf page: photo mosaic, lens and the portrait themes as shelves."""
 
 import base64
-import re
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -10,6 +9,7 @@ from markupsafe import Markup, escape
 
 from shelf.shelf_file import ShelfFile
 from shelf.shelves import build_shelves, frequent_authors, mosaic, shelves_from_file
+from shelf.text import EMPHASIS
 
 TEMPLATES = Path(__file__).parent / "templates"
 TITLE_FONT = Path(__file__).parent / "fonts" / "newsreader-italic-500-latin.woff2"
@@ -17,7 +17,7 @@ TITLE_FONT = Path(__file__).parent / "fonts" / "newsreader-italic-500-latin.woff
 
 def emphasize(text: str) -> Markup:
     """Escapes text, then turns *Book Title* into <em>Book Title</em>."""
-    return Markup(re.sub(r"\*([^*\n]+)\*", r"<em>\1</em>", str(escape(text))))
+    return Markup(EMPHASIS.sub(r"<em>\1</em>", str(escape(text))))
 
 
 _env = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=select_autoescape(default=True))

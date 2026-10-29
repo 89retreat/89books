@@ -17,9 +17,11 @@ from shelf.core import (
     move_shelf_section,
     order_shelf_photos,
     remove_shelf_section,
+    rewrite_shelf_section,
     set_book_cover,
     set_book_face,
     set_cover_photo,
+    set_shelf_lens,
     show_book,
 )
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
@@ -283,6 +285,48 @@ def test_correct_book_identity_rejects_empty_reader_data(title, authors, known_a
     )
     with pytest.raises(ValueError):
         correct_book_identity(shelf, 0, 0, title=title, authors=authors, known_as=known_as)
+
+
+def test_shelf_language_operations_are_pure_and_preserve_books_and_other_sections():
+    first = ShelfSection(
+        title="Generated title",
+        text="Generated text",
+        books=[ShelfBook(title="Book", source="reader", work="/works/1")],
+    )
+    second = ShelfSection(title="Other", books=[ShelfBook(title="Other book")])
+    original = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Generated lens",
+        shelves=[first, second],
+    )
+
+    voiced = set_shelf_lens(original, "My *own* lens <safe>")
+    rewritten = rewrite_shelf_section(
+        voiced,
+        0,
+        title="My shelf",
+        text="My *own* text <safe>",
+    )
+
+    assert original.lens == "Generated lens" and original.shelves[0] is first
+    assert voiced.lens == "My *own* lens <safe>" and voiced.shelves is original.shelves
+    assert rewritten.shelves[0].title == "My shelf"
+    assert rewritten.shelves[0].text == "My *own* text <safe>"
+    assert rewritten.shelves[0].books is first.books
+    assert rewritten.shelves[0].books[0] is first.books[0]
+    assert rewritten.shelves[1] is second
+    assert set_shelf_lens(original, "").lens == ""
+    assert rewrite_shelf_section(original, 0, title="Still here", text="").shelves[0].text == ""
+
+    for invalid in (None, 3):
+        with pytest.raises(ValueError, match="lens"):
+            set_shelf_lens(original, invalid)
+    for title, text in (("", "text"), ("  ", "text"), (None, "text"), ("Title", None)):
+        with pytest.raises(ValueError):
+            rewrite_shelf_section(original, 0, title=title, text=text)
+    for index in (-1, 2):
+        with pytest.raises(IndexError):
+            rewrite_shelf_section(original, index, title="Title", text="Text")
 
 
 def test_cover_photo_choice_and_ordering_are_pure_and_preserve_everything_else():

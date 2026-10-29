@@ -1,4 +1,4 @@
-from shelf.page import render, render_file
+from shelf.page import emphasize, render, render_file
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection
 from shelf.shelves import REST_TITLE
 
@@ -20,6 +20,38 @@ def test_page_escapes_text_and_marks_book_titles():
     assert "<em>Torto Arado</em>" in html
     assert "&lt;b&gt;" in html
     assert "data:image/jpeg;base64,AAA" in html
+
+
+def test_reader_authored_lens_title_and_text_are_literal_emphasized_and_safe():
+    shelf = ShelfFile(
+        cover_photo="photo.jpg",
+        lens="Minha *voz* <script>alert('lens')</script>",
+        shelves=[
+            ShelfSection(
+                title="Minha *prateleira* <autoral>",
+                text="Aqui está *Livro B* <script>alert('text')</script>.",
+                books=[ShelfBook(title="Livro B")],
+            )
+        ],
+    )
+
+    html = render_file(shelf, [])
+
+    assert "Minha <em>voz</em> &lt;script&gt;alert(&#39;lens&#39;)&lt;/script&gt;" in html
+    assert "Aqui está <em>Livro B</em> &lt;script&gt;alert(&#39;text&#39;)&lt;/script&gt;." in html
+    assert "Minha *prateleira* &lt;autoral&gt;" in html
+    assert "<em>prateleira</em>" not in html
+    assert "<script>alert('lens')</script>" not in html
+    assert "<script>alert('text')</script>" not in html
+
+
+def test_emphasis_requires_a_plain_balanced_pair_on_one_line():
+    text = "Antes *aberto\nfechado* e *válido*, mas **não negrito** e fim *"
+
+    html = str(emphasize(text))
+
+    assert html == "Antes *aberto\nfechado* e <em>válido</em>, mas **não negrito** e fim *"
+    assert str(emphasize("*<b>seguro</b>*")) == "<em>&lt;b&gt;seguro&lt;/b&gt;</em>"
 
 
 def test_page_shows_themes_as_shelves_with_cited_cover_face_out():

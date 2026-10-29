@@ -21,7 +21,7 @@
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
-| 　　↳ US4 · Write my own shelf titles and texts | 🟢 ativa · plano aguarda aprovação | `▓▓▓░░░░░░░` |
+| 　　↳ US4 · Write my own shelf titles and texts | 👀 aguarda validação | `▓▓▓▓▓▓▓▓░░` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
 | **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
 | ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US4 · Write my own shelf titles and texts** | 🟢 ativa · plano aguarda aprovação | Entregar operações puras, texto seguro e efeito explícito das citações nas faces automáticas |
+| **CV2.DS3.US4 · Write my own shelf titles and texts** | 👀 aguarda validação | Confirmar palavras autorais, HTML visível como texto, itálico, face automática e restore |
 
 ### ✅ Fundações assentadas
 

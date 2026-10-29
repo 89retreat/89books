@@ -284,6 +284,48 @@ uv run shelf draw
 uv run shelf open
 ```
 
+## Write your own opening, shelf titles and texts
+
+Edit `lens`, each shelf's `title` and optional `text` directly in `shelf.yaml`:
+
+```yaml
+lens: Eu volto sempre a *Torto Arado*.
+shelves:
+  - title: Livros que me dão chão
+    text: Aqui conversam *Torto Arado* e *Quarto de Despejo*.
+    books:
+      # complete book blocks stay here
+```
+
+`lens` is the opening under your name. `title` is the shelf heading and must
+not be empty. Remove `text`, or set `text: ''`, to show no paragraph for that
+shelf. `lens: ''` is also valid when you do not want an opening sentence.
+
+A pair of single asterisks adds italics in `lens` and `text`; it stays literal
+in a shelf `title`. HTML is never enabled: text such as `<script>` or `<em>` is
+shown safely as text instead of becoming a tag. General Markdown, links,
+lists and bold are not supported.
+
+A cited book title also guides the automatic composition. Changing
+`*Torto Arado*` to `*Cynefin*` may change which available cover faces out, but
+it never reorders books and never overrides an explicit `face: true` or
+`face: false`. Adding text to the generated closing shelf makes it an ordinary
+numbered shelf, because the quiet closing treatment is reserved for its exact
+canonical title with no text.
+
+Check and redraw without a key, network or cost:
+
+```bash
+uv run shelf check
+uv run shelf draw
+uv run shelf open
+```
+
+A changed `draw` saves the source in history. Use `history` and `restore` to
+return to earlier wording. Do not use the paid `recreate` command merely to
+redraw your writing: it deliberately rebuilds the whole source from photos
+after saving the current version.
+
 ### What `--project` means
 
 `--project` is an option of `uv`, not of 89 Books. You normally do not need it.

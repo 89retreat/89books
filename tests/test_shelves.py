@@ -70,6 +70,45 @@ def test_explicit_face_spine_and_absent_face_follow_reader_precedence():
     }
 
 
+def test_rewriting_citations_recomposes_only_automatic_faces_without_reordering_books():
+    cover = "https://example.test/cover.jpg"
+    automatic_a = ShelfSection(
+        title="My words",
+        text="I begin with *Torto Arado*.",
+        books=[ShelfBook(title="Torto Arado", cover=cover), ShelfBook(title="Cynefin", cover=cover)],
+    )
+    automatic_b = ShelfSection(
+        title="My words",
+        text="Now I begin with *Cynefin*.",
+        books=[ShelfBook(title="Torto Arado", cover=cover), ShelfBook(title="Cynefin", cover=cover)],
+    )
+    explicit = ShelfSection(
+        title="My words",
+        text="Now I begin with *Cynefin*.",
+        books=[
+            ShelfBook(title="Torto Arado", face=True, cover=cover),
+            ShelfBook(title="Cynefin", face=False, cover=cover),
+        ],
+    )
+
+    _, shelves_a = shelves_from_file([automatic_a])
+    _, shelves_b = shelves_from_file([automatic_b])
+    _, shelves_explicit = shelves_from_file([explicit])
+
+    assert [(book["title"], book["face"]) for book in shelves_a[0]["books"]] == [
+        ("Torto Arado", True),
+        ("Cynefin", False),
+    ]
+    assert [(book["title"], book["face"]) for book in shelves_b[0]["books"]] == [
+        ("Torto Arado", False),
+        ("Cynefin", True),
+    ]
+    assert [(book["title"], book["face"]) for book in shelves_explicit[0]["books"]] == [
+        ("Torto Arado", True),
+        ("Cynefin", False),
+    ]
+
+
 def test_only_the_canonical_last_section_is_the_generated_closing_shelf():
     custom = [
         ShelfSection(title="Primeira", text="Texto.", books=[]),
@@ -79,14 +118,17 @@ def test_only_the_canonical_last_section_is_the_generated_closing_shelf():
         ShelfSection(title="Primeira", text="Texto.", books=[]),
         ShelfSection(title=REST_TITLE, text="", books=[]),
     ]
+    authored_closing = [ShelfSection(title=REST_TITLE, text="Meu fechamento.", books=[])]
 
     _, custom_shelves = shelves_from_file(custom)
     _, canonical_shelves = shelves_from_file(canonical)
+    _, authored_shelves = shelves_from_file(authored_closing)
 
     assert not custom_shelves[1]["rest"]
     assert custom_shelves[1]["numeral"] == "II" and custom_shelves[1]["place"] == "side"
     assert canonical_shelves[1]["rest"]
     assert canonical_shelves[1]["numeral"] == "" and canonical_shelves[1]["place"] == "full"
+    assert not authored_shelves[0]["rest"] and authored_shelves[0]["numeral"] == "I"
 
 
 def test_themes_become_shelves_and_leftovers_go_to_the_last_one():

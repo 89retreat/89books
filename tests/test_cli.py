@@ -359,6 +359,41 @@ def test_draw_reflects_file_edits_and_shelf_order(shelf_folder):
     assert html.index(REST_TITLE) < html.index("Quando penso na terra")
 
 
+def test_reader_authored_shelf_language_is_checked_snapshotted_drawn_and_restored(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    first = draw_shelf(shelf_folder, now=datetime(2026, 10, 29, 11, 0))
+    path = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(path.read_text(encoding="utf-8"))
+    shelf.lens = "Minha *voz* <segura>."
+    shelf.shelves[0].title = "Minha *prateleira* <autoral>"
+    shelf.shelves[0].text = "Agora escolho *Cynefin* <script>não executar</script>."
+    path.write_text(dump_shelf(shelf), encoding="utf-8")
+    authored_source = path.read_bytes()
+
+    checked = check_shelf(shelf_folder)
+    authored = draw_shelf(shelf_folder, now=datetime(2026, 10, 29, 11, 1))
+    html = authored.html.read_text(encoding="utf-8")
+
+    assert checked.books == 2 and authored.version.read_bytes() == authored_source
+    assert "Minha <em>voz</em> &lt;segura&gt;." in html
+    assert "Minha *prateleira* &lt;autoral&gt;" in html
+    assert "Agora escolho <em>Cynefin</em> &lt;script&gt;não executar&lt;/script&gt;." in html
+    assert "<script>não executar</script>" not in html
+
+    restored = restore_shelf(
+        shelf_folder,
+        first.version.name,
+        now=datetime(2026, 10, 29, 11, 2),
+    )
+    redrawn = draw_shelf(shelf_folder, now=datetime(2026, 10, 29, 11, 3))
+    restored_html = redrawn.html.read_text(encoding="utf-8")
+
+    assert restored.changed and restored.saved_current.read_bytes() == authored_source
+    assert "Eu olho a terra." in restored_html and "Quando penso na terra" in restored_html
+    assert "Minha *prateleira*" not in restored_html
+
+
 def test_draw_respects_explicit_face_spine_and_return_to_automatic(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
     create_with_fakes(config)

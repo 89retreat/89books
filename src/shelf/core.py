@@ -136,6 +136,33 @@ def draw(
     return render_file(shelf, images, cover_assets)
 
 
+def set_shelf_lens(shelf: ShelfFile, lens: str) -> ShelfFile:
+    """Returns a shelf copy with the reader's authored opening text."""
+    if not isinstance(lens, str):
+        raise ValueError("lens must be text")
+    return replace(shelf, lens=lens)
+
+
+def rewrite_shelf_section(
+    shelf: ShelfFile,
+    shelf_index: int,
+    *,
+    title: str,
+    text: str,
+) -> ShelfFile:
+    """Returns a shelf copy with reader-authored title and text for one section."""
+    if shelf_index < 0:
+        raise IndexError("shelf position must not be negative")
+    if not isinstance(title, str) or not title.strip():
+        raise ValueError("shelf title must not be empty")
+    if not isinstance(text, str):
+        raise ValueError("shelf text must be text")
+    sections = list(shelf.shelves)
+    section = sections[shelf_index]
+    sections[shelf_index] = replace(section, title=title, text=text)
+    return replace(shelf, shelves=sections)
+
+
 def set_cover_photo(shelf: ShelfFile, cover_photo: str) -> ShelfFile:
     """Returns a shelf copy with the reader's chosen featured shelf photo."""
     if not isinstance(cover_photo, str) or not cover_photo.strip():
