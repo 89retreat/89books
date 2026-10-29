@@ -11,11 +11,13 @@ from shelf.cli import (
     draw_shelf,
     list_history,
     open_shelf,
+    recover_shelf,
     recreate_shelf,
     restore_shelf,
     save_version,
 )
 from shelf.config import load_config
+from shelf.portrait import PortraitResponseError
 from shelf.shelf_file import ShelfSection, ShelfYamlError, dump_shelf, parse_shelf
 from shelf.shelves import REST_TITLE
 
@@ -101,6 +103,97 @@ def test_create_writes_only_the_versioned_source(shelf_folder):
     assert not (shelf_folder / "shelf.html").exists()
     assert not (shelf_folder / "books.yaml").exists()
     assert any("2 books" in line for line in lines)
+
+
+def test_failed_portrait_keeps_a_private_draft_and_raw_response_for_free_recovery(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def broken_portrait(books, api_key):
+        raise PortraitResponseError("portrait response is invalid JSON", '{"lens":"broken"', 0.012)
+
+    with pytest.raises(CommandError, match="shelf recover"):
+        create_with_fakes(config, portrait=broken_portrait)
+
+    assert not (shelf_folder / "shelf.yaml").exists()
+    assert (shelf_folder / ".shelf" / "create-draft.yaml").exists()
+    assert (shelf_folder / ".shelf" / "failed-portrait.txt").read_text() == '{"lens":"broken"'
+
+
+def test_recover_creates_a_free_starter_source_and_cleans_only_recovery_files(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def broken_portrait(books, api_key):
+        raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
+
+    with pytest.raises(CommandError):
+        create_with_fakes(config, portrait=broken_portrait)
+    unrelated = shelf_folder / ".shelf" / "keep.txt"
+    unrelated.write_text("keep")
+
+    result = recover_shelf(shelf_folder)
+    source = parse_shelf(result.shelf_yaml.read_text(encoding="utf-8"))
+
+    assert result.books == 2
+    assert source.lens == "" and [section.title for section in source.shelves] == ["Meus livros"]
+    assert [book.title for book in source.shelves[0].books] == ["Torto Arado", "Cynefin"]
+    assert not (shelf_folder / ".shelf" / "create-draft.yaml").exists()
+    assert not (shelf_folder / ".shelf" / "failed-portrait.txt").exists()
+    assert unrelated.read_text() == "keep"
+
+
+def test_create_retries_only_the_portrait_from_a_saved_compatible_draft(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def broken_portrait(books, api_key):
+        raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
+
+    with pytest.raises(CommandError):
+        create_with_fakes(config, portrait=broken_portrait)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("paid preparation repeated")
+
+    result = create_shelf(
+        config,
+        recognize=forbidden,
+        review=forbidden,
+        library=forbidden,
+        covers=forbidden,
+        second=forbidden,
+        portrait=fake_portrait,
+        log=lambda line: None,
+    )
+
+    assert result.books == 2 and result.cost == 0.062
+    assert (shelf_folder / "shelf.yaml").exists()
+    assert not (shelf_folder / ".shelf" / "create-draft.yaml").exists()
+
+
+def test_recover_refuses_a_corrupt_or_incompatible_draft_without_changing_it(shelf_folder):
+    cache = shelf_folder / ".shelf"
+    cache.mkdir()
+    draft = cache / "create-draft.yaml"
+    draft.write_text("version: broken\n")
+    corrupt = draft.read_bytes()
+
+    with pytest.raises(CommandError, match="Could not read saved creation"):
+        recover_shelf(shelf_folder)
+    assert draft.read_bytes() == corrupt and not (shelf_folder / "shelf.yaml").exists()
+
+    draft.unlink()
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+
+    def broken_portrait(books, api_key):
+        raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
+
+    with pytest.raises(CommandError):
+        create_with_fakes(config, portrait=broken_portrait)
+    saved = draft.read_bytes()
+    (shelf_folder / "photo-02.jpg").unlink()
+
+    with pytest.raises(CommandError, match="does not match"):
+        recover_shelf(shelf_folder)
+    assert draft.read_bytes() == saved and not (shelf_folder / "shelf.yaml").exists()
 
 
 def test_create_moves_the_legacy_cover_photo_choice_into_shelf_yaml(shelf_folder):

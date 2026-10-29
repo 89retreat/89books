@@ -23,7 +23,7 @@
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US4 · Write my own shelf titles and texts | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
-| 　　↳ US6 · Keep paid work after a failed portrait | 🧭 plano aguarda aprovação | `▓▓░░░░░░░░` |
+| 　　↳ US6 · Keep paid work after a failed portrait | 👀 implementação pronta · aguarda validação | `▓▓▓▓▓▓▓▓░░` |
 | **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
 | ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
 | **CV4 · A Estante no Telegram** | 🟡 planejada · antes CV3 · porta em aberto | `░░░░░░░░░░` 0/6 |
@@ -42,7 +42,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US6 · Keep paid work after a failed portrait** | 🧭 plano aguarda aprovação | Preservar o resultado pago e oferecer recuperação gratuita ou retry só do retrato |
+| **CV2.DS3.US6 · Keep paid work after a failed portrait** | 👀 aguarda validação | Rodar `recover` na fixture; depois investigar o generation content do caso Rafael |
 
 ### ✅ Fundações assentadas
 

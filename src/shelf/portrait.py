@@ -4,6 +4,45 @@ import json
 
 from shelf import openrouter
 
+PORTRAIT_FORMAT = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "shelf_portrait",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "lens": {"type": "string"},
+                "themes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {"type": "string"},
+                            "text": {"type": "string"},
+                            "books": {"type": "array", "items": {"type": "integer"}},
+                        },
+                        "required": ["title", "text", "books"],
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            "required": ["lens", "themes"],
+            "additionalProperties": False,
+        },
+    },
+}
+
+
+class PortraitResponseError(ValueError):
+    """The paid call completed, but its response could not become a safe portrait."""
+
+    def __init__(self, message: str, response: str, cost: float):
+        super().__init__(message)
+        self.response = response
+        self.cost = cost
+
+
 PROMPT = """Você recebe a lista numerada dos livros de uma estante pessoal, reconhecidos automaticamente a partir de fotos. Pode haver erros de leitura e itens que não são livros; ignore o que não fizer sentido.
 
 Escreva o retrato desta estante em português do Brasil, em primeira pessoa, como se a dona ou o dono estivesse apresentando os próprios livros a uma visita ("eu olho o mundo...", "boa parte da minha estante..."). Tom de conversa acolhedora: a pessoa mostra o que ama, sem se elogiar. Nada de diagnóstico de personalidade nem de frases genéricas que serviriam para qualquer leitor. Não mencione que a lista veio de fotos nem os possíveis erros.
@@ -57,6 +96,13 @@ def parse_portrait(text: str, book_count: int) -> dict:
 
 def write_portrait(books: list[dict], api_key: str) -> tuple[dict, float]:
     text, cost = openrouter.complete(
-        api_key, PROMPT.format(books=book_list(books)), max_tokens=4000, temperature=0.7
+        api_key,
+        PROMPT.format(books=book_list(books)),
+        max_tokens=4000,
+        temperature=0.7,
+        response_format=PORTRAIT_FORMAT,
     )
-    return parse_portrait(text, len(books)), cost
+    try:
+        return parse_portrait(text, len(books)), cost
+    except ValueError as exc:
+        raise PortraitResponseError("portrait response is invalid JSON", text, cost) from exc

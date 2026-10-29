@@ -182,7 +182,7 @@ folder is recovery evidence, not a fixture and never enters tests or Git.
 
 ## Approval Gate
 
-- Navigator approval is required before implementation.
+- Approved by the Navigator on 2026-10-29.
 - Approval authorizes only CV2.DS3.US6 through the automated/E2E evidence and
   Navigator Validation checkpoint.
 - Push remains a separate explicit authorization.

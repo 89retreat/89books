@@ -62,6 +62,19 @@ Already generated a shelf with the older command? If `books.yaml` exists,
 the catalogues again; it asks for the much smaller cost of writing a new
 portrait. The old `books.yaml` and `shelf.html` are left untouched.
 
+Before the final portrait call, `create` privately saves the recognized and
+reviewed books under `.shelf/`. If the model returns an unreadable portrait,
+you do not have to pay to read the photos again. Choose either:
+
+```bash
+uv run shelf recover  # free: create an editable starter shelf with all saved books
+uv run shelf create   # paid: retry only the portrait after a new confirmation
+```
+
+`recover` needs no key or network. Its starter source has an empty `lens` and
+one `Meus livros` section, ready for you to edit and draw. Recovery files stay
+private and are removed only after `shelf.yaml` has been written successfully.
+
 ## 5. Draw and open it for free
 
 ```bash
@@ -85,7 +98,8 @@ seconds and does not call the model.
 | Command | What it does | Cost or network | Files changed |
 | --- | --- | --- | --- |
 | `uv run shelf` | Shows the selected folder, photos, books, edit/draw times, versions and next safe command. | None. | None. |
-| `uv run shelf create` | Reads the photos and creates `shelf.yaml` once. A CV1 shelf reuses its saved catalogue and pays only for a new portrait. | Paid and confirmed before the model call. | Creates `shelf.yaml` and local caches; never replaces an existing source. |
+| `uv run shelf create` | Reads the photos and creates `shelf.yaml` once. A CV1 shelf or saved creation retries only its portrait. | Paid and confirmed before the model call. | Saves a private draft before the portrait; creates `shelf.yaml` and never replaces an existing source. |
+| `uv run shelf recover` | Creates an editable starter source from paid work saved before a failed portrait. | None; no key or network. | Atomically creates `shelf.yaml`, then removes only its private recovery files. |
 | `uv run shelf check` | Validates `shelf.yaml` and lists every problem with its line and path. | None; no key or network. | None. |
 | `uv run shelf draw` | Saves a changed source, then draws `shelf.html`. Repeating it unchanged creates no new version. | None; no key or network. | May add `history/shelf-….yaml`; atomically replaces `shelf.html` and the local draw marker. |
 | `uv run shelf history` | Lists saved version names, dates and sizes without opening or comparing their contents. | None. | None. |

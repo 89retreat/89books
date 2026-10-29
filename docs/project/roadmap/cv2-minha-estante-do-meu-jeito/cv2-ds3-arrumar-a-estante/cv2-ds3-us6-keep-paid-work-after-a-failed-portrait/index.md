@@ -2,7 +2,7 @@
 code: CV2.DS3.US6
 level: User Story
 status: Active
-status_reason: um retrato JSON inválido descartou o resultado pago de 12 fotos no primeiro uso real de fundador
+status_reason: implementação concluída com 221 testes e E2E offline; aguarda validação do Navigator
 updated: 2026-10-29
 related:
   - ../index.md

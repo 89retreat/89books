@@ -18,6 +18,7 @@ class ShelfFacts:
     page_modified: float | None = None
     source_hash: str | None = None
     last_drawn_hash: str | None = None
+    creation_draft: bool = False
 
 
 @dataclass(frozen=True)
@@ -38,7 +39,9 @@ class ShelfStatus:
 def inspect(facts: ShelfFacts) -> ShelfStatus:
     """Returns one state and next safe verb from the current source and generated page facts."""
     if facts.source_text is None:
-        return _result(facts, "not_created", next_command="create")
+        next_command = "recover" if facts.creation_draft else "create"
+        state = "creation_saved" if facts.creation_draft else "not_created"
+        return _result(facts, state, next_command=next_command)
     try:
         shelf = parse_shelf(facts.source_text)
     except ShelfYamlError as error:

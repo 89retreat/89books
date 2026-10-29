@@ -41,6 +41,18 @@ class Creation:
 
 
 @dataclass
+class CreationDraft:
+    """Paid preparation that a client can persist before asking for the final portrait."""
+
+    name: str | None
+    photos: list[str]
+    books: list[dict]
+    left_out: list[dict]
+    cost: float
+    migrated: bool
+
+
+@dataclass
 class Services:
     """What generating a shelf calls outside: the model, the catalogues and the cover check."""
 
@@ -73,6 +85,99 @@ class _Run:
     names: dict = field(default_factory=dict)
 
 
+def prepare_creation(
+    photos: list[Path],
+    api_key: str,
+    name: str | None,
+    services: Services,
+    legacy_books: str | None = None,
+    log: Callable[[str], None] = lambda line: None,
+    progress=None,
+) -> CreationDraft:
+    """Completes every paid preparation stage before the portrait so a client can persist it."""
+    if legacy_books is not None:
+        books, left_out = read_books_yaml(legacy_books)
+        log(f"Reusing {len(books)} books from books.yaml; photos will not be read again.")
+        return CreationDraft(
+            name=name,
+            photos=[photo.name for photo in photos],
+            books=books,
+            left_out=left_out,
+            cost=0.0,
+            migrated=True,
+        )
+
+    run = _Run(log, progress or Quiet())
+    books = _recognize(photos, api_key, services, run)
+    _look_up(books, services.library, run)
+    books, left_out = _review(books, api_key, services, run)
+    books = _confirm(books, services.second, run)
+    books = name_books(books, run.names)
+    _covers(books, services, run)
+    return CreationDraft(
+        name=name,
+        photos=[photo.name for photo in photos],
+        books=books,
+        left_out=left_out,
+        cost=round(run.cost, 4),
+        migrated=False,
+    )
+
+
+def finish_creation(
+    draft: CreationDraft,
+    api_key: str,
+    portrait: Callable,
+    log: Callable[[str], None] = lambda line: None,
+) -> Creation:
+    """Writes only the portrait and turns persisted paid preparation into the editable source."""
+    generated = _write_portrait(draft, api_key, portrait, log)
+    return Creation(_shelf_file(generated), len(generated.books), generated.cost, draft.migrated)
+
+
+def _write_portrait(
+    draft: CreationDraft,
+    api_key: str,
+    portrait: Callable,
+    log: Callable[[str], None],
+) -> Shelf:
+    log("Writing your portrait...")
+    written, spent = portrait(draft.books, api_key)
+    return Shelf(
+        name=draft.name,
+        photos=list(draft.photos),
+        books=[dict(book) for book in draft.books],
+        left_out=[dict(book) for book in draft.left_out],
+        portrait=written,
+        cost=round(draft.cost + spent, 4),
+    )
+
+
+def recover_creation(draft: CreationDraft) -> Creation:
+    """Creates a free, explicitly unfinished starter shelf without reordering preserved books."""
+    if not draft.photos:
+        raise ValueError("A saved creation needs at least one photo.")
+    left_out = [
+        LeftOutBook(str(book["title"]), str(book["reason"]))
+        for book in draft.left_out
+        if isinstance(book, dict) and book.get("title") and book.get("reason")
+    ]
+    shelf = ShelfFile(
+        name=draft.name,
+        cover_photo=draft.photos[0],
+        lens="",
+        shelves=[
+            ShelfSection(
+                title="Meus livros",
+                text="",
+                books=[_shelf_book(book) for book in draft.books],
+            )
+        ],
+        left_out=left_out,
+    )
+    return Creation(shelf, len(draft.books), draft.cost, draft.migrated)
+
+
 def generate(
     photos: list[Path],
     api_key: str,
@@ -81,19 +186,9 @@ def generate(
     log: Callable[[str], None] = lambda line: None,
     progress=None,
 ) -> Shelf:
-    """Reads the photos, checks the books in the catalogues and writes the portrait. This is what costs."""
-    run = _Run(log, progress or Quiet())
-    books = _recognize(photos, api_key, services, run)
-    _look_up(books, services.library, run)
-    books, left_out = _review(books, api_key, services, run)
-    books = _confirm(books, services.second, run)
-    books = name_books(books, run.names)
-    _covers(books, services, run)
-
-    log("Writing your portrait...")
-    portrait, spent = services.portrait(books, api_key)
-    run.cost += spent
-    return Shelf(name, [p.name for p in photos], books, left_out, portrait, round(run.cost, 4))
+    """Compatibility wrapper that generates a complete shelf without persisting the intermediate draft."""
+    draft = prepare_creation(photos, api_key, name, services, log=log, progress=progress)
+    return _write_portrait(draft, api_key, services.portrait, log)
 
 
 def create(
@@ -105,26 +200,17 @@ def create(
     log: Callable[[str], None] = lambda line: None,
     progress=None,
 ) -> Creation:
-    """Creates the editable source once, either from photos or from the saved CV1 book list."""
-    if legacy_books is None:
-        generated = generate(photos, api_key, name, services, log, progress)
-        migrated = False
-    else:
-        books, left_out = read_books_yaml(legacy_books)
-        log(f"Reusing {len(books)} books from books.yaml; photos will not be read again.")
-        log("Writing your portrait...")
-        portrait, cost = services.portrait(books, api_key)
-        generated = Shelf(
-            name=name,
-            photos=[photo.name for photo in photos],
-            books=books,
-            left_out=left_out,
-            portrait=portrait,
-            cost=round(cost, 4),
-        )
-        migrated = True
-    source = _shelf_file(generated)
-    return Creation(source, len(generated.books), generated.cost, migrated)
+    """Compatibility wrapper for clients that do not persist a resumable creation draft."""
+    draft = prepare_creation(
+        photos,
+        api_key,
+        name,
+        services,
+        legacy_books=legacy_books,
+        log=log,
+        progress=progress,
+    )
+    return finish_creation(draft, api_key, services.portrait, log)
 
 
 def draw(

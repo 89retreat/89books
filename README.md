@@ -20,13 +20,17 @@ Put photos in `my-bookshelf/` (`.jpg`, `.heic`, `.png` or `.webp), then run:
 
 ```bash
 uv run shelf create   # paid: reads the photos and creates shelf.yaml once
+uv run shelf recover  # free: finishes from saved paid work if the portrait failed
 uv run shelf draw     # free: draws shelf.html from shelf.yaml
 uv run shelf open     # free: opens the page
 ```
 
 The first `create` asks for your name and keys, checks them, shows the
 estimated cost and waits for confirmation. It never replaces an existing
-`shelf.yaml`. `draw` needs no API key and makes no network call; it saves a
+`shelf.yaml`. Before asking for the final portrait, it saves the recognized and
+reviewed books privately. If the portrait cannot be read, `recover` creates a
+free editable starter shelf, while another `create` retries only the portrait
+after a new cost confirmation. `draw` needs no API key and makes no network call; it saves a
 changed source in `history/` before replacing the page. If the file is invalid,
 it reports the lines and preserves the previous page. The command
 without a verb shows photos, books, edit/draw times, version count, current
@@ -46,6 +50,7 @@ Other commands and options:
 ```bash
 uv run shelf                         # status and next safe action; never spends
 uv run shelf check                   # validate shelf.yaml with line numbers
+uv run shelf recover                 # free starter shelf from saved paid work
 uv run shelf history                 # list saved versions without reading them
 uv run shelf restore VERSION         # save the current source, then restore one
 uv run shelf recreate                # paid: save the source, then rebuild from photos
@@ -68,7 +73,9 @@ The shelf folder contains:
   cover still needs network when the page opens. File previews such as Quick
   Look do not run its layout; open it in Chrome or Safari.
 - `config.toml`: your name and API keys, kept local and ignored by git.
-- `.shelf/`: local catalogue, cover caches and the last-drawn content marker.
+- `.shelf/`: private creation draft, failed portrait response, catalogue and
+  cover caches, and the last-drawn content marker. Recovery files disappear
+  only after `shelf.yaml` is safely created.
 - `history/`: at most 20 exact `shelf.yaml` versions, kept local and ignored by git.
 - `books.yaml`, when present: the CV1 output used only for the first migration.
   It is no longer the source after `shelf.yaml` exists.

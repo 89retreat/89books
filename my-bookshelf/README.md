@@ -6,6 +6,7 @@ of the repository:
 ```bash
 uv run shelf          # status and next safe command; free
 uv run shelf create   # once; paid and confirmed
+uv run shelf recover  # free starter shelf if the final portrait failed
 uv run shelf check    # validate shelf.yaml; free
 uv run shelf draw     # save a changed source and redraw; free
 uv run shelf history  # list saved source versions; free
@@ -18,7 +19,8 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 
 - One shelf per photo, taken straight on, in good light, reads best.
 - `.jpg`, `.heic` (iPhone), `.png` and `.webp` all work.
-- `create` never replaces an existing `shelf.yaml`.
+- `create` never replaces an existing `shelf.yaml`. It privately saves the reviewed books before the final portrait; after a broken portrait, rerunning `create` retries only that paid step.
+- `recover` uses the saved work to create a starter `shelf.yaml` with no key, network or additional cost.
 - `draw` snapshots changed source bytes; `restore` and `recreate` save the current source before replacement.
 - At most 20 managed files stay in `history/`, which git ignores.
 - Add `hidden: true` to a book and draw to omit it without deleting it; remove the line to show it again.

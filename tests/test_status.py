@@ -34,6 +34,12 @@ def test_not_created_recommends_create_without_parsing_anything():
     assert result.errors == ()
 
 
+def test_saved_creation_without_source_recommends_free_recovery():
+    result = inspect(ShelfFacts(photo_count=3, creation_draft=True))
+    assert result.state == "creation_saved"
+    assert result.books is None and result.next_command == "recover"
+
+
 def test_invalid_source_recommends_check_and_keeps_every_issue():
     result = inspect(
         ShelfFacts(

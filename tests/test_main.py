@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 
 from shelf import cli
+from shelf.core import CreationDraft
+from shelf.creation_draft import dump_draft
 from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection, dump_shelf
 from tests.test_setup import FakeTerminal, google, openrouter
 
@@ -35,6 +37,14 @@ def fake_recreate(calls):
     return recreate
 
 
+def fake_recover(calls):
+    def recover(folder, **kwargs):
+        calls.append(("recover", Path(folder)))
+        return cli.RecoverResult(shelf_yaml=Path(folder) / "shelf.yaml", books=12)
+
+    return recover
+
+
 def fake_draw(calls):
     def draw(folder, **kwargs):
         calls.append(("draw", Path(folder)))
@@ -59,6 +69,7 @@ def run(argv, terminal, interactive=True):
         interactive=interactive,
         create_action=fake_create(calls),
         recreate_action=fake_recreate(calls),
+        recover_action=fake_recover(calls),
         draw_action=fake_draw(calls),
         open_action=fake_open(calls),
         check_openrouter=openrouter,
@@ -253,6 +264,43 @@ def test_yes_skips_the_paid_confirmation(shelf_folder, monkeypatch):
 
     assert code == 0 and calls[0][0] == "create"
     assert terminal.questions == []
+
+
+def test_saved_creation_confirms_only_a_portrait_retry_and_skips_full_cost(shelf_folder, monkeypatch):
+    configured(shelf_folder, monkeypatch)
+    cache = shelf_folder / ".shelf"
+    cache.mkdir()
+    (cache / "create-draft.yaml").write_text(
+        dump_draft(
+            CreationDraft(
+                name="Lula",
+                photos=["photo-01.jpg", "photo-02.jpg"],
+                books=[{"title": "Um"}, {"title": "Dois"}],
+                left_out=[],
+                cost=0.20,
+                migrated=False,
+            )
+        )
+    )
+    terminal = FakeTerminal(["y"])
+
+    code, calls = run(["create", "--folder", str(shelf_folder)], terminal)
+
+    assert code == 0 and calls[0][0] == "create"
+    assert "saved work with 2 books" in terminal.text
+    assert "portrait" in terminal.text.lower() and "US$ 0.03" in terminal.text
+    assert "Making your shelf" not in terminal.text
+
+
+def test_recover_is_free_and_needs_no_key_or_confirmation(shelf_folder, monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    terminal = FakeTerminal([])
+
+    code, calls = run(["recover", "--folder", str(shelf_folder)], terminal, interactive=False)
+
+    assert code == 0 and calls == [("recover", shelf_folder)]
+    assert terminal.questions == [] and "Recovered for free" in terminal.text
+    assert "draw" in terminal.text.lower()
 
 
 def test_cv1_migration_confirms_only_a_new_portrait_and_passes_the_legacy_text(shelf_folder, monkeypatch):

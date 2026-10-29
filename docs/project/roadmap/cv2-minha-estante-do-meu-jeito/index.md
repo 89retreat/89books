@@ -72,7 +72,8 @@ Para o terminal ajudar e não atrapalhar o que vem depois:
 | Situação da pessoa | Comando | Custo | O que acontece com o `shelf.yaml` |
 | --- | --- | --- | --- |
 | Não sei em que pé estou | `uv run shelf` | grátis | Nada; mostra o estado e sugere o próximo comando |
-| Primeira vez, só tenho as fotos | `uv run shelf create` | pago | Cria o arquivo; recusa se ele já existir |
+| Primeira vez, só tenho as fotos | `uv run shelf create` | pago | Guarda um rascunho privado antes do retrato e cria o arquivo; recusa se ele já existir |
+| O retrato final falhou, mas os livros já foram processados | `uv run shelf recover` | grátis | Cria uma fonte inicial editável com todos os livros salvos |
 | Editei o arquivo e quero ver | `uv run shelf draw` | grátis | Só lê; guarda uma versão se ele mudou |
 | Quero conferir se o arquivo está certo | `uv run shelf check` | grátis | Só lê; aponta erros com o número da linha |
 | Mudei a estante, tirei fotos novas | `uv run shelf recreate` | pago | Guarda uma versão e refaz tudo a partir das fotos |

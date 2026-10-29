@@ -5,17 +5,21 @@ import pytest
 
 from shelf import core
 from shelf.core import (
+    CreationDraft,
     Services,
     Shelf,
     add_shelf_section,
     correct_book_identity,
     create,
     draw,
+    finish_creation,
     generate,
     hide_book,
     move_book,
     move_shelf_section,
     order_shelf_photos,
+    prepare_creation,
+    recover_creation,
     remove_shelf_section,
     rewrite_shelf_section,
     set_book_cover,
@@ -88,6 +92,63 @@ def test_create_turns_paid_generation_into_the_versioned_file(shelf_folder):
         "Cynefin",
     ]
     assert all(book.face is None for section in created.shelf.shelves for book in section.books)
+
+
+def test_paid_preparation_can_be_persisted_before_the_portrait_and_finished_later(shelf_folder):
+    calls = []
+
+    def portrait(books, api_key):
+        calls.append(([book["title"] for book in books], api_key))
+        return {
+            "lens": "Eu volto aos livros.",
+            "themes": [{"title": "Quando volto", "text": "", "books": [0, 1]}],
+        }, 0.0123
+
+    draft = prepare_creation(
+        sorted(shelf_folder.glob("*.jpg")),
+        "sk-secret",
+        "Lula",
+        services(portrait=lambda *args: (_ for _ in ()).throw(AssertionError("portrait called early"))),
+    )
+
+    assert isinstance(draft, CreationDraft)
+    assert calls == []
+    assert draft.photos == ["photo-01.jpg", "photo-02.jpg"]
+    assert [book["title"] for book in draft.books] == ["Torto Arado", "Cynefin"]
+    assert draft.cost == 0.04 and draft.migrated is False
+
+    created = finish_creation(draft, "sk-secret", portrait)
+
+    assert calls == [(["Torto Arado", "Cynefin"], "sk-secret")]
+    assert created.cost == 0.0523 and created.books == 2
+    assert created.shelf.lens == "Eu volto aos livros."
+
+
+def test_free_recovery_builds_one_editable_starter_shelf_without_a_portrait():
+    draft = CreationDraft(
+        name="Rafael",
+        photos=["photo.jpg"],
+        books=[
+            {"title": "Primeiro", "authors": ["A"], "cover_id": 7},
+            {"title": "Segundo", "authors": ["B"], "source": "photo"},
+            {"title": "Terceiro", "authors": ["A"], "source": "photo"},
+        ],
+        left_out=[{"title": "Objeto", "reason": "not a book"}],
+        cost=0.25,
+        migrated=False,
+    )
+
+    recovered = recover_creation(draft)
+
+    assert recovered.cost == 0.25 and recovered.books == 3
+    assert recovered.shelf.lens == ""
+    assert [section.title for section in recovered.shelf.shelves] == ["Meus livros"]
+    assert [book.title for book in recovered.shelf.shelves[0].books] == [
+        "Primeiro",
+        "Segundo",
+        "Terceiro",
+    ]
+    assert recovered.shelf.left_out[0].title == "Objeto"
 
 
 def test_create_migrates_cv1_books_by_calling_only_the_portrait(shelf_folder):

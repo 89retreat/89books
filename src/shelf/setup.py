@@ -201,5 +201,14 @@ def confirm_portrait_cost(books: int, terminal: Terminal) -> bool:
     return answer in ("", "y", "yes")
 
 
+def confirm_saved_creation_cost(books: int, terminal: Terminal) -> bool:
+    terminal.say(
+        f"Found saved work with {books} books. Photos, catalogues and review will not run again. "
+        f"Retrying only the portrait costs about US$ {COST_PER_PORTRAIT:.2f} and takes about 1 minute."
+    )
+    answer = terminal.ask("Continue? [Y/n] ").lower()
+    return answer in ("", "y", "yes")
+
+
 def is_interactive() -> bool:
     return sys.stdin.isatty() and sys.stdout.isatty()

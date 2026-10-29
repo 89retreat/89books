@@ -22,10 +22,11 @@ from shelf import photos as photo_tools
 from shelf.books import read_books_yaml
 from shelf.config import CONFIG_FILE, PHOTO_EXTENSIONS, Config, ConfigError, load_config, load_photos
 from shelf.covers import CoverCheck
+from shelf.creation_draft import DraftError, dump_draft, parse_draft
 from shelf.googlebooks import GoogleBooks
 from shelf.local_covers import CoverAssetError, resolve_cover_assets
 from shelf.openlibrary import OpenLibrary
-from shelf.portrait import write_portrait
+from shelf.portrait import PortraitResponseError, write_portrait
 from shelf.progress import Progress
 from shelf.recognition import recognize
 from shelf.review import review_books
@@ -37,6 +38,8 @@ PAGE = "shelf.html"
 LEGACY_BOOKS = "books.yaml"
 HISTORY_DIR = "history"
 DRAWN_HASH = "last-drawn.sha256"
+CREATION_DRAFT = "create-draft.yaml"
+FAILED_PORTRAIT = "failed-portrait.txt"
 HISTORY_LIMIT = 20
 DEFAULT_FOLDER = Path("my-bookshelf")
 
@@ -58,6 +61,12 @@ class DrawResult:
     html: Path
     books: int
     version: Path | None = None
+
+
+@dataclass
+class RecoverResult:
+    shelf_yaml: Path
+    books: int
 
 
 @dataclass
@@ -95,28 +104,109 @@ def create_shelf(
     log: Callable[[str], None] = print,
     progress=None,
 ) -> CreateResult:
-    """Calls the paid core once and safely creates shelf.yaml without replacing one."""
+    """Creates shelf.yaml while preserving completed paid preparation across portrait failures."""
     path = config.folder / SHELF_YAML
     if path.exists():
         raise CommandError(f"{SHELF_YAML} already exists. `create` never replaces your shelf.")
-    created = _generate_shelf(
-        config,
-        legacy_books=legacy_books,
-        recognize=recognize,
-        library=library,
-        portrait=portrait,
-        covers=covers,
-        second=second,
-        review=review,
-        log=log,
-        progress=progress,
-    )
+    cache = config.folder / CACHE_DIR
+    draft_path = cache / CREATION_DRAFT
+    failed_path = cache / FAILED_PORTRAIT
+    if draft_path.exists():
+        draft = _load_creation_draft(config.folder, config.photos)
+        log(f"Reusing saved work with {len(draft.books)} books; photos and catalogues will not run again.")
+    else:
+        services = _services(config, recognize, library, portrait, covers, second, review)
+        draft = core.prepare_creation(
+            config.photos,
+            config.api_key,
+            config.name,
+            services,
+            legacy_books=legacy_books,
+            log=log,
+            progress=progress or Progress(),
+        )
+        _write_new(draft_path, dump_draft(draft))
+    try:
+        created = core.finish_creation(draft, config.api_key, portrait, log)
+    except PortraitResponseError as exc:
+        draft = replace(draft, cost=round(draft.cost + exc.cost, 4))
+        _replace(draft_path, dump_draft(draft))
+        _replace(failed_path, exc.response)
+        raise CommandError(
+            "Could not read the portrait returned by OpenRouter. "
+            f"Saved paid work: {draft_path}. "
+            f"Run `uv run shelf recover --folder {config.folder}` for a free editable starter shelf, "
+            "or rerun `uv run shelf create` to spend only on another portrait."
+        ) from exc
     _write_new(path, dump_shelf(created.shelf))
+    _remove_creation_recovery(config.folder)
     log(
         f"Created {path.name} with {created.books} books "
         f"(cost: US$ {created.cost:.2f}{'; reused books.yaml' if created.migrated else ''})."
     )
     return CreateResult(path, created.books, created.cost, created.migrated)
+
+
+def recover_shelf(folder: Path) -> RecoverResult:
+    """Creates a free starter source from saved paid work without keys or network."""
+    folder = Path(folder)
+    path = folder / SHELF_YAML
+    if path.exists():
+        raise CommandError(f"{SHELF_YAML} already exists. `recover` never replaces your shelf.")
+    try:
+        photos = load_photos(folder)
+    except ConfigError as exc:
+        raise CommandError(str(exc)) from exc
+    draft = _load_creation_draft(folder, photos)
+    recovered = core.recover_creation(draft)
+    _write_new(path, dump_shelf(recovered.shelf))
+    _remove_creation_recovery(folder)
+    return RecoverResult(path, recovered.books)
+
+
+def _load_creation_draft(folder: Path, photos: list[Path]) -> core.CreationDraft:
+    path = Path(folder) / CACHE_DIR / CREATION_DRAFT
+    if not path.exists():
+        raise CommandError(f"No saved creation in {folder}. Run `uv run shelf create --folder {folder}`.")
+    try:
+        draft = parse_draft(path.read_text(encoding="utf-8"))
+    except (DraftError, OSError) as exc:
+        raise CommandError(str(exc)) from exc
+    current = [photo.name for photo in photos]
+    if sorted(draft.photos) != sorted(current):
+        raise CommandError(
+            "Saved creation does not match the current shelf photos. "
+            "Put back the same photos before retrying or recovering; no files were changed."
+        )
+    return draft
+
+
+def _remove_creation_recovery(folder: Path) -> None:
+    cache = Path(folder) / CACHE_DIR
+    (cache / CREATION_DRAFT).unlink(missing_ok=True)
+    (cache / FAILED_PORTRAIT).unlink(missing_ok=True)
+
+
+def _services(
+    config: Config,
+    recognize: Callable,
+    library,
+    portrait: Callable,
+    covers,
+    second,
+    review: Callable,
+) -> core.Services:
+    cache = config.folder / CACHE_DIR
+    if second is None and config.google_books_api_key:
+        second = GoogleBooks(cache / "googlebooks.json", config.google_books_api_key)
+    return core.Services(
+        recognize=recognize,
+        review=review,
+        portrait=portrait,
+        library=library or OpenLibrary(cache / "openlibrary.json"),
+        covers=covers or CoverCheck(cache / "covers.json"),
+        second=second,
+    )
 
 
 def _generate_shelf(
@@ -131,17 +221,7 @@ def _generate_shelf(
     log: Callable[[str], None] = print,
     progress=None,
 ) -> core.Creation:
-    cache = config.folder / CACHE_DIR
-    if second is None and config.google_books_api_key:
-        second = GoogleBooks(cache / "googlebooks.json", config.google_books_api_key)
-    services = core.Services(
-        recognize=recognize,
-        review=review,
-        portrait=portrait,
-        library=library or OpenLibrary(cache / "openlibrary.json"),
-        covers=covers or CoverCheck(cache / "covers.json"),
-        second=second,
-    )
+    services = _services(config, recognize, library, portrait, covers, second, review)
     return core.create(
         config.photos,
         config.api_key,
@@ -371,6 +451,7 @@ def _parser() -> argparse.ArgumentParser:
     create.add_argument("--yes", action="store_true", help="do not ask before spending")
     recreate = command("recreate", "replace shelf.yaml from photos after saving it (paid)")
     recreate.add_argument("--yes", action="store_true", help="do not ask before spending")
+    command("recover", "create a free starter shelf from saved paid work")
     command("draw", "draw shelf.html and save changed source (free)")
     command("check", "check shelf.yaml and show every error (free)")
     command("history", "list saved shelf.yaml versions (free)")
@@ -387,6 +468,7 @@ def main(
     interactive: bool | None = None,
     create_action: Callable = create_shelf,
     recreate_action: Callable = recreate_shelf,
+    recover_action: Callable = recover_shelf,
     draw_action: Callable = draw_shelf,
     open_action: Callable = open_shelf,
     check_action: Callable = check_shelf,
@@ -456,6 +538,16 @@ def main(
         terminal.say(f"Next: `uv run shelf draw --folder {folder}` (free).")
         return 0
 
+    if args.command == "recover":
+        try:
+            result = recover_action(folder)
+        except (CommandError, ConfigError, DraftError, ShelfYamlError, OSError, ValueError) as exc:
+            return _error(exc)
+        terminal.say(f"Recovered for free: {result.shelf_yaml} ({_count(result.books, 'book')}).")
+        terminal.say("The starter shelf has no AI portrait; edit its lens and section when you are ready.")
+        terminal.say(f"Next: `uv run shelf draw --folder {folder}` (free).")
+        return 0
+
     if args.command == "draw":
         try:
             result = draw_action(folder)
@@ -486,13 +578,16 @@ def main(
         return _error(CommandError(f"`shelf {args.command}` can spend. Run it interactively or pass --yes."))
 
     try:
-        load_photos(folder)  # photos come first: do not ask for keys for an empty folder
+        photos = load_photos(folder)  # photos come first: do not ask for keys for an empty folder
+        saved_draft = None
+        if not recreating and (folder / CACHE_DIR / CREATION_DRAFT).exists():
+            saved_draft = _load_creation_draft(folder, photos)
         legacy_path = folder / LEGACY_BOOKS
         legacy_text = None
-        if not recreating and legacy_path.exists():
+        if not recreating and saved_draft is None and legacy_path.exists():
             legacy_text = legacy_path.read_text(encoding="utf-8")
         legacy_count = len(read_books_yaml(legacy_text)[0]) if legacy_text is not None else 0
-        include_google = recreating or legacy_text is None
+        include_google = recreating or (legacy_text is None and saved_draft is None)
         if interactive and setup.needs_setup(folder, os.environ, include_google=include_google):
             setup.run_setup(
                 folder,
@@ -507,11 +602,12 @@ def main(
         return _error(exc)
 
     if interactive and not args.yes:
-        confirmed = (
-            setup.confirm_portrait_cost(legacy_count, terminal)
-            if legacy_text is not None
-            else setup.confirm_cost(len(config.photos), terminal)
-        )
+        if saved_draft is not None:
+            confirmed = setup.confirm_saved_creation_cost(len(saved_draft.books), terminal)
+        elif legacy_text is not None:
+            confirmed = setup.confirm_portrait_cost(legacy_count, terminal)
+        else:
+            confirmed = setup.confirm_cost(len(config.photos), terminal)
         if not confirmed:
             terminal.say("Nothing was spent.")
             return 0
@@ -565,6 +661,8 @@ def _show_status(folder: Path, terminal: setup.Terminal) -> None:
     terminal.say(f"Photos: {result.photo_count}")
     if result.state == "not_created":
         terminal.say(f"Source: no {SHELF_YAML}")
+    elif result.state == "creation_saved":
+        terminal.say(f"Source: no {SHELF_YAML} — paid work saved privately")
     elif result.state == "invalid":
         terminal.say(
             f"Source: {SHELF_YAML} — invalid ({_count(len(result.errors), 'error')})"
@@ -606,6 +704,7 @@ def _facts(folder: Path) -> status.ShelfFacts:
         page_modified=page.stat().st_mtime if page.exists() else None,
         source_hash=hashlib.sha256(source_bytes).hexdigest() if source_bytes is not None else None,
         last_drawn_hash=marker.read_text(encoding="utf-8").strip() if marker.exists() else None,
+        creation_draft=(folder / CACHE_DIR / CREATION_DRAFT).exists(),
     )
 
 

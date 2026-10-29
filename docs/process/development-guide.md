@@ -59,8 +59,9 @@ uv run ruff check . && uv run ruff format --check .
 # create the editable source once (paid and confirmed)
 uv run shelf create
 
-# inspect and validate the source (free)
+# inspect, recover and validate the source (free)
 uv run shelf
+uv run shelf recover
 uv run shelf check
 
 # draw, inspect history and restore the source (free)
@@ -77,7 +78,7 @@ uv run shelf setup
 ```
 
 A CV2 usa um comando por situação sobre `shelf.yaml`. Já existem `create`,
-`check`, `draw`, `history`, `restore`, `recreate`, `open` e `setup`; o comando
+`recover`, `check`, `draw`, `history`, `restore`, `recreate`, `open` e `setup`; o comando
 sem verbo mostra o estado e o próximo gesto, sem gastar. Sem `--folder`, a
 pasta atual vence quando já parece uma estante; caso contrário, o fallback é
 `my-bookshelf/`. `draw` guarda uma fonte alterada; `restore` e `recreate`
@@ -115,7 +116,9 @@ Regras para quem mexer no código da estante:
 - **Quem gasta pergunta antes; quem reescreve guarda antes.** Comando que faz
   chamada paga mostra custo e tempo e pede confirmação (exceto com `--yes`
   ou fora de um terminal interativo). Comando que reescreve o `shelf.yaml`
-  guarda uma versão em `history/` e diz onde. O comando sem verbo nunca gasta.
+  guarda uma versão em `history/` e diz onde. `create` guarda o resultado pago
+  antes do retrato final; `recover` transforma esse rascunho numa fonte inicial
+  sem chave, rede ou novo custo. O comando sem verbo nunca gasta.
 
 A review de cada story da CV2 em diante confere essas regras.
 

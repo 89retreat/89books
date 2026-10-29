@@ -59,4 +59,20 @@ explicit consent. Never copy it into this repository or test output.
 
 ## Validation Evidence
 
-Pending implementation and Navigator validation.
+Driver evidence on 2026-10-29:
+
+- `uv run pytest` — 221 passed.
+- `uv run ruff check .` — passed.
+- `uv run ruff format --check .` — 257 files already formatted.
+- OpenRouter's public endpoint metadata for `anthropic/claude-sonnet-5.5`
+  lists `response_format` on every available provider endpoint; no model call
+  was made for this check.
+- Offline E2E passed in `/tmp/89books-ds3-us6-validation`: a malformed
+  portrait preserved the private draft and raw response; `recover` produced a
+  three-book editable shelf with no key/network; a second fixture retried only
+  the portrait and retained the accumulated cost.
+- Navigator fixture prepared at
+  `/tmp/89books-ds3-us6-validation/navigator`. Its status reports `paid work
+  saved privately` and recommends `recover`.
+
+Navigator acceptance is pending.

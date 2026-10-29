@@ -6,7 +6,13 @@ URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL = "anthropic/claude-sonnet-5.5"
 
 
-def complete(api_key: str, content: list | str, max_tokens: int, temperature: float) -> tuple[str, float]:
+def complete(
+    api_key: str,
+    content: list | str,
+    max_tokens: int,
+    temperature: float,
+    response_format: dict | None = None,
+) -> tuple[str, float]:
     """Returns the model's text and the cost in US dollars reported by OpenRouter."""
     body = {
         "model": MODEL,
@@ -16,6 +22,8 @@ def complete(api_key: str, content: list | str, max_tokens: int, temperature: fl
         "provider": {"data_collection": "deny"},
         "usage": {"include": True},
     }
+    if response_format is not None:
+        body["response_format"] = response_format
     headers = {
         "Authorization": f"Bearer {api_key}",
         "HTTP-Referer": "https://github.com/89retreat/89books",
