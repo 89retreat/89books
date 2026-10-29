@@ -39,7 +39,7 @@ for the visible JSON. The photos themselves had already been read successfully.
 2. Allow callers to send OpenRouter's `reasoning` control and optionally require
    a complete response, without changing the normal `(text, cost)` return tuple.
 3. Send only portrait requests with:
-   - explicit low reasoning effort;
+   - explicit high reasoning effort, preserving current portrait quality;
    - reasoning text excluded from the response;
    - no temperature;
    - a 64,000-token shared ceiling;
@@ -62,13 +62,20 @@ Every model request has a finite limit, so no fixed ceiling can mathematically
 support an unlimited shelf. This story removes the actual bottleneck in three
 layers:
 
-1. low reasoning prevents a simple formatting task from consuming most tokens
-   before writing;
-2. 64,000 tokens gives the bounded 3–6-theme portrait ample room for realistic
-   personal shelves and is not billed merely because it is available;
+1. the portrait keeps high reasoning quality instead of trading quality for
+   output space;
+2. 64,000 tokens gives high reasoning and the bounded 3–6-theme portrait ample
+   room for realistic personal shelves and is not billed merely because it is
+   available;
 3. `finish_reason` detection turns any future size limit into an explicit,
    recoverable product state instead of presenting truncated JSON as a parsing
    mystery.
+
+Technically, reasoning effort could vary by book count. This story deliberately
+does not do that: a larger and more diverse shelf may need more—not less—reasoning
+to find coherent themes. Book count is therefore used as evidence for output
+size, not as a reason to lower portrait quality. A later measured cost/quality
+study may introduce adaptive effort if real evidence supports a threshold.
 
 A fundamentally unbounded shelf would require a different portrait protocol,
 such as hierarchical summarization. That is not justified by the current
@@ -90,7 +97,7 @@ such as hierarchical summarization. That is not justified by the current
 Given a large saved creation draft whose portrait must cover hundreds of books
 When create retries only the portrait
 Then recognition and catalogue stages do not run again
-And the portrait request uses JSON Schema, reasoning effort low, no temperature and max_tokens 64000
+And the portrait request uses JSON Schema, reasoning effort high, no temperature and max_tokens 64000
 And OpenRouter token truncation is detected from finish_reason before JSON parsing
 And a complete response remains subject to the same strict parser
 And every unusable response remains private and recoverable
@@ -167,7 +174,8 @@ JSON language reaches the reader, or the draft disappears before a valid
 
 Implementation and automated validation are free. A 64,000-token ceiling does
 not charge 64,000 tokens; OpenRouter charges actual input, reasoning and output.
-Low reasoning should reduce waste relative to the failed high-effort request.
+High reasoning preserves the current intended portrait quality; this story fixes
+the truncation by giving that reasoning and its answer enough shared space.
 
 The final real validation is a portrait-only paid retry and still requires the
 Navigator's explicit consent at the CLI prompt. No implementation command may

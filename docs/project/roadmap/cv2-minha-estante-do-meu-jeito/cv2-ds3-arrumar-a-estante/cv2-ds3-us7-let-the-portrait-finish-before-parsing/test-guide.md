@@ -19,7 +19,7 @@
 
 - `max_tokens=64000`;
 - no temperature;
-- `reasoning={"effort": "low", "exclude": true}`;
+- `reasoning={"effort": "high", "exclude": true}`;
 - complete-response enforcement;
 - the existing strict JSON Schema.
 

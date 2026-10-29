@@ -24,8 +24,8 @@ para que o retry de centavos conclua a estante em vez de falhar novamente.
 ## Outcome
 
 A chamada de retrato ao Claude Sonnet 5.5 segue o contrato atual do modelo: sem
-parâmetros de amostragem removidos, com esforço baixo explícito e com limite
-suficiente para raciocínio e resposta compartilharem tokens. A leitura das fotos
+parâmetros de amostragem removidos, preservando esforço alto explícito e com
+limite suficiente para raciocínio e resposta compartilharem tokens. A leitura das fotos
 não muda. Se o serviço ainda interromper ou devolver um retrato inutilizável, o
 terminal explica em linguagem comum que os livros revisados estão seguros e que
 as etapas caras não serão repetidas.
