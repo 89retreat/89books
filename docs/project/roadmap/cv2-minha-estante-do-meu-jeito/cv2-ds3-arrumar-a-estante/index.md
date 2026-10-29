@@ -2,7 +2,7 @@
 code: CV2.DS3
 level: Delivery Story
 status: Active
-status_reason: US1, US2 e US3 concluídas; US4 puxada e aguardando planejamento
+status_reason: US1, US2 e US3 concluídas; US4 planejada e aguardando aprovação do Navigator
 updated: 2026-10-29
 related:
   - ../index.md

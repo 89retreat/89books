@@ -2,7 +2,7 @@
 code: CV2.DS3.US4
 level: User Story
 status: Active
-status_reason: puxada pelo Navigator em 2026-10-29; aguarda planejamento
+status_reason: puxada e planejada em 2026-10-29; aguarda aprovação do Navigator
 updated: 2026-10-29
 related:
   - ../index.md
@@ -32,7 +32,15 @@ não apenas com o primeiro retrato proposto pela IA.
   operação gratuita chama modelo ou catálogo.
 - Operações puras preparam os mesmos controles para uma interface futura.
 
+## Plan
+
+[plan.md](plan.md)
+
+## Test Guide
+
+[test-guide.md](test-guide.md)
+
 ## Next Checkpoint
 
-Criar e apresentar `plan.md` e `test-guide.md`. Implementação permanece
-bloqueada até aprovação explícita do Navigator.
+Aprovação explícita do plano pelo Navigator. Implementação permanece bloqueada
+até esse aceite.
