@@ -1,8 +1,8 @@
 ---
 code: CV2.DS3.US3
 level: User Story
-status: Active
-status_reason: implementação concluída em 2026-10-29 com 201 testes; aguarda validação do Navigator
+status: Validated
+status_reason: validação aceita pelo Navigator em 2026-10-29; aguarda debt review e fechamento
 updated: 2026-10-29
 related:
   - ../index.md
@@ -14,7 +14,7 @@ related:
 
 # CV2.DS3.US3 — Choose the photo that represents my shelf
 
-**Status:** Active
+**Status:** Validated
 
 ## User Story
 

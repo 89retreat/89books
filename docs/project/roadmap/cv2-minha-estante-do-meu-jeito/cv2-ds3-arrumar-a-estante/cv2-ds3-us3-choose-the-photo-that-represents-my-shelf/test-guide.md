@@ -49,6 +49,6 @@ a página é substituída em erro ou surge qualquer pedido de chave/pagamento.
 
 ## Navigator Evidence
 
-Pendente: abrir a fixture, confirmar que a foto azul `PHOTO 2` ocupa o bloco
-grande, reduzir a janela para largura de celular e então trocar `cover_photo`
-para outro nome válido. Confirmar também o erro seguro com um nome ausente.
+O Navigator abriu a fixture, mudou `cover_photo` e redesenhou por `check`,
+`draw` e `open`. Em 2026-10-29, informou que a validação deu certo; o aceite
+foi registrado sem qualquer serviço pago ou leitura de histórico real.

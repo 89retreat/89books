@@ -41,7 +41,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3.US3 · Choose the photo that represents my shelf** | 👀 aguarda validação | Trocar `cover_photo` na fixture e confirmar destaque, ordem e erro seguro |
+| **CV2.DS3.US3 · Choose the photo that represents my shelf** | ✅ validada · aguarda review | Registrar dívida ou confirmar ausência antes do fechamento |
 
 ### ✅ Fundações assentadas
 
