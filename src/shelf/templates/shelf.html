@@ -64,6 +64,9 @@
   .bay.side header { flex-direction: column; align-items: flex-start; gap: 10px; }
   .bay.side .num { font-size: 3rem; }
   .bay.side h2 { font-size: 1.12rem; line-height: 1.2; }
+  .section-photo { margin: 0 0 20px; border-radius: 4px; overflow: hidden; background: #ddd; }
+  .section-photo img { width: 100%; height: 260px; object-fit: cover; display: block; }
+  .bay.side .section-photo img { height: 180px; }
   .t { margin: 0 0 24px; font-size: 1rem; }
   .bay.wide .t { columns: 2 19em; column-gap: 32px; }
   .bay.full .t { columns: 2 21em; column-gap: 36px; }
@@ -126,6 +129,7 @@
     h1 { font-size: 2.2rem; }
     .num { font-size: 3.6rem; }
     .face img { height: 200px; width: 133px; }
+    .section-photo img, .bay.side .section-photo img { height: 190px; }
   }
 </style>
 <script>
@@ -167,6 +171,7 @@
   {%- macro bay(shelf) %}
   <section class="bay {{ shelf.place }}" style="--o:{{ shelf.order }}" data-home="{{ shelf.place }}">
     <header>{% if shelf.numeral %}<span class="num">{{ shelf.numeral }}</span>{% endif %}<h2>{{ shelf.title }}</h2></header>
+    {% if shelf.photo %}<figure class="section-photo"><img src="{{ shelf.photo }}" alt="Foto da prateleira {{ shelf.title }}" loading="lazy"></figure>{% endif %}
     {% if shelf.text %}<p class="t">{{ shelf.text | emphasize }}</p>{% endif %}
     <div class="shelf" data-max="{{ 3 if shelf.rest else 99 }}">
       {%- for book in shelf.books %}

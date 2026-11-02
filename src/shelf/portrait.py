@@ -3,6 +3,7 @@
 import json
 
 from shelf import openrouter
+from shelf.named_shelves import NamedShelf
 
 PORTRAIT_FORMAT = {
     "type": "json_schema",
@@ -60,6 +61,29 @@ Responda apenas com JSON:
 Livros:
 {books}"""
 
+FIXED_SHELVES_PROMPT = """Você recebe a lista numerada dos livros de uma estante pessoal, reconhecidos automaticamente a partir de fotos. Pode haver erros de leitura e itens que não são livros; ignore o que não fizer sentido.
+
+Escreva o retrato desta estante em português do Brasil, em primeira pessoa, como se a dona ou o dono estivesse apresentando os próprios livros a uma visita. Tom de conversa acolhedora: a pessoa mostra o que ama, sem se elogiar. Nada de diagnóstico de personalidade nem de frases genéricas que serviriam para qualquer leitor. Não mencione que a lista veio de fotos nem os possíveis erros.
+
+A leitora ou o leitor já definiu as prateleiras abaixo. Títulos, ordem e números dos livros são fixos e autorais. Não renomeie, reordene, junte, divida ou mova livros entre elas.
+
+- lens: uma frase sobre o modo de olhar o mundo que a estante inteira revela.
+- themes: exatamente uma entrada para cada prateleira fixa, na mesma ordem:
+  - title: copie literalmente o título informado.
+  - text: escreva um parágrafo breve que cite dois ou três livros daquela prateleira, com cada título citado entre asteriscos exatamente como aparece na lista. Se a prateleira não tiver livros reconhecidos, use texto vazio.
+  - books: copie exatamente a lista de números informada.
+
+Livros de fotos sem nome autoral não entram em outra prateleira: eles irão automaticamente para o fechamento da página.
+
+Responda apenas com JSON:
+{{"lens": "...", "themes": [{{"title": "...", "text": "...", "books": [1, 2]}}]}}
+
+Livros:
+{books}
+
+Prateleiras fixas:
+{fixed}"""
+
 
 def book_list(books: list[dict]) -> str:
     lines = []
@@ -95,11 +119,30 @@ def parse_portrait(text: str, book_count: int) -> dict:
     return {"lens": lens.strip(), "themes": themes}
 
 
-def write_portrait(books: list[dict], api_key: str) -> tuple[dict, float]:
+def write_portrait(
+    books: list[dict],
+    api_key: str,
+    fixed_shelves: list[NamedShelf] | None = None,
+) -> tuple[dict, float]:
+    if fixed_shelves:
+        rows = [
+            json.dumps(
+                {
+                    "photo": shelf.photo,
+                    "title": shelf.title,
+                    "books": [index + 1 for index in shelf.book_indexes],
+                },
+                ensure_ascii=False,
+            )
+            for shelf in fixed_shelves
+        ]
+        prompt = FIXED_SHELVES_PROMPT.format(books=book_list(books), fixed="\n".join(rows))
+    else:
+        prompt = PROMPT.format(books=book_list(books))
     try:
         text, cost = openrouter.complete(
             api_key,
-            PROMPT.format(books=book_list(books)),
+            prompt,
             max_tokens=64000,
             response_format=PORTRAIT_FORMAT,
             reasoning={"effort": "high", "exclude": True},

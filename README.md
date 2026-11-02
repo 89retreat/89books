@@ -16,7 +16,11 @@ pagar de novo.
 **New here? Follow [GETTING_STARTED.md](GETTING_STARTED.md)**: from clone to
 an editable shelf and its page.
 
-Put photos in `my-bookshelf/` (`.jpg`, `.heic`, `.png` or `.webp), then run:
+Put photos in `my-bookshelf/` (`.jpg`, `.heic`, `.png` or `.webp`). To shape the
+initial shelves yourself, name selected photos `NN_Title.ext`, for example
+`01_Technology and Product.jpg`; the number sets shelf order, the title stays
+literal, and books recognized in that photo start there. Ordinary camera names
+keep the automatic behavior. Then run:
 
 ```bash
 uv run shelf create   # paid: reads the photos and creates shelf.yaml once
@@ -66,8 +70,9 @@ An explicit `--folder` always wins.
 The shelf folder contains:
 
 - `shelf.yaml`: the versioned, human-editable source — name, cover photo,
-  portrait opening, ordered shelves and ordered books. This is what survives
-  every free redraw.
+  portrait opening, ordered shelves, optional section photos and ordered books.
+  New creations use version 2; version 1 files remain readable and drawable.
+  This is what survives every free redraw.
 - `shelf.html`: a portable page with the photo mosaic, reader portrait, covers
   and drawn spines. Local covers are embedded; an explicitly chosen HTTPS
   cover still needs network when the page opens. File previews such as Quick

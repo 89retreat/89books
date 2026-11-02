@@ -18,7 +18,7 @@ from shelf.cli import (
 )
 from shelf.config import load_config
 from shelf.portrait import PortraitResponseError
-from shelf.shelf_file import ShelfSection, ShelfYamlError, dump_shelf, parse_shelf
+from shelf.shelf_file import ShelfBook, ShelfFile, ShelfSection, ShelfYamlError, dump_shelf, parse_shelf
 from shelf.shelves import REST_TITLE
 
 
@@ -52,7 +52,7 @@ def no_review(books, api_key):
     return {}, 0.0, {}
 
 
-def fake_portrait(books, api_key):
+def fake_portrait(books, api_key, named=None):
     portrait = {
         "lens": "Eu olho a terra.",
         "themes": [{"title": "Quando penso na terra", "text": "*Torto Arado*", "books": [0]}],
@@ -108,7 +108,7 @@ def test_create_writes_only_the_versioned_source(shelf_folder):
 def test_failed_portrait_keeps_a_private_draft_and_raw_response_for_free_recovery(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
 
-    def broken_portrait(books, api_key):
+    def broken_portrait(books, api_key, named=None):
         raise PortraitResponseError("portrait response is invalid JSON", '{"lens":"broken"', 0.012)
 
     with pytest.raises(CommandError) as failed:
@@ -128,7 +128,7 @@ def test_failed_portrait_keeps_a_private_draft_and_raw_response_for_free_recover
 def test_unfinished_portrait_explains_the_cutoff_and_keeps_paid_work(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
 
-    def unfinished_portrait(books, api_key):
+    def unfinished_portrait(books, api_key, named=None):
         raise PortraitResponseError("portrait response is unfinished", '{"lens":"cut', 0.014, "unfinished")
 
     with pytest.raises(CommandError) as failed:
@@ -147,7 +147,7 @@ def test_unfinished_portrait_explains_the_cutoff_and_keeps_paid_work(shelf_folde
 def test_recover_creates_a_free_starter_source_and_cleans_only_recovery_files(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
 
-    def broken_portrait(books, api_key):
+    def broken_portrait(books, api_key, named=None):
         raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
 
     with pytest.raises(CommandError):
@@ -169,7 +169,7 @@ def test_recover_creates_a_free_starter_source_and_cleans_only_recovery_files(sh
 def test_create_retries_only_the_portrait_from_a_saved_compatible_draft(shelf_folder):
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
 
-    def broken_portrait(books, api_key):
+    def broken_portrait(books, api_key, named=None):
         raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
 
     with pytest.raises(CommandError):
@@ -208,7 +208,7 @@ def test_recover_refuses_a_corrupt_or_incompatible_draft_without_changing_it(she
     draft.unlink()
     config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
 
-    def broken_portrait(books, api_key):
+    def broken_portrait(books, api_key, named=None):
         raise PortraitResponseError("portrait response is invalid JSON", "broken", 0.012)
 
     with pytest.raises(CommandError):
@@ -259,7 +259,7 @@ def test_review_and_catalogues_are_preserved_in_shelf_yaml(shelf_folder):
             {},
         )
 
-    def portrait(books, api_key):
+    def portrait(books, api_key, named=None):
         return {
             "lens": "Eu.",
             "themes": [{"title": "Quando penso", "text": "*Continuo Preta*", "books": [0]}],
@@ -379,6 +379,36 @@ def test_draw_is_free_self_contained_and_uses_only_shelf_yaml(shelf_folder, monk
     assert (shelf_folder / "shelf.yaml").read_bytes() == source
 
 
+def test_version_1_source_remains_drawable_without_being_rewritten(shelf_folder, monkeypatch):
+    source = shelf_folder / "shelf.yaml"
+    source.write_text(
+        dump_shelf(
+            ShelfFile(
+                version=1,
+                cover_photo="photo-01.jpg",
+                lens="Eu leio.",
+                shelves=[
+                    ShelfSection(
+                        title="Minha prateleira",
+                        books=[ShelfBook(title="Livro antigo")],
+                    )
+                ],
+            )
+        ),
+        encoding="utf-8",
+    )
+    original = source.read_bytes()
+    monkeypatch.setattr(cli.photo_tools, "prepare", lambda path, max_side: path.name.encode())
+    monkeypatch.setattr(cli.photo_tools, "data_uri", lambda image: image.decode())
+
+    checked = check_shelf(shelf_folder)
+    result = draw_shelf(shelf_folder)
+
+    assert checked.books == 1 and result.books == 1
+    assert "Livro antigo" in result.html.read_text(encoding="utf-8")
+    assert source.read_bytes() == original
+
+
 def test_check_and_draw_put_the_reader_chosen_photo_first_without_reordering_the_rest(
     shelf_folder, monkeypatch
 ):
@@ -411,6 +441,24 @@ def test_check_and_draw_reject_a_cover_photo_outside_the_root_photo_set(shelf_fo
         check_shelf(shelf_folder)
     with pytest.raises(CommandError, match='cover_photo "covers/photo-02.jpg"'):
         draw_shelf(shelf_folder)
+
+
+def test_check_and_draw_reject_a_missing_section_photo_without_replacing_the_page(shelf_folder):
+    config = load_config(shelf_folder, env={"OPENROUTER_API_KEY": "sk-secret"})
+    create_with_fakes(config)
+    source = shelf_folder / "shelf.yaml"
+    shelf = parse_shelf(source.read_text(encoding="utf-8"))
+    shelf.shelves[0].photo = "missing.jpg"
+    source.write_text(dump_shelf(shelf), encoding="utf-8")
+    page = shelf_folder / "shelf.html"
+    page.write_text("keep this page", encoding="utf-8")
+
+    with pytest.raises(CommandError, match=r'shelves\[0\]\.photo "missing\.jpg"'):
+        check_shelf(shelf_folder)
+    with pytest.raises(CommandError, match=r'shelves\[0\]\.photo "missing\.jpg"'):
+        draw_shelf(shelf_folder)
+
+    assert page.read_text(encoding="utf-8") == "keep this page"
 
 
 def test_check_and_draw_use_corrected_identity_and_embed_a_safe_local_cover(shelf_folder):

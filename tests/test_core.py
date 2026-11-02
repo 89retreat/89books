@@ -80,7 +80,7 @@ def test_create_turns_paid_generation_into_the_versioned_file(shelf_folder):
 
     assert created.migrated is False
     assert created.cost == 0.05 and created.books == 2
-    assert created.shelf.version == 1
+    assert created.shelf.version == 2
     assert created.shelf.cover_photo == "photo-01.jpg"
     assert created.shelf.lens == "Eu olho a terra."
     assert [section.title for section in created.shelf.shelves] == [
@@ -97,8 +97,8 @@ def test_create_turns_paid_generation_into_the_versioned_file(shelf_folder):
 def test_paid_preparation_can_be_persisted_before_the_portrait_and_finished_later(shelf_folder):
     calls = []
 
-    def portrait(books, api_key):
-        calls.append(([book["title"] for book in books], api_key))
+    def portrait(books, api_key, named=None):
+        calls.append(([book["title"] for book in books], api_key, named))
         return {
             "lens": "Eu volto aos livros.",
             "themes": [{"title": "Quando volto", "text": "", "books": [0, 1]}],
@@ -119,9 +119,77 @@ def test_paid_preparation_can_be_persisted_before_the_portrait_and_finished_late
 
     created = finish_creation(draft, "sk-secret", portrait)
 
-    assert calls == [(["Torto Arado", "Cynefin"], "sk-secret")]
+    assert calls == [(["Torto Arado", "Cynefin"], "sk-secret", [])]
     assert created.cost == 0.0523 and created.books == 2
     assert created.shelf.lens == "Eu volto aos livros."
+
+
+def test_named_photos_fix_created_shelf_order_titles_photos_and_membership():
+    draft = CreationDraft(
+        name="Rafael",
+        photos=["02_Literatura.jpg", "photo-03.jpg", "01_Tecnologia.jpg"],
+        books=[
+            {"title": "Código", "photo": "01_Tecnologia.jpg"},
+            {"title": "Romance", "photo": "02_Literatura.jpg"},
+            {"title": "Sem tema", "photo": "photo-03.jpg"},
+        ],
+        left_out=[],
+        cost=0.2,
+        migrated=False,
+    )
+
+    def conflicting_portrait(books, api_key, named):
+        assert [s.title for s in named] == ["Tecnologia", "Literatura"]
+        return {
+            "lens": "Eu leio.",
+            "themes": [
+                {"title": "Inventado", "text": "Texto A", "books": [1]},
+                {"title": "Invertido", "text": "Texto B", "books": [0]},
+            ],
+        }, 0.01
+
+    created = finish_creation(draft, "sk-secret", conflicting_portrait)
+
+    assert created.shelf.version == 2
+    assert [(s.title, s.photo) for s in created.shelf.shelves] == [
+        ("Tecnologia", "01_Tecnologia.jpg"),
+        ("Literatura", "02_Literatura.jpg"),
+        (REST_TITLE, None),
+    ]
+    assert [[b.title for b in s.books] for s in created.shelf.shelves] == [
+        ["Código"],
+        ["Romance"],
+        ["Sem tema"],
+    ]
+    assert [s.text for s in created.shelf.shelves[:2]] == ["Texto A", "Texto B"]
+
+
+def test_free_recovery_builds_named_shelves_without_a_portrait():
+    draft = CreationDraft(
+        name="Rafael",
+        photos=["02_Literatura.jpg", "photo-03.jpg", "01_Tecnologia.jpg"],
+        books=[
+            {"title": "Código", "photo": "01_Tecnologia.jpg"},
+            {"title": "Romance", "photo": "02_Literatura.jpg"},
+            {"title": "Sem tema", "photo": "photo-03.jpg"},
+        ],
+        left_out=[],
+        cost=0.2,
+        migrated=False,
+    )
+
+    recovered = recover_creation(draft)
+
+    assert [(s.title, s.photo) for s in recovered.shelf.shelves] == [
+        ("Tecnologia", "01_Tecnologia.jpg"),
+        ("Literatura", "02_Literatura.jpg"),
+        ("Meus livros", None),
+    ]
+    assert [[b.title for b in s.books] for s in recovered.shelf.shelves] == [
+        ["Código"],
+        ["Romance"],
+        ["Sem tema"],
+    ]
 
 
 def test_free_recovery_builds_one_editable_starter_shelf_without_a_portrait():
@@ -161,8 +229,8 @@ def test_create_migrates_cv1_books_by_calling_only_the_portrait(shelf_folder):
 
     calls = []
 
-    def portrait(books, api_key):
-        calls.append(([book["title"] for book in books], api_key))
+    def portrait(books, api_key, named=None):
+        calls.append(([book["title"] for book in books], api_key, named))
         return {
             "lens": "Eu volto aos livros.",
             "themes": [{"title": "Quando volto", "text": "*Torto Arado*", "books": [0]}],
@@ -195,7 +263,7 @@ left_out:
         legacy_books=legacy,
     )
 
-    assert calls == [(["Torto Arado"], "sk-secret")]
+    assert calls == [(["Torto Arado"], "sk-secret", [])]
     assert created.migrated is True and created.cost == 0.0123 and created.books == 1
     book = created.shelf.shelves[0].books[0]
     assert book.cover == "https://covers.openlibrary.org/b/id/7-M.jpg?default=false"

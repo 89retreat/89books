@@ -251,7 +251,8 @@ def draw_shelf(folder: Path, now: datetime | None = None) -> DrawResult:
     photos = _ordered_shelf_photos(folder, shelf)
     cover_assets = _resolve_cover_assets(folder, shelf)
     images = [photo_tools.data_uri(photo_tools.prepare(photo, photo_tools.PAGE_SIDE)) for photo in photos]
-    html = core.draw(shelf, images, cover_assets)
+    photo_assets = {photo.name: image for photo, image in zip(photos, images, strict=True)}
+    html = core.draw(shelf, images, cover_assets, photo_assets)
     digest = hashlib.sha256(source_bytes).hexdigest()
     marker = folder / CACHE_DIR / DRAWN_HASH
     previous = marker.read_text(encoding="utf-8").strip() if marker.exists() else None
@@ -375,6 +376,11 @@ def _ordered_shelf_photos(folder: Path, shelf: ShelfFile) -> list[Path]:
     except ConfigError as exc:
         raise CommandError(str(exc)) from exc
     by_name = {photo.name: photo for photo in photos}
+    for index, section in enumerate(shelf.shelves):
+        if section.photo is not None and section.photo not in by_name:
+            raise CommandError(
+                f'shelves[{index}].photo "{section.photo}" is not one of the shelf photos in {folder}.'
+            )
     try:
         names = core.order_shelf_photos(list(by_name), shelf.cover_photo)
     except ValueError as exc:
@@ -586,6 +592,12 @@ def main(
 
     try:
         photos = load_photos(folder)  # photos come first: do not ask for keys for an empty folder
+        named = core.named_shelves([photo.name for photo in photos], [])
+        if named:
+            terminal.say("Named shelves:")
+            for shelf in named:
+                terminal.say(f"  {shelf.position:02d}. {shelf.title}")
+            terminal.say("Their names and order will be preserved in shelf.yaml.")
         saved_draft = None
         if not recreating and (folder / CACHE_DIR / CREATION_DRAFT).exists():
             saved_draft = _load_creation_draft(folder, photos)

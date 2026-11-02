@@ -33,9 +33,13 @@ def render_file(
     shelf: ShelfFile,
     photos: list[str],
     cover_assets: Mapping[tuple[int, int], str] | None = None,
+    photo_assets: Mapping[str, str] | None = None,
 ) -> str:
     """Renders only what the editable, versioned shelf and prepared assets say."""
     books, shelves = shelves_from_file(shelf.shelves, cover_assets)
+    photo_assets = photo_assets or {}
+    for rendered in shelves:
+        rendered["photo"] = photo_assets.get(rendered.get("photo_name"))
     return _render(shelf.name, photos, shelf.lens, books, shelves)
 
 

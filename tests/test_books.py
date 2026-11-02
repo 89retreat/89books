@@ -13,6 +13,21 @@ def test_dedupe_merges_same_title_across_photos():
     assert [b["title"] for b in dedupe(books)] == ["Pensando em Sistemas", "Torto Arado"]
 
 
+def test_dedupe_keeps_cross_photo_ambiguity_visible_for_authored_photo_shelves():
+    books = [
+        {"title": "Pensando em Sistemas", "authors": ["Donella Meadows"], "photo": "01_Sistemas.jpg"},
+        {"title": "Pensando em sistemas", "authors": [], "photo": "02_Produto.jpg"},
+        {"title": "Pensando em sistemas", "authors": [], "photo": "02_Produto.jpg"},
+    ]
+
+    visible = dedupe(books, preserve_photo_provenance=True)
+
+    assert [(book["title"], book["photo"]) for book in visible] == [
+        ("Pensando em Sistemas", "01_Sistemas.jpg"),
+        ("Pensando em sistemas", "02_Produto.jpg"),
+    ]
+
+
 def test_books_yaml_lists_books_without_local_paths(tmp_path):
     path = tmp_path / "books.yaml"
     write_books_yaml(

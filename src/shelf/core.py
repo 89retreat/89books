@@ -11,6 +11,7 @@ from pathlib import Path
 
 from shelf import photos as photo_tools
 from shelf.books import dedupe, read_books_yaml
+from shelf.named_shelves import apply_named_shelves, named_shelves
 from shelf.page import render_file
 from shelf.review import apply_review, confirm, name_books, settle
 from shelf.shelf_file import LeftOutBook, ShelfBook, ShelfFile, ShelfSection
@@ -58,7 +59,7 @@ class Services:
 
     recognize: Callable  # (jpeg, api_key) -> (books, cost)
     review: Callable  # (books, api_key) -> (entries, cost, names)
-    portrait: Callable  # (books, api_key) -> (portrait, cost)
+    portrait: Callable  # (books, api_key, named_shelves) -> (portrait, cost)
     library: object  # Open Library: lookup(title, authors), save()
     covers: object  # ok(cover), save()
     second: object | None = None  # Google Books, when there is a key
@@ -95,6 +96,7 @@ def prepare_creation(
     progress=None,
 ) -> CreationDraft:
     """Completes every paid preparation stage before the portrait so a client can persist it."""
+    named = named_shelves([photo.name for photo in photos], [])
     if legacy_books is not None:
         books, left_out = read_books_yaml(legacy_books)
         log(f"Reusing {len(books)} books from books.yaml; photos will not be read again.")
@@ -108,7 +110,13 @@ def prepare_creation(
         )
 
     run = _Run(log, progress or Quiet())
-    books = _recognize(photos, api_key, services, run)
+    books = _recognize(
+        photos,
+        api_key,
+        services,
+        run,
+        preserve_photo_provenance=bool(named),
+    )
     _look_up(books, services.library, run)
     books, left_out = _review(books, api_key, services, run)
     books = _confirm(books, services.second, run)
@@ -141,8 +149,12 @@ def _write_portrait(
     portrait: Callable,
     log: Callable[[str], None],
 ) -> Shelf:
+    fixed = [] if draft.migrated else named_shelves(draft.photos, draft.books)
+    if fixed:
+        log(f"Using {len(fixed)} named photo shelves; their titles and order will be preserved.")
     log("Writing your portrait...")
-    written, spent = portrait(draft.books, api_key)
+    written, spent = portrait(draft.books, api_key, fixed)
+    written = apply_named_shelves(written, fixed)
     return Shelf(
         name=draft.name,
         photos=list(draft.photos),
@@ -162,17 +174,24 @@ def recover_creation(draft: CreationDraft) -> Creation:
         for book in draft.left_out
         if isinstance(book, dict) and book.get("title") and book.get("reason")
     ]
+    fixed = [] if draft.migrated else named_shelves(draft.photos, draft.books)
+    used = {index for section in fixed for index in section.book_indexes}
+    sections = [
+        ShelfSection(
+            title=section.title,
+            photo=section.photo,
+            books=[_shelf_book(draft.books[index]) for index in section.book_indexes],
+        )
+        for section in fixed
+    ]
+    remaining = [_shelf_book(book) for index, book in enumerate(draft.books) if index not in used]
+    if remaining or not sections:
+        sections.append(ShelfSection(title="Meus livros", books=remaining))
     shelf = ShelfFile(
         name=draft.name,
         cover_photo=draft.photos[0],
         lens="",
-        shelves=[
-            ShelfSection(
-                title="Meus livros",
-                text="",
-                books=[_shelf_book(book) for book in draft.books],
-            )
-        ],
+        shelves=sections,
         left_out=left_out,
     )
     return Creation(shelf, len(draft.books), draft.cost, draft.migrated)
@@ -217,9 +236,10 @@ def draw(
     shelf: ShelfFile,
     images: list[str],
     cover_assets: Mapping[tuple[int, int], str] | None = None,
+    photo_assets: Mapping[str, str] | None = None,
 ) -> str:
     """Draws the page from the editable source and prepared assets. Costs nothing."""
-    return render_file(shelf, images, cover_assets)
+    return render_file(shelf, images, cover_assets, photo_assets)
 
 
 def set_shelf_lens(shelf: ShelfFile, lens: str) -> ShelfFile:
@@ -440,6 +460,7 @@ def _shelf_file(generated: Shelf) -> ShelfFile:
             ShelfSection(
                 title=arranged["title"],
                 text=arranged["text"],
+                photo=arranged.get("photo"),
                 books=[_shelf_book(book) for book in arranged["books"]],
             )
         )
@@ -473,7 +494,13 @@ def _shelf_book(book: dict) -> ShelfBook:
     )
 
 
-def _recognize(photos: list[Path], api_key: str, services: Services, run: _Run) -> list[dict]:
+def _recognize(
+    photos: list[Path],
+    api_key: str,
+    services: Services,
+    run: _Run,
+    preserve_photo_provenance: bool = False,
+) -> list[dict]:
     run.log(f"Recognizing books in {len(photos)} photos...")
     found: list[dict] = []
     for path in photos:
@@ -481,7 +508,7 @@ def _recognize(photos: list[Path], api_key: str, services: Services, run: _Run) 
         run.cost += spent
         found.extend({**book, "photo": path.name} for book in books)
         run.log(f"  {path.name}: {len(books)} books")
-    books = dedupe(found)
+    books = dedupe(found, preserve_photo_provenance=preserve_photo_provenance)
     run.log(f"Recognized {len(books)} books.")
     return books
 

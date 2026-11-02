@@ -1,6 +1,7 @@
 import pytest
 
 from shelf import portrait
+from shelf.named_shelves import named_shelves
 from shelf.portrait import PortraitResponseError, book_list, parse_portrait, write_portrait
 from shelf.recognition import parse_books
 
@@ -87,6 +88,33 @@ def test_write_portrait_requests_schema_constrained_json(monkeypatch):
     schema = seen["response_format"]["json_schema"]["schema"]
     assert schema["required"] == ["lens", "themes"]
     assert schema["properties"]["themes"]["items"]["required"] == ["title", "text", "books"]
+
+
+def test_write_portrait_tells_the_model_that_named_shelves_are_fixed(monkeypatch):
+    seen = {}
+
+    def complete(api_key, content, **kwargs):
+        seen["content"] = content
+        return (
+            '{"lens":"Eu leio.","themes":['
+            '{"title":"Tecnologia","text":"Texto A","books":[1]},'
+            '{"title":"Literatura","text":"Texto B","books":[2]}]}',
+            0.012,
+        )
+
+    monkeypatch.setattr(portrait.openrouter, "complete", complete)
+    books = [
+        {"title": "Código", "authors": [], "photo": "01_Tecnologia.jpg"},
+        {"title": "Romance", "authors": [], "photo": "02_Literatura.jpg"},
+    ]
+    fixed = named_shelves(["01_Tecnologia.jpg", "02_Literatura.jpg"], books)
+
+    result, cost = write_portrait(books, "sk-secret", fixed)
+
+    assert cost == 0.012 and result["lens"] == "Eu leio."
+    assert "Títulos, ordem e números dos livros são fixos e autorais" in seen["content"]
+    assert '"photo": "01_Tecnologia.jpg", "title": "Tecnologia", "books": [1]' in seen["content"]
+    assert '"photo": "02_Literatura.jpg", "title": "Literatura", "books": [2]' in seen["content"]
 
 
 def test_write_portrait_preserves_invalid_response_and_cost_for_private_recovery(monkeypatch):

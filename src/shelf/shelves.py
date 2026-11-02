@@ -175,7 +175,7 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
     shelves, used = [], set()
     for theme in portrait.get("themes", []):
         indexes = [i for i in theme.get("books", []) if 0 <= i < len(books) and i not in used]
-        if not indexes:
+        if not indexes and not theme.get("photo"):
             continue
         used.update(indexes)
         cited = _cited(theme.get("text", ""))
@@ -186,7 +186,13 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
             items.append(_book(books[i], face))
         items = _by_author(items)
         shelves.append(
-            {"title": theme["title"], "text": theme.get("text", ""), "books": items, "rest": False}
+            {
+                "title": theme["title"],
+                "text": theme.get("text", ""),
+                "photo": theme.get("photo"),
+                "books": items,
+                "rest": False,
+            }
         )
 
     rest = [b for i, b in enumerate(books) if i not in used]
@@ -196,6 +202,7 @@ def build_shelves(books: list[dict], portrait: dict) -> list[dict]:
             {
                 "title": REST_TITLE,
                 "text": "",
+                "photo": None,
                 "books": _by_author(
                     [_book(b, j % REST_FACE_EVERY == REST_FACE_EVERY // 2) for j, b in enumerate(rest)]
                 ),
@@ -242,6 +249,7 @@ def shelves_from_file(
             {
                 "title": section.title,
                 "text": section.text,
+                "photo_name": section.photo,
                 "books": items,
                 "rest": rest,
             }

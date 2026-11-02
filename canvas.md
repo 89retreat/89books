@@ -6,7 +6,7 @@
 
 | Capability / entrega | Estado | Progresso |
 | --- | --- | --- |
-| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `█████████░` 13/15 |
+| **CV2 · Minha estante, do meu jeito** | 🟢 ativa · fecha quando um fundador ajustar a própria estante | `████████░░` 13/16 |
 | ↳ **CV2.DS1 · A estante num arquivo meu** | 🟢 resultado agregado pendente | `██████████` 5/5 |
 | 　　↳ TS1 · A shelf core a server could run | ✅ concluída · núcleo sem terminal | `██████████` |
 | 　　↳ TS2 · shelf.yaml, version 1 | ✅ concluída · contrato e validação com linha | `██████████` |
@@ -17,7 +17,7 @@
 | 　　↳ US1 · Hide books from my shelf | ✅ concluída | `██████████` |
 | 　　↳ US2 · Fix titles, authors and covers | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ TS1 · Does reading photos in strips improve recognition? | ⚫ estacionada · reabrir só com erros demais | `░░░░░░░░░░` |
-| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · retrato real de Rafael concluído, segue apropriação autoral | `█████████░` 6/7 |
+| ↳ **CV2.DS3 · Arrumar a estante** | 🟢 ativa · nomes das fotos passam a orientar a primeira composição | `███████░░░` 6/8 |
 | 　　↳ US1 · Put each book on the shelf I choose | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US2 · Face out or spine, my choice | ✅ concluída · validada pelo Navigator | `██████████` |
 | 　　↳ US3 · Choose the photo that represents my shelf | ✅ concluída · validada pelo Navigator | `██████████` |
@@ -25,6 +25,7 @@
 | 　　↳ US5 · Ask for another portrait | ⚪ planejada · só se fizer falta | `░░░░░░░░░░` |
 | 　　↳ US6 · Keep paid work after a failed portrait | ✅ concluída · recuperação gratuita validada | `██████████` |
 | 　　↳ US7 · Let the portrait finish before parsing | ✅ concluída · retry real de 237 livros validado | `██████████` |
+| 　　↳ US8 · Name photos to shape my shelves | 🟢 ativa · `NN_Título` preserva ordem, seção e foto | `██████░░░░` |
 | **CV3 · A Estante Visitável** | 🟡 planejada · antes CV2.DS2 | `░░░░░░░░░░` 0/2 |
 | ↳ **CV3.DS1 · Estante visitável** | 🟡 planejada · onde publicar em aberto | `░░░░░░░░░░` 0/2 |
 | **CV4 · A Estante no Telegram** | 🟡 planejada · antes CV3 · porta em aberto | `░░░░░░░░░░` 0/6 |
@@ -43,7 +44,7 @@
 
 | Opção | Estado | Próximo gesto |
 | --- | --- | --- |
-| **CV2.DS3 · Arrumar a estante** | 👤 validação de fundador em curso | Ajustar ordem, faces, foto e linguagem na estante real de Rafael; depois mostrá-la como “minha estante” |
+| **CV2.DS3.US8 · Name photos to shape my shelves** | 🧭 plano acelerado em preparação | Fazer `NN_Título` formar seções autorais no YAML e na página, sem deixar a IA reorganizá-las |
 
 ### ✅ Fundações assentadas
 

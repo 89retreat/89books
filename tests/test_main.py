@@ -256,6 +256,33 @@ def test_declining_full_generation_spends_nothing(shelf_folder, monkeypatch):
     assert "Nothing was spent" in terminal.text
 
 
+def test_named_photo_shelves_are_shown_before_paid_confirmation(shelf_folder, monkeypatch):
+    (shelf_folder / "photo-01.jpg").rename(shelf_folder / "01_Tecnologia.jpg")
+    (shelf_folder / "photo-02.jpg").rename(shelf_folder / "02_Literatura.jpg")
+    configured(shelf_folder, monkeypatch)
+    terminal = FakeTerminal(["n"])
+
+    code, calls = run(["create", "--folder", str(shelf_folder)], terminal)
+
+    assert code == 0 and calls == []
+    assert "Named shelves:" in terminal.text
+    assert "01. Tecnologia" in terminal.text and "02. Literatura" in terminal.text
+    assert "names and order will be preserved" in terminal.text
+    assert terminal.text.index("Named shelves:") < terminal.text.index("Making your shelf")
+
+
+def test_duplicate_named_photo_positions_stop_before_confirmation(shelf_folder, monkeypatch, capsys):
+    (shelf_folder / "photo-01.jpg").rename(shelf_folder / "01_Tecnologia.jpg")
+    (shelf_folder / "photo-02.jpg").rename(shelf_folder / "01_Literatura.jpg")
+    configured(shelf_folder, monkeypatch)
+    terminal = FakeTerminal([])
+
+    code, calls = run(["create", "--folder", str(shelf_folder)], terminal)
+
+    assert code == 2 and calls == [] and terminal.questions == []
+    assert "position 01" in capsys.readouterr().err
+
+
 def test_yes_skips_the_paid_confirmation(shelf_folder, monkeypatch):
     configured(shelf_folder, monkeypatch)
     terminal = FakeTerminal([])

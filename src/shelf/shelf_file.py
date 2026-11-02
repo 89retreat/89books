@@ -49,6 +49,7 @@ class ShelfSection:
     title: str
     books: list[ShelfBook] = field(default_factory=list)
     text: str = ""
+    photo: str | None = None
 
 
 @dataclass
@@ -64,7 +65,7 @@ class ShelfFile:
     shelves: list[ShelfSection] = field(default_factory=list)
     name: str | None = None
     left_out: list[LeftOutBook] = field(default_factory=list)
-    version: int = 1
+    version: int = 2
 
 
 @dataclass(frozen=True)
@@ -85,7 +86,8 @@ class ShelfYamlError(ValueError):
 
 
 _ROOT_FIELDS = {"version", "name", "cover_photo", "lens", "shelves", "left_out"}
-_SECTION_FIELDS = {"title", "text", "books"}
+_SECTION_FIELDS_V1 = {"title", "text", "books"}
+_SECTION_FIELDS_V2 = _SECTION_FIELDS_V1 | {"photo"}
 _BOOK_FIELDS = {
     "title",
     "authors",
@@ -193,8 +195,10 @@ class _Reader:
             return None
 
         version = self.integer(values["version"], "version") if "version" in values else None
-        if version is not None and version != 1:
-            self.issue(values["version"], "version", f"unsupported version {version}; expected version 1")
+        if version is not None and version not in {1, 2}:
+            self.issue(
+                values["version"], "version", f"unsupported version {version}; expected version 1 or 2"
+            )
 
         name = self.text(values["name"], "name") if "name" in values else None
         cover_photo = (
@@ -203,7 +207,7 @@ class _Reader:
             else None
         )
         lens = self.text(values["lens"], "lens") if "lens" in values else None
-        shelves = self._shelves(values["shelves"], "shelves") if "shelves" in values else []
+        shelves = self._shelves(values["shelves"], "shelves", version) if "shelves" in values else []
         left_out = self._left_out(values["left_out"], "left_out") if "left_out" in values else []
 
         if version is None or cover_photo is None or lens is None:
@@ -217,23 +221,27 @@ class _Reader:
             left_out=left_out,
         )
 
-    def _shelves(self, node: Node, path: str) -> list[ShelfSection]:
+    def _shelves(self, node: Node, path: str, version: int | None) -> list[ShelfSection]:
         nodes = self.sequence(node, path)
         if nodes is None:
             return []
         shelves = []
         for index, item in enumerate(nodes):
             item_path = f"{path}[{index}]"
-            values = self.mapping(item, item_path, _SECTION_FIELDS, required=("title", "books"))
+            allowed = _SECTION_FIELDS_V2 if version == 2 else _SECTION_FIELDS_V1
+            values = self.mapping(item, item_path, allowed, required=("title", "books"))
             if values is None:
                 continue
             title = (
                 self.text(values["title"], f"{item_path}.title", nonempty=True) if "title" in values else None
             )
             text = self.text(values["text"], f"{item_path}.text") if "text" in values else ""
+            photo = (
+                self.text(values["photo"], f"{item_path}.photo", nonempty=True) if "photo" in values else None
+            )
             books = self._books(values["books"], f"{item_path}.books") if "books" in values else []
             if title is not None and text is not None:
-                shelves.append(ShelfSection(title=title, text=text, books=books))
+                shelves.append(ShelfSection(title=title, text=text, books=books, photo=photo))
         return shelves
 
     def _books(self, node: Node, path: str) -> list[ShelfBook]:
@@ -292,7 +300,7 @@ class _Reader:
 
 
 def parse_shelf(text: str) -> ShelfFile:
-    """Validates all of shelf.yaml version 1 and returns it as typed data.
+    """Validates shelf.yaml version 1 or 2 and returns it as typed data.
 
     Syntax and structural problems are reported together when possible. This function never returns a
     partial shelf: callers either receive a valid `ShelfFile` or a `ShelfYamlError` with line-numbered issues.
@@ -329,13 +337,17 @@ _ShelfDumper.add_representer(str, _represent_text)
 
 
 def dump_shelf(shelf: ShelfFile) -> str:
-    """Returns stable, human-readable version 1 YAML without opening or writing a file."""
+    """Returns stable, human-readable versioned YAML without opening or writing a file."""
+    if shelf.version not in {1, 2}:
+        raise ValueError(f"unsupported shelf version {shelf.version}")
+    if shelf.version == 1 and any(section.photo is not None for section in shelf.shelves):
+        raise ValueError("section photos require shelf.yaml version 2")
     data = {
         "version": shelf.version,
         **({"name": shelf.name} if shelf.name is not None else {}),
         "cover_photo": shelf.cover_photo,
         "lens": shelf.lens,
-        "shelves": [_section_data(section) for section in shelf.shelves],
+        "shelves": [_section_data(section, shelf.version) for section in shelf.shelves],
         **({"left_out": [_left_out_data(book) for book in shelf.left_out]} if shelf.left_out else {}),
     }
     return yaml.dump(
@@ -347,9 +359,10 @@ def dump_shelf(shelf: ShelfFile) -> str:
     )
 
 
-def _section_data(section: ShelfSection) -> dict:
+def _section_data(section: ShelfSection, version: int) -> dict:
     return {
         "title": section.title,
+        **({"photo": section.photo} if version == 2 and section.photo is not None else {}),
         **({"text": section.text} if section.text else {}),
         "books": [_book_data(book) for book in section.books],
     }

@@ -19,6 +19,7 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 
 - One shelf per photo, taken straight on, in good light, reads best.
 - `.jpg`, `.heic` (iPhone), `.png` and `.webp` all work.
+- Name a photo `NN_Title.ext` to fix that initial shelf's order, title, photo and recognized books before any portrait is written. Additional underscores become spaces; duplicate numbers or titles stop before paid calls. Ordinary camera names keep the automatic behavior.
 - `create` never replaces an existing `shelf.yaml`. It privately saves the reviewed books before the final portrait; after a broken portrait, rerunning `create` retries only that paid step.
 - `recover` uses the saved work to create a starter `shelf.yaml` with no key, network or additional cost.
 - `draw` snapshots changed source bytes; `restore` and `recreate` save the current source before replacement.
@@ -29,7 +30,7 @@ See [GETTING_STARTED.md](../GETTING_STARTED.md) for the full path.
 - Shelf and book list order is page order. Move the complete YAML book block so authors, cover and provenance travel with it; remove a shelf only after moving its books.
 - Use `face: true` for a cover, `face: false` for a spine, or remove `face` to return to the automatic composition. A missing/`none` cover always falls back to a spine.
 - Set root-level `cover_photo` to the exact filename of the shelf photo that should open the mosaic. `check` rejects missing names; once `shelf.yaml` exists, it wins over any legacy choice in `config.toml`.
-- Rewrite root-level `lens` plus each shelf's `title` and optional `text` in your own words. Single `*asterisks*` add italics only in `lens` and `text`; HTML stays escaped, and cited titles guide only automatic face-out choices.
+- Rewrite root-level `lens` plus each shelf's `title` and optional `text` in your own words. Version 2 shelves may also name a root photo with `photo`; version 1 remains readable and drawable. Single `*asterisks*` add italics only in `lens` and `text`; HTML stays escaped, and cited titles guide only automatic face-out choices.
 
 Everything in this folder is ignored by git except this README: photos,
 `config.toml`, `shelf.yaml`, `shelf.html`, a legacy `books.yaml` and the

@@ -45,6 +45,31 @@ def test_reader_authored_lens_title_and_text_are_literal_emphasized_and_safe():
     assert "<script>alert('text')</script>" not in html
 
 
+def test_version_2_section_photo_is_rendered_inside_its_authored_shelf():
+    shelf = ShelfFile(
+        version=2,
+        cover_photo="01_Tecnologia.jpg",
+        lens="Eu leio.",
+        shelves=[
+            ShelfSection(
+                title="Tecnologia",
+                photo="01_Tecnologia.jpg",
+                books=[ShelfBook(title="Código")],
+            )
+        ],
+    )
+
+    html = render_file(
+        shelf,
+        [],
+        photo_assets={"01_Tecnologia.jpg": "data:image/jpeg;base64,c2VjYW8="},
+    )
+
+    assert 'class="section-photo"' in html
+    assert 'src="data:image/jpeg;base64,c2VjYW8="' in html
+    assert 'alt="Foto da prateleira Tecnologia"' in html
+
+
 def test_emphasis_requires_a_plain_balanced_pair_on_one_line():
     text = "Antes *aberto\nfechado* e *válido*, mas **não negrito** e fim *"
 

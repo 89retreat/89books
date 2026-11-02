@@ -38,6 +38,24 @@ Copy the photos into `my-bookshelf/`. Git ignores everything you put there.
 During `create`, resized copies with metadata removed are sent to the model;
 the original files remain local.
 
+If a photo already represents a shelf you want to name, use the exact
+`NN_Title.ext` convention:
+
+```text
+01_Technology and Product.jpeg
+02_Brazilian_Literature.jpeg
+03_History and Politics.jpeg
+```
+
+The two-digit prefix sets the initial shelf order. The rest of the filename,
+with extra underscores changed to spaces, becomes the shelf title. Books
+recognized in that photo start in that shelf, and the photo appears inside its
+section on the page. The portrait model may write the opening and section
+prose, but it cannot rename, reorder or move these shelves. Ordinary camera
+names such as `IMG_1234.HEIC` keep the automatic portrait behavior. Duplicate
+numbers or titles stop before any paid call. After creation, `shelf.yaml` is the
+authority; renaming a photo does not silently reorganize an existing shelf.
+
 ## 4. Create the editable shelf once
 
 ```bash
@@ -72,8 +90,10 @@ uv run shelf create   # paid: retry only the portrait after a new confirmation
 ```
 
 `recover` needs no key or network. Its starter source has an empty `lens` and
-one `Meus livros` section, ready for you to edit and draw. Recovery files stay
-private and are removed only after `shelf.yaml` has been written successfully.
+keeps any shelves explicitly named through photos; books from ordinary photo
+names go into `Meus livros`. Without named photos, it creates the same single
+`Meus livros` section as before. Recovery files stay private and are removed
+only after `shelf.yaml` has been written successfully.
 
 ## 5. Draw and open it for free
 
@@ -255,8 +275,23 @@ shelves:
 ```
 
 You may reorder whole shelf blocks or add a shelf with `title`, optional `text`
-and a `books` list. Remove a shelf only after its books have been moved; manual
-YAML editing is powerful, while history and `restore` are the safety net.
+and a `books` list. Version 2 also accepts an optional root-photo filename on a
+section:
+
+```yaml
+version: 2
+shelves:
+  - title: Technology and Product
+    photo: 01_Technology and Product.jpeg
+    text: ''
+    books: []
+```
+
+The filename must identify an existing supported shelf photo in the folder;
+`check` and `draw` reject missing names without replacing the page. Version 1
+files remain readable and drawable without being rewritten. Remove a shelf
+only after its books have been moved; manual YAML editing is powerful, while
+history and `restore` are the safety net.
 
 A custom last shelf remains an ordinary numbered shelf even when `text` is
 empty. Only the generated closing shelf named “E mais livros que já me

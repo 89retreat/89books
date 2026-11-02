@@ -123,7 +123,7 @@ shelves:
 
 def test_parse_reports_every_detectable_problem_with_line_and_path():
     text = """\
-version: 2
+version: 3
 cover_photo: 3
 lens: tudo certo
 shelves:
@@ -151,9 +151,54 @@ left_out:
         (10, "shelves[0].books[1].hidden"),
         (12, "left_out[0].reason"),
     ]
-    assert "unsupported version" in issues[0].message
+    assert "unsupported version 3" in issues[0].message
     assert "unknown field" in issues[3].message
     assert all(str(issue).startswith(f"line {issue.line}: {issue.path}:") for issue in issues)
+
+
+def test_version_2_adds_an_optional_photo_to_each_section_without_changing_version_1():
+    shelf = parse_shelf(
+        """\
+version: 2
+cover_photo: shelf.jpg
+lens: Eu leio.
+shelves:
+  - title: Tecnologia
+    photo: 01_Tecnologia.jpg
+    books:
+      - title: Código
+"""
+    )
+
+    assert shelf.version == 2
+    assert shelf.shelves[0].photo == "01_Tecnologia.jpg"
+    assert parse_shelf(dump_shelf(shelf)) == shelf
+    assert "photo: 01_Tecnologia.jpg" in dump_shelf(shelf)
+
+    with pytest.raises(ShelfYamlError, match="unknown field in version 1"):
+        parse_shelf(
+            """\
+version: 1
+cover_photo: shelf.jpg
+lens: Eu leio.
+shelves:
+  - title: Tecnologia
+    photo: 01_Tecnologia.jpg
+    books: []
+"""
+        )
+
+
+def test_dump_refuses_to_hide_a_section_photo_inside_version_1():
+    shelf = ShelfFile(
+        version=1,
+        cover_photo="shelf.jpg",
+        lens="",
+        shelves=[ShelfSection(title="Tecnologia", photo="01_Tecnologia.jpg")],
+    )
+
+    with pytest.raises(ValueError, match="version 2"):
+        dump_shelf(shelf)
 
 
 def test_duplicate_keys_are_rejected_at_the_second_occurrence():
